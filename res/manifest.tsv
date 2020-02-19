@@ -120,7 +120,7 @@ Touch the "Sky Shutter" satellite orbiting [TH]		TH & Early	3	1.5
 Go through the black hole in [BH]		BlackHoleExclusive	2	2.5
 Go through the black hole in [BH] without your ship		Shipless & BlackHoleExclusive	2.5	3.5
 Talk to Solanum		QM	6	6.5
-Get inside the electric core of [GD]		Electric Core	4	4.5
+Get inside the electric core of [GD]		ElectricCore	4	4.5
 Ride one CW tornado and one CCW tornado		(GD | SouthernObs) & Tornado	2.5	3
 Activate emergency scout recall		Sun | HL	2	2
 Enter the black hole formed inside the ATP		ATP & Late	4	7
@@ -129,7 +129,7 @@ Touch the Hearthian flag on [AR]		AR	2	2
 Complete all trials in [ToQT] ([GD])		GD & QShard	5	5
 Translate any text in the Southern Observatory		BH & TranslateSecondary	5	5
 Translate any text in the Hanging City		BH & TranslateSecondary	3	3.5
-Activate $1/2/3$ gravity cannon(s)	[OPC] counts, but only as 1	PlanetHopping & $[BH;ET;OPC]ChooseN$	$2/3.5/5$	$2/4/6$
+Activate $1/2/3$ gravity cannon(s)	[OPC] counts, but only as 1	PlanetHopping & @BH;ET;OPC@	$2/3.5/5$	$2/4/6$
 Translate any text in the Sunless City		SunlessCity	3	3.5
 Translate any text in the High Energy Lab		HighNrg	4	4
 Supernova ending		Late	3	5
@@ -142,33 +142,33 @@ Translate any text in $1/2/3$ different [OPC] module(s)		$ OPC / OPC / ElectricC
 Eat a marshmallow at $2/3/4/5$ different fire(s)		LitFire | UnlitFire	$1/2/3/4.5$	$1.5/2.5/3.5/4.5$
 Use oxygen as a propellant		Misc	2	1.5
 Enter black hole forge		HangingCity & AT & Warp	8	8.5
-Talk to $2/3/4/5$ Hearthian traveler(s) outside of [TH]		PlanetHopping & $[AR;GD;ET;DB;BH]ChooseN$	$3/4/5/6$	$3.5/4.5/5.5/6.5$
+Talk to $2/3/4/5$ Hearthian traveler(s) outside of [TH]		PlanetHopping & @AR;GD;ET;DB;BH@	$3/4/5/6$	$3.5/4.5/5.5/6.5$
 Aggro an anglerfish (and survive)		DB	2.5	3.5
 Touch a living or dead Jellyfish		GD | DB	3	3.5
 Translate any text inside [TI]		TranslateSecondary & (ShitCreek | End)	7	7.5
 Raise the black hole forge		HangingCity	3	3.5
 Enter the museum		TH & Misc	1	2.5
-Touch $1/2/3$ distress beacon(s)		PlanetHopping & $[BH;ET;DB]ChooseN$	$2/4/7$	$2/4/7$
-Fully repair the satellite in the zero g cave		TH & misc	2.5	3.5
-Touch $1/2/3/4$ explorer ship(s)		$[AR;GD;ET;DB]ChooseN$	$1.5/3/4.5/6$	$1.5/3/5/7$
-Touch $1/2$ anglerfish skeleton(s)		$[DB;Sunless City]ChooseN$	$3.5/7$	$3/6.5$
-Translate any text on $2/3$ moon(s)		$[AR; QM; HL]ChooseN$	$5/6.5$	$5/6.5$
-Visit $2/3/4$ projection pool(s)		PlanetHopping	$3/4.5/6$	$3/4.5/6$
+Touch $1/2/3$ distress beacon(s)		PlanetHopping & @BH;ET;DB@	$2/4/7$	$2/4/7$
+Fully repair the satellite in the zero g cave		TH & Misc	2.5	3.5
+Touch $1/2/3/4$ explorer ship(s)		@AR;GD;ET;DB@	$1.5/3/4.5/6$	$1.5/3/5/7$
+Touch $1/2$ anglerfish skeleton(s)		@DB;SunlessCity@	$3.5/7$	$3/6.5$
+Translate any text on $2/3$ moon(s)		@AR; QM; HL@	$5/6.5$	$5/6.5$
+Use $2/3/4$ different projection pool(s)		PlanetHopping	$3/4.5/6$	$3/4.5/6$
 Translate any text inside Mine 2b		TH	2	2.5
 Use a storm shelter on Giants Deep		GD & Tornado	4	3
 Touch the red anglerfish eggs		DB	3	4
 Translate any text inside statue island	Text on the outside does not count	GD & Tornado	3.5	3
-Touch a dead Nomai on $1/2/3/4$ primary location(s)	QM only counts as 1	$[AT; QM; TI; DB]ChooseN$	$2/3.5/5/6.5$	$2/3.5/5/6.5$
-Shoot scout through 2 impassable bramble seed(s)		TH;DB	3.5	3.5
+Touch a dead Nomai on $1/2/3/4$ primary location(s)	QM only counts as 1	@AT; QM; TI; DB@	$2/3.5/5/6.5$	$2/3.5/5/6.5$
+Shoot scout through 2 impassable bramble seed(s)		TH & DB	3.5	3.5
 Puncture your suit		Misc	1.5	1
 Touch the quantum cave shard on Ember Twin		QShard &ET	3.5	3
-Light 1/2/3 camp fire(s)		UnlitFire		
+[TODO] Light 1/2/3 camp fire(s)		UnlitFire		
 Touch the grove shard on Timber Hearth		QShard & TH	1.5	1.5
-Touch quantum shards on $2/3/4$ different planet(s)		QShardHunt		
-Touch island shard		QShard & GD		
+[TODO] Touch quantum shards on $2/3/4$ different planet(s)		QShardHunt		
+[TODO] Touch island shard		QShard & GD		
 Find both kids in hide and go seek		TH	1	1.5
 Hold an advanced warp core	(Broken or functional…)	ATP | Vessel	4.5	4
-Enter $1/2$ Nomai ship(s)		$[BH;QM;ET]ChooseN$	$2/4$	$2.5/4.5$
+Enter $1/2$ Nomai ship(s)		@BH;QM;ET@	$2/4$	$2.5/4.5$
 Destroy fabric of spacetime	If doing the [ATP] method, you may not "set up" your file before the timer starts	HighNrg | End	7	7
 "You died" game ending	(Remove the warp core from [APT] and then die)	ATP	4.5	5.5
 Set foot on The Eye		Eye	10	11
@@ -177,7 +177,7 @@ QM Ending	(Remove the warp core from [APT] and then await the supernova at the 6
 Touch the Sun Station with your ship		SS & Sun	7	4
 Refuel your jetpack at $3/4/5$ different canister(s)	Refueling via the canister in your ship counts as 1	JetFuel	$2.5/3.5/5$	$2.5/3.5/5$
 Ride 3 elevators on TH		TH	2	3.5
-Take a picture of ghost matter on $2/3/4$ different primary location(s)		$[TH;TI;GD;BH;ET]ChooseN$	$3/4/5$	$3/4/5$
+Take a picture of ghost matter on $2/3/4$ different primary location(s)		@TH;TI;GD;BH;ET@	$3/4/5$	$3/4/5$
 Translate any text at Eye Signal Locator ([AR])		AR & TranslateSecondary	2	2
 Translate any text at the Construction Yard		GD & TranslateSecondary	2.5	3.5
 Translate any text at Quantum Moon Locator ([ET])		ET & TranslateSecondary	2	3

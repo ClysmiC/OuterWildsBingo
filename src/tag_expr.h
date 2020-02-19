@@ -1,3 +1,5 @@
+// View this file with tab-spacing 4. On GitHub, append ?ts=4 to the URL to do so.
+
 #pragma once
 
 #include "bingo_gen.h"
@@ -30,10 +32,6 @@ struct TagExpressionLexer		// tag = telex
 	int					m_cCh;
 	int					m_i;
 
-	// $-exp
-
-	int					m_iDolctx;
-
 	// Cached peek token
 
 	Token				m_tokenNextCache;
@@ -44,7 +42,7 @@ struct TagExpressionLexer		// tag = telex
 
 // API
 
-TagExpression * PTagexprCompile(const char * pCh, int cCh, int iDolctx=-1);
+TagExpression * PTagexprCompile(const char * pCh, int cCh);
 
 
 

@@ -174,9 +174,17 @@ inline bool tryConsumeChar(const char * pBuffer, int * pI, char chMatch)
     return false;
 }
 
-// Optional params = the poor man's regex :)
+// Optional params = The poor man's regex :)
 
-inline bool tryConsumeUntilChar(const char * pBuffer, int * pI, char chMatch, bool fResultOnMatchNull=false)
+inline bool tryConsumeUntilChar(
+	const char * pBuffer,
+	int * pI,
+	char * poChMatch,
+	char chMatch0,
+	char chMatch1='\0',
+	char chMatch2='\0',
+	char chMatch3='\0',
+	bool fResultOnMatchNull=false)
 {
 	int i = *pI;
 
@@ -185,10 +193,17 @@ inline bool tryConsumeUntilChar(const char * pBuffer, int * pI, char chMatch, bo
 		char c = pBuffer[i++];
 
 		if (c == '\0')			return fResultOnMatchNull;
-		if (c == chMatch)		break;
+		if (c == chMatch0 || c == chMatch1 || c == chMatch2 || c == chMatch3)
+		{
+			*poChMatch = c;
+			*pI = i - 1;		// Consume *until*... so we need to step back one
+			return true;
+		}
 	}
+}
 
-	i--;	// Consume *until*... so we need to step back one
-	*pI = i;
-	return true;
+inline bool tryConsumeUntilChar(const char * pBuffer, int * pI, char chMatch, bool fResultOnMatchNull=false)
+{
+	char chMatched;
+	return tryConsumeUntilChar(pBuffer, pI, &chMatched, chMatch, '\0', '\0', '\0', fResultOnMatchNull);
 }

@@ -1,3 +1,5 @@
+// View this file with tab-spacing 4. On GitHub, append ?ts=4 to the URL to do so.
+
 #pragma once
 
 #include "als/als.h"
@@ -68,7 +70,7 @@ struct Goal
 // Global state
 
 extern char *		g_pChzMan;			// Manifest
-extern int			g_iMan;				// Index
+extern int			g_iChMan;				// Index
 extern int			g_nLine;			// Line #
 
 extern DynamicArray<Tag>						g_aryTag;
@@ -90,6 +92,9 @@ bool FIsLegalTagCharacter(char c);
 StringView StrvNextCell();
 void SkipToNextLine();
 TAGID TagidFromStrv(const StringView & strv);
+bool FTryCompileDollarExpr(const StringView & strvCell, DynamicArray<String> * poAryStrCompiled);
+StringView StrvCompileAtExpr(const StringView & strvCell, int iDollarCtx);
+void CreateGeneratedManifestFromRaw();
 
 
 

@@ -47,6 +47,17 @@ struct String
 	char * pBuffer;     // NOTE: If you mutate the buffer when it is pointing at the zero string then you will break everything!
 };
 
+inline void dispose(String * pStr)
+{
+	ALS_COMMON_STRING_Assert(pStr->pBuffer);		// Even the empty string should point to our global "zero" buffer
+
+	if (pStr->pBuffer != &String::gc_zeroString)
+	{
+		free(pStr->pBuffer);
+		pStr->pBuffer = const_cast<char *>(&String::gc_zeroString);
+	}
+}
+
 inline void ensureCapacity(String * pStr, int requestedCapacity)
 {
 	if (requestedCapacity <= pStr->capacity) return;
@@ -89,11 +100,17 @@ inline void init(String * pStr)
 	pStr->pBuffer = const_cast<char *>(&String::gc_zeroString);
 }
 
+inline void reinit(String * pStr)
+{
+	dispose(pStr);
+	init(pStr);
+}
+
 inline void init(String * pStr, const char * pChz)
 {
     pStr->pBuffer = const_cast<char *>(&String::gc_zeroString);
 
-	char * cursor = pChz;
+	const char * cursor = pChz;
 	while (*cursor)
 	{
 		cursor++;
@@ -112,6 +129,12 @@ inline void init(String * pStr, const char * pChz)
 	pStr->pBuffer[pStr->cChar] = '\0';
 }
 
+inline void reinit(String * pStr, const char * pChz)
+{
+	dispose(pStr);
+	init(pStr, pChz);
+}
+
 inline void init(String * pStr, const char * pCh, int cCh)
 {
 	pStr->pBuffer = const_cast<char *>(&String::gc_zeroString);
@@ -127,6 +150,12 @@ inline void init(String * pStr, const char * pCh, int cCh)
 	// NOTE: This is always safe due to the extra byte requested inside ensureCapacity
 
 	pStr->pBuffer[pStr->cChar] = '\0';
+}
+
+inline void reinit(String * pStr, const char * pCh, int cCh)
+{
+	dispose(pStr);
+	init(pStr, pCh, cCh);
 }
 
 inline void append(String * pString, const char * charsToAppend)
@@ -160,17 +189,6 @@ inline void append(String * pString, const char * pCh, int cCh)
     // NOTE: This is always safe due to the extra byte requested inside ensureCapacity
 
     pString->pBuffer[pString->cChar] = '\0';
-}
-
-inline void dispose(String * pStr)
-{
-	ALS_COMMON_STRING_Assert(pStr->pBuffer);		// Even the empty string should point to our global "zero" buffer
-
-	if (pStr->pBuffer != &String::gc_zeroString)
-	{
-		free(pStr->pBuffer);
-		pStr->pBuffer = const_cast<char *>(&String::gc_zeroString);
-	}
 }
 
 struct StringView
@@ -225,16 +243,23 @@ inline void trim(StringView * pStrv)
 	{
 		// TODO: Better IsWhitespace test
 
-		if (pStrv->pCh[0] == ' ' || pStrv->pCh[0] == '\t')
+		switch (pStrv->pCh[0])
 		{
-			pStrv->pCh++;
-			pStrv->cCh--;
-		}
-		else
-		{
-			break;
+			case ' ':
+			case '\t':
+			case '\r':
+			case '\n':
+			{
+				pStrv->pCh++;
+				pStrv->cCh--;
+			} break;
+
+			default:
+				goto LTrimStartDone;
 		}
 	}
+
+LTrimStartDone:
 
 	// Trim end
 
@@ -242,15 +267,37 @@ inline void trim(StringView * pStrv)
 	{
 		// TODO: Better IsWhitespace test
 
-		if (pStrv->pCh[pStrv->cCh - 1] == ' ' || pStrv->pCh[pStrv->cCh - 1] == '\t')
+		switch (pStrv->pCh[pStrv->cCh - 1])
 		{
-			pStrv->cCh--;
-		}
-		else
-		{
-			break;
+			case ' ':
+			case '\t':
+			case '\r':
+			case '\n':
+			{
+				pStrv->cCh--;
+			} break;
+
+			default:
+				goto LTrimEndDone;
 		}
 	}
+
+LTrimEndDone:
+
+	return;
+}
+
+inline bool startsWith(const StringView & strv, const char * pChz)
+{
+	for (int iCh = 0; iCh < strv.cCh; iCh++)
+	{
+		// NOTE (andrew) Capitalization matters
+
+		if (pChz[iCh] == '\0' )				return true;
+		if (strv.pCh[iCh] != pChz[iCh])		return false;
+	}
+
+	return pChz[strv.cCh] == '\0';
 }
 
 #undef ALS_COMMON_STRING_StaticAssert

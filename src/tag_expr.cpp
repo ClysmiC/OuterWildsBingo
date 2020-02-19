@@ -1,3 +1,5 @@
+// View this file with tab-spacing 4. On GitHub, append ?ts=4 to the URL to do so.
+
 #include "tag_expr.h"
 
 Token TokenPeekNext(TagExpressionLexer * pTelex)
@@ -188,7 +190,7 @@ TagExpression * PTagexprParseExpr(TagExpressionLexer * pTelex)
 	return PTagexprParseBinop(pTelex, TAGEXPRK_And);
 }
 
-TagExpression * PTagexprCompile(const char * pCh, int cCh, int iDolctx)
+TagExpression * PTagexprCompile(const char * pCh, int cCh)
 {
 	Assert(cCh > 0);
 
@@ -199,7 +201,6 @@ TagExpression * PTagexprCompile(const char * pCh, int cCh, int iDolctx)
 	telex.m_tokenNextCache.m_tokenk = TOKENK_Nil;
 	telex.m_tokenNextCache.m_tagidLiteral = TAGID_Nil;
 	telex.m_iAfterCacheConsumed = 0;
-	telex.m_iDolctx = iDolctx;
 
 	TagExpression * pTagexprRoot = PTagexprParseExpr(&telex);
 
