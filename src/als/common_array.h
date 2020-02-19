@@ -356,6 +356,12 @@ void removeLast(DynamicArray<T> * pArray)
 }
 
 template <typename T>
+void removeLastMultiple(DynamicArray<T> * pArray, int cRemove)
+{
+	pArray->cItem = (cRemove > pArray->cItem) ? 0 : pArray->cItem - cRemove;
+}
+
+template <typename T>
 void remove(DynamicArray<T> * pArray, int iItem)
 {
 	// Slowest way to remove. Maintains order.

@@ -3,85 +3,8 @@
 #include "als/als.h"
 
 
-struct StringView				// tag = strv
-{
-	// TODO: Move this into an als file?
 
-	const char *				m_pCh;
-	int							m_cCh;
-
-	bool operator==(const StringView & strvOther) const
-	{
-		if (m_cCh != strvOther.m_cCh)		return false;
-		for (int iCh = 0; iCh < m_cCh; iCh++)
-		{
-			// NOTE (andrew) Capitalization matters
-
-			if (m_pCh[iCh] != strvOther.m_pCh[iCh])		return false;
-		}
-
-		return true;
-	}
-
-	bool operator!=(const StringView & strvOther) const
-	{
-		return !((*this) == strvOther);
-	}
-
-	bool operator==(const char * pchz) const
-	{
-		if (pchz[m_cCh] != '\0' )		return false;
-
-		for (int iCh = 0; iCh < m_cCh; iCh++)
-		{
-			// NOTE (andrew) Capitalization matters
-
-			if (pchz[iCh] == '\0' )				return false;
-			if (m_pCh[iCh] != pchz[iCh])		return false;
-		}
-	}
-
-	bool operator!=(const char * pchz) const
-	{
-		return !((*this) == pchz);
-	}
-};
-
-void Trim(StringView * pStrv)
-{
-	// Trim start
-
-	while (pStrv->m_cCh > 0)
-	{
-		// TODO: Better IsWhitespace test
-
-		if (pStrv->m_pCh[0] == ' ' || pStrv->m_pCh[0] == '\t')
-		{
-			pStrv->m_pCh++;
-			pStrv->m_cCh--;
-		}
-		else
-		{
-			break;
-		}
-	}
-
-	// Trim end
-
-	while (pStrv->m_cCh > 0)
-	{
-		// TODO: Better IsWhitespace test
-
-		if (pStrv->m_pCh[pStrv->m_cCh - 1] == ' ' || pStrv->m_pCh[pStrv->m_cCh - 1] == '\t')
-		{
-			pStrv->m_cCh--;
-		}
-		else
-		{
-			break;
-		}
-	}
-}
+// Definitions
 
 enum TAGID
 {
@@ -122,7 +45,7 @@ struct Synergy					// tag = synrg
 {
 	TAGID						m_tagid0;
 	TAGID						m_tagid1;
-	f32							m_nSynergy;
+	f32							m_nSynrg;
 };
 
 struct Shorthand				// tag = shorthand
@@ -139,3 +62,37 @@ struct Goal
 	f32							m_gDifficulty;			// Unit-less, ballparked difficulty. Only has meaning relative to other difficulties.
 	f32							m_gLength;				//	... length.
 };
+
+
+
+// Global state
+
+extern char *		g_pChzMan;			// Manifest
+extern int			g_iMan;				// Index
+extern int			g_nLine;			// Line #
+
+extern DynamicArray<Tag>						g_aryTag;
+extern DynamicArray<Synergy>					g_arySynrg;
+extern DynamicArray<Shorthand>					g_aryShorthand;
+extern DynamicPoolAllocator<TagExpression>		g_dpaTagexpr;
+
+
+
+// API
+
+void ErrorAndExit(const char * errFormat, ...);
+bool FIsLegalTagCharacter(char c);
+
+
+
+// Internal
+
+StringView StrvNextCell();
+void SkipToNextLine();
+TAGID TagidFromStrv(const StringView & strv);
+
+
+
+// main
+
+int main();

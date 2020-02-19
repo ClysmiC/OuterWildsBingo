@@ -35,7 +35,7 @@
 #endif
 #endif
 
-bool tryConsumeInt(const char * pBuffer, int * pI, int *poN)
+inline bool tryConsumeInt(const char * pBuffer, int * pI, int *poN)
 {
 	int i = *pI;
     bool isNeg = false;
@@ -76,7 +76,7 @@ bool tryConsumeInt(const char * pBuffer, int * pI, int *poN)
 
 // NOTE (andrew) "Approx" because the implementation is kind of a hack and probably accumulates error
 
-bool tryConsumeFloatApprox(const char * pBuffer, int * pI, float * poF)
+inline bool tryConsumeFloatApprox(const char * pBuffer, int * pI, float * poF)
 {
 	int i = *pI;
     bool isNeg = false;
@@ -131,7 +131,7 @@ bool tryConsumeFloatApprox(const char * pBuffer, int * pI, float * poF)
     }
 }
 
-bool tryConsume(const char * pBuffer, int * pI, const char * pchzMatch)
+inline bool tryConsume(const char * pBuffer, int * pI, const char * pchzMatch)
 {
     int iBuffer = *pI;
     int iMatch = 0;
@@ -149,7 +149,7 @@ bool tryConsume(const char * pBuffer, int * pI, const char * pchzMatch)
     return true;
 }
 
-bool tryConsumeChar(const char * pBuffer, int * pI, char * pChMatch, char chMin, char chMax)
+inline bool tryConsumeChar(const char * pBuffer, int * pI, char * pChMatch, char chMin, char chMax)
 {
     char c = pBuffer[*pI];
     if (c >= chMin && c <= chMax)
@@ -162,7 +162,7 @@ bool tryConsumeChar(const char * pBuffer, int * pI, char * pChMatch, char chMin,
     return false;
 }
 
-bool tryConsumeChar(const char * pBuffer, int * pI, char chMatch)
+inline bool tryConsumeChar(const char * pBuffer, int * pI, char chMatch)
 {
     char c = pBuffer[*pI];
     if (c == chMatch)
@@ -174,7 +174,9 @@ bool tryConsumeChar(const char * pBuffer, int * pI, char chMatch)
     return false;
 }
 
-bool tryConsumeUntilChar(const char * pBuffer, int * pI, char chMatch)
+// Optional params = the poor man's regex :)
+
+inline bool tryConsumeUntilChar(const char * pBuffer, int * pI, char chMatch, bool fResultOnMatchNull=false)
 {
 	int i = *pI;
 
@@ -182,7 +184,7 @@ bool tryConsumeUntilChar(const char * pBuffer, int * pI, char chMatch)
 	{
 		char c = pBuffer[i++];
 
-		if (c == '\0')			return false;
+		if (c == '\0')			return fResultOnMatchNull;
 		if (c == chMatch)		break;
 	}
 

@@ -19,7 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\bingo_gen.cpp" />
+    <ClCompile Include="src\bingo_gen.cpp">
+      <FileType>CppCode</FileType>
+    </ClCompile>
+    <ClCompile Include="src\tag_expr.cpp">
+      <FileType>CppCode</FileType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\als\als.h" />
@@ -37,6 +42,10 @@
     <ClInclude Include="src\als\macro_util.h" />
     <ClInclude Include="src\bingo_gen.h" />
     <ClInclude Include="src\common_parse.h" />
+    <ClInclude Include="src\tag_expr.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\manifest.csv" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}</ProjectGuid>
@@ -94,6 +103,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,6 +121,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

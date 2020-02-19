@@ -89,22 +89,39 @@ inline void init(String * pStr)
 	pStr->pBuffer = const_cast<char *>(&String::gc_zeroString);
 }
 
-inline void init(String * pStr, char * chars)
+inline void init(String * pStr, const char * pChz)
 {
     pStr->pBuffer = const_cast<char *>(&String::gc_zeroString);
 
-	char * cursor = chars;
+	char * cursor = pChz;
 	while (*cursor)
 	{
 		cursor++;
 	}
 
-	pStr->cChar = cursor - chars;
+	pStr->cChar = cursor - pChz;
 	ensureCapacity(pStr, pStr->cChar);
 
 	for (int i = 0; i < pStr->cChar; i++)
 	{
-		pStr->pBuffer[i] = chars[i];
+		pStr->pBuffer[i] = pChz[i];
+	}
+
+	// NOTE: This is always safe due to the extra byte requested inside ensureCapacity
+
+	pStr->pBuffer[pStr->cChar] = '\0';
+}
+
+inline void init(String * pStr, const char * pCh, int cCh)
+{
+	pStr->pBuffer = const_cast<char *>(&String::gc_zeroString);
+
+	pStr->cChar = cCh;
+	ensureCapacity(pStr, pStr->cChar);
+
+	for (int i = 0; i < pStr->cChar; i++)
+	{
+		pStr->pBuffer[i] = pCh[i];
 	}
 
 	// NOTE: This is always safe due to the extra byte requested inside ensureCapacity
@@ -130,6 +147,21 @@ inline void append(String * pString, const char * charsToAppend)
     pString->pBuffer[pString->cChar] = '\0';
 }
 
+inline void append(String * pString, const char * pCh, int cCh)
+{
+    for (int iCh = 0; iCh < cCh; iCh++)
+    {
+        ensureCapacity(pString, pString->cChar + 1);
+
+        pString->pBuffer[pString->cChar] = pCh[iCh];
+        pString->cChar++;
+    }
+
+    // NOTE: This is always safe due to the extra byte requested inside ensureCapacity
+
+    pString->pBuffer[pString->cChar] = '\0';
+}
+
 inline void dispose(String * pStr)
 {
 	ALS_COMMON_STRING_Assert(pStr->pBuffer);		// Even the empty string should point to our global "zero" buffer
@@ -138,6 +170,86 @@ inline void dispose(String * pStr)
 	{
 		free(pStr->pBuffer);
 		pStr->pBuffer = const_cast<char *>(&String::gc_zeroString);
+	}
+}
+
+struct StringView
+{
+	const char * pCh = nullptr;
+	int cCh = 0;
+};
+
+inline bool operator==(const StringView & strv0, const StringView & strv1)
+{
+	if (strv0.cCh != strv1.cCh)		return false;
+	for (int iCh = 0; iCh < strv0.cCh; iCh++)
+	{
+		// NOTE (andrew) Capitalization matters
+
+		if (strv0.pCh[iCh] != strv1.pCh[iCh])		return false;
+	}
+
+	return true;
+}
+
+inline bool operator!=(const StringView & strv0, const StringView & strv1)
+{
+	return !(strv0 == strv1);
+}
+
+inline bool operator==(const StringView & strv, const char * pchz)
+{
+	if (pchz[strv.cCh] != '\0' )		return false;
+
+	for (int iCh = 0; iCh < strv.cCh; iCh++)
+	{
+		// NOTE (andrew) Capitalization matters
+
+		if (pchz[iCh] == '\0' )				return false;
+		if (strv.pCh[iCh] != pchz[iCh])		return false;
+	}
+
+	return true;
+}
+
+inline bool operator!=(const StringView & strv, const char * pchz)
+{
+	return !(strv == pchz);
+}
+
+inline void trim(StringView * pStrv)
+{
+	// Trim start
+
+	while (pStrv->cCh > 0)
+	{
+		// TODO: Better IsWhitespace test
+
+		if (pStrv->pCh[0] == ' ' || pStrv->pCh[0] == '\t')
+		{
+			pStrv->pCh++;
+			pStrv->cCh--;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	// Trim end
+
+	while (pStrv->cCh > 0)
+	{
+		// TODO: Better IsWhitespace test
+
+		if (pStrv->pCh[pStrv->cCh - 1] == ' ' || pStrv->pCh[pStrv->cCh - 1] == '\t')
+		{
+			pStrv->cCh--;
+		}
+		else
+		{
+			break;
+		}
 	}
 }
 
