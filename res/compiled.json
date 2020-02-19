@@ -1,0 +1,20 @@
+{
+	"shorthands":
+	[
+		  { "short": "SS", "long": "Sun Station" }
+		, { "short": "AT", "long": "Ash Twin" }
+		, { "short": "ET", "long": "Ember Twin" }
+		, { "short": "TH", "long": "Timber Hearth" }
+		, { "short": "AR", "long": "Attlerock" }
+		, { "short": "BH", "long": "Brittle Hollow" }
+		, { "short": "HL", "long": "Hollow's Lantern" }
+		, { "short": "GD", "long": "Giant's Deep" }
+		, { "short": "OPC", "long": "Orbital Probe Cannon" }
+		, { "short": "DB", "long": "Dark Bramble" }
+		, { "short": "WHS", "long": "White Hole Station" }
+		, { "short": "TI", "long": "The Interloper" }
+		, { "short": "QM", "long": "Quantum Moon" }
+		, { "short": "ToQT", "long": "Tower of Quantum Trials" }
+		, { "short": "ToQK", "long": "Tower of Quantum Knowledge" }
+	]
+}

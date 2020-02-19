@@ -94,7 +94,10 @@ void SkipToNextLine();
 TAGID TagidFromStrv(const StringView & strv);
 bool FTryCompileDollarExpr(const StringView & strvCell, DynamicArray<String> * poAryStrCompiled);
 StringView StrvCompileAtExpr(const StringView & strvCell, int iDollarCtx);
+
 void CreateGeneratedManifestFromRaw();
+void CompileGeneratedManifest();
+void DumpToJson();
 
 
 

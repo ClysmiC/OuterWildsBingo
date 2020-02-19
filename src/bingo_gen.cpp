@@ -333,8 +333,13 @@ StringView StrvCompileAtExpr(const StringView & strvCell, int iDollarCtx)
 
 void CreateGeneratedManifestFromRaw()
 {
-	Assert(g_iChMan == 0);
-	Assert(g_nLine == -1);
+	// Init needed globals
+
+	g_pChzMan = nullptr;
+	g_iChMan = 0;
+	g_nLine = -1;
+	g_fEof = false;
+	g_fIsGeneratedMan = false;
 
 	// Read in raw manifest
 
@@ -606,19 +611,9 @@ void CreateGeneratedManifestFromRaw()
 	}
 }
 
-int main()
+void CompileGeneratedManifest()
 {
-	// Init globals for generating manifest from raw
-
-	g_pChzMan = nullptr;
-	g_iChMan = 0;
-	g_nLine = -1;
-	g_fEof = false;
-	g_fIsGeneratedMan = false;
-
-	CreateGeneratedManifestFromRaw();
-
-	// Init globals for compiling generated manifest
+	// Init needed globals
 
 	init(&g_aryTag);
 	init(&g_arySynrg);
@@ -652,12 +647,10 @@ int main()
 		if (cB < 0)
 		{
 			ErrorAndExit("Error opening manifest file");
-			return 1;
 		}
 		else if (cB == cChManifestMax + 1)
 		{
 			ErrorAndExit("Manifest file of size >= %d bytes is not yet supported", cBManifestMax);
-			return 1;
 		}
 	}
 
@@ -909,6 +902,10 @@ int main()
 				if (strvLong.cCh == 0)		ErrorAndExit("Illegal empty cell in \"%s\"", s_pChzCol);
 			}
 
+			Shorthand * pShorthand = appendNew(&g_aryShorthand);
+			pShorthand->m_strvShort = strvShort;
+			pShorthand->m_strvLong = strvLong;
+
 			SkipToNextLine();
 		}
 	}
@@ -1016,8 +1013,86 @@ int main()
 
 		if (!g_fEof)				ErrorAndExit("File has content after \"!!Eof\"");
 	}
+}
 
-	fprintf(stdout, "Compilation successful");
+void DumpToJson()
+{
+	auto printTabs = [](FILE * file, int cTab)
+	{
+		bool fFail = false;
+		for (int iTab = 0; iTab < cTab; iTab++)
+		{
+			fFail = fFail || fputc('\t', file) < 0;
+		}
+
+		return !fFail;
+	};
+
+	auto printStrv = [](FILE * file, StringView strv)
+	{
+		bool fFail = false;
+		for (int iCh = 0; iCh < strv.cCh; iCh++)
+		{
+			fFail = fFail || fputc(strv.pCh[iCh], file) < 0;
+		}
+
+		return !fFail;
+	};
+
+	FILE * file = fopen("./res/compiled.json", "wb");
+	Defer (if (file) fclose(file));
+
+	int cTab = 0;
+	if (!file)		ErrorAndExit("Failed to create compiled JSON file");
+
+	bool fFail = false;
+	fFail = fFail || fputs("{\n", file) < 0;
+
+	cTab++;
+	{
+		fFail = fFail || !printTabs(file, cTab);
+		fFail = fFail || fputs("\"shorthands\":\n", file) < 0;
+
+		fFail = fFail || !printTabs(file, cTab);
+		fFail = fFail || fputs("[\n", file) < 0;
+
+		cTab++;
+		for (int iShorthand = 0; iShorthand < g_aryShorthand.cItem; iShorthand++)
+		{
+			fFail = fFail || !printTabs(file, cTab);
+
+			if (iShorthand == 0)		fFail = fFail || fputs("  ", file) < 0;
+			else						fFail = fFail || fputs(", ", file) < 0;
+
+			fFail = fFail || fputs("{ \"short\": \"", file) < 0;
+			fFail = fFail || !printStrv(file, g_aryShorthand[iShorthand].m_strvShort);
+			fFail = fFail || fputs("\", \"long\": \"", file) < 0;
+			fFail = fFail || !printStrv(file, g_aryShorthand[iShorthand].m_strvLong);
+			fFail = fFail || fputs("\" }\n", file) < 0;
+		}
+		cTab--;
+
+		fFail = fFail || !printTabs(file, cTab);
+		fFail = fFail || fputs("],\n", file);
+	}
+	cTab--;
+
+	fFail = fFail || fputs("}\n", file) < 0;
+	
+	if (fFail)		ErrorAndExit("Failed to write to compiled JSON file");
+}
+
+int main()
+{
+	CreateGeneratedManifestFromRaw();
+	fprintf(stdout, "Manifest generated\n");
+
+	CompileGeneratedManifest();
+	fprintf(stdout, "Manifest compiled\n");
+
+	DumpToJson();
+	fprintf(stdout, "Dumped to JSON");
+
 	getchar();		// Hack to make seeing output easier in debug
 	return 0;
 }
