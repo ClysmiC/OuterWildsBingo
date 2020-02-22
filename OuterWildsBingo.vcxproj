@@ -22,9 +22,6 @@
     <ClCompile Include="src\bingo_gen.cpp">
       <FileType>CppCode</FileType>
     </ClCompile>
-    <ClCompile Include="src\tag_expr.cpp">
-      <FileType>CppCode</FileType>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\als\als.h" />
@@ -42,7 +39,6 @@
     <ClInclude Include="src\als\macro_util.h" />
     <ClInclude Include="src\bingo_gen.h" />
     <ClInclude Include="src\common_parse.h" />
-    <ClInclude Include="src\tag_expr.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\manifest.csv" />

@@ -1,87 +1,7 @@
-!!Tags				
-Tag	Implies	Max Per Row	Self Synergy	Notes
-TranslatePrimary		2	0	
-TranslateSecondary		2	0	
-PlanetHopping		3	1	
-TextHunt	PlanetHopping & (TranslatePrimary | TranslateSecondary)	1	10	
-Misc		3	0	
-ShitCreek		3	0	
-Shipless	ShitCreek	3	1	
-Sun		2	1.5	
-SS	Sun	3	3.25	
-AT		3	2	
-ET		3	2	
-TH		1	1.5	
-AR		2	1.75	
-BH		3	1.75	
-HL		2	3	
-GD		3	2	
-OPC		3	2	
-DB		3	2	
-WHS		3	2	
-TI		3	2	
-QM		3	3	
-Early		2	-1	
-EarlyExclusive	Early	1	-10	
-Mid		2	-2.5	
-End		1	-3	End means it ends the run. Does not necessarily mean late
-Late	End	1	-5	
-Jelly		2	2.5	
-Tornado		2	2.5	
-HangingCity	BH	2	3	
-SouthernObs	BH	2	3.5	
-SunlessCity	(Early | Mid) & ET	2	2.5	
-HighNrg	EarlyExclusive & SunlessCity	1	3.25	
-ATP	AT & (Mid | Late)	2	3.75	
-Vessel	DB	2	4.5	
-Eye	End & ATP & Vessel	1	20	
-QShard	PlanetHopping	2	0	
-QShardHunt	QShard & PlanetHopping	1	10	
-ElectricCore	GD & Jelly & Tornado	2	3	
-JetFuel		2	2	
-UnlitFire		1	2	I'm unsure how the implies should work around fires, travelers, jet fuel, etc. I'm just going to lean on synergies to hopefully handle this
-LitFire		2	2	
-Traveler		2	2	
-Warp		3	2	
-GravCannon		2	1.5	
-NomaiShip	GravCannon	2	1.5	
-BlackHoleExclusive	BH	1	10	
-				
-!!Synergies				
-Tag0	Tag1	Synergy	Comment	
-TextHunt	TranslatePrimary	2		
-TextHunt	TranslateSecondary	2		
-SS	Sun	2		
-AT	ATP	2.5		
-AT	Sun	1.5		
-AT	ET	1.5		
-ET	Sun	1.5		
-ET	SunlessCity; HighNrg	1.5		
-TH	AR	0	You always start on TH anyways, so doing TH + AR isn't really an advantage to just doing AR. No need to penalize you with a synergy.	
-BH	HL	1		
-BH	SouthernObs; HangingCity	2		
-GD	Tornado	2		
-GD	Jelly	1.5		
-GD	OPC	1.5		
-GD	ElectricCore	1.5		
-WHS	BH	1		
-Eye	ATP;DB;Vessel	3		
-PlanetHopping	QShardHunt;TextHunt	1.5		
-Traveler	JetFuel;LitFire;UnlitFire	1.5		
-JetFuel	LitFire;UnlitFire	1.5		
-LitFire	UnlitFire	1.5		
-Warp	PlanetHopping	2.5		
-Warp	NomaiShip	1		
-Warp	BH	1		
-Warp	Eye	2	They Vessel warps once and then you take a warp out onto the Eye	
-ElectricCore	Jelly;Tornado	1.5		
-Jelly	Tornado	1.5		
-GravCannon	ET;BH;OPC	1		
-GravCannon	GD	0.5		
-				
 !!Shorthands				
 Short	Long			
 SS	Sun Station			
+HT	Hourglass Twins			
 AT	Ash Twin			
 ET	Ember Twin			
 TH	Timber Hearth			
@@ -97,92 +17,243 @@ QM	Quantum Moon
 ToQT	Tower of Quantum Trials			
 ToQK	Tower of Quantum Knowledge			
 				
+!!Tags				
+Tag	Implies	MaxPerRow	SelfSynergy	
+TranslatePrimary		2	0	
+TranslateSecondary		2	0	
+Hunt		3	3.5	
+TextHunt	Hunt	1	0	
+WarpHunt	Hunt	1	0	
+QShardHunt	Hunt	1	0	
+JetFuelHunt	Hunt	1	0	
+UnlitFireHunt	Hunt	1	0	
+FireHunt	Hunt	1	0	
+TravelerHunt	Hunt	1	0	
+BeaconHunt	Hunt	1	0	
+MoonHunt	Hunt	1	0	
+ProjectionPoolHunt	Hunt	1	0	
+NomaiCorpseHunt	Hunt	1	0	
+TKOrbHunt	Hunt	1	0	
+DBVineHunt	Hunt	1	0	
+GravCannonHunt	Hunt	1	0	
+FakeGravHunt	Hunt	1	0	
+Early		2	-1	
+EarlyExclusive	Early	1	0	
+Mid		2	-2.5	
+End		1	0	
+Late	End	1	0	
+ShitCreek		4	0	
+Shipless	ShitCreek	4	1	
+Sun		2	1.5	
+SS		3	3.25	
+AT		3	2	
+ATP	AT, Mid	2	3.75	
+ET		3	2	
+HT	AT, ET	3	2	
+QMLoc	ET	1	0	
+SunlessCity	Early, ET	2	2.5	
+HighNrg	EarlyExclusive, SunlessCity	1	0	
+TH		1	0	
+MineTwoB	TH	1	0	
+Museum	TH	1	0	
+AR		2	1.75	
+EyeSigLoc	AR	1	0	
+BH		3	1.75	
+ToQK	BH	1	0	
+HangingCity	BH	2	3	
+SouthernObs	BH	2	3.5	
+BHBlackHole	BH	1	0	
+BlackHoleForge	BH	1	0	
+HL		2	3	
+GD		3	2	
+ToQT	GD	1	0	
+StatueIsland	GD	1	0	
+Jelly		2	2.5	
+Tornado		2	2.5	
+ElectricCore	GD, Jelly, Tornado	2	3	
+ConstrYard	GD	1	0	
+OPC		3	2	
+DB		3	2	
+Vessel	DB	2	4.5	
+WHS		3	2	
+TI		3	2	
+QM		3	3	
+SixthLocation	QM	2	4	
+Eye	End, ATP, Vessel	1	0	
+QShard		2	0	
+AdvWarpCore		1	0	
+NomaiShip		2	2	
+AnglerSkelly		1	0	
+TinyBramble		1	0	
+Shock		1	0	
+				
+!!Synergies				
+Tag0	Tag1	Synergy	Comment	
+SS	Sun	3		
+AT	ATP	2.5		
+AT	Sun	1.5		
+AT	ET	1.5		
+ET	Sun	1.5		
+TH	AR	0.5		
+BH	HL	1.5		
+GD	Tornado	2		
+GD	Jelly	1.5		
+GD	OPC	1.5		
+WHS	BH	1.5		
+Eye	ATP,DB,Vessel	3		
+Jelly	Tornado	1.5		
+TextHunt	TranslatePrimary	2		
+TextHunt	TranslateSecondary	2		
+WarpHunt	NomaiShip	1		
+WarpHunt	BH	1		
+WarpHunt	Eye	2		
+WarpHunt	AT	2.5		
+QShardHunt	TH	1.5		
+QShardHunt	ET, BH	1		
+QShardHunt	GD	0.5		
+QShardHunt	QShard	2		
+JetFuelHunt	TravelerHunt, FireHunt	4.5		
+JetFuelHunt	BH, ET, AR	1		
+JetFuelHunt	GD, DB	0.5		
+JetFuelHunt	Shipless	0.5		
+UnlitFireHunt	GD, BH, ET	1		
+FireHunt	[UnlitFireHunt], TravelerHunt	4.5		
+FireHunt	ET, AR, GD, DB	1		
+TravelerHunt	ET, AR	1.5		
+TravelerHunt	GD, BH	1		
+TravelerHunt	DB	0.5		
+BeaconHunt	BH, ET	1		
+BeaconHunt	DB	0.5		
+MoonHunt	QM	0.75		
+MoonHunt	HL	1		
+MoonHunt	AR	1.25		
+ProjectionPoolHunt	ConstrYard, MineTwoB, ATP	1.75		
+ProjectionPoolHunt	ET, GD, BH, OPC, SS	1		
+NomaiCorpseHunt	AT	1		
+NomaiCorpseHunt	QM, DB	1.25		
+NomaiCorpseHunt	TI	0.5		
+TKOrbHunt	OPC	1.5	Definitely a lot more I could put...	
+TKOrbHunt	WHS	1		
+DBVineHunt	DB	1.25		
+DBVineHunt	GD, TinyBramble	1		
+FakeGravHunt	Museum, BH, WHS, ATP	1		
+GravCannonHunt	ET, BH, OPC	1		
+GravCannonHunt	NomaiShip	1.5		
+BlackHoleForge	AT, HangingCity	2		
+AdvWarpCore	ATP, Vessel	2		
+AnglerSkelly	DB, ET	1		
+AnglerSkelly	SunlessCity	1.5		
+TinyBramble	DB	1		
+TinyBramble	TH	0.5		
+NomaiShip	ET, BH, QM	1		
+Shock	GD	1		
+Shock	ElectricCore	1.5		
+Shock	DB	0.5		
+				
 !!Goals				
 Text	Clarification	Tags	Difficulty	Length
-Translate any text on [SS]		SS & TranslatePrimary	5	5
-Translate any text on [AT]		AT & TranslatePrimary	1.5	4
-Translate any text on [ET]		ET & TranslatePrimary	1.5	2.5
-Translate any text on [TH]		TH & TranslatePrimary	1	2
-Translate any text on [AR]		AR & TranslatePrimary	1.5	2
-Translate any text on [BH]	Text that has fallen through the black hole is no longer considered "on [BH]"	BH & TranslatePrimary	1.5	2
-Translate any text on [HL]		HL & TranslatePrimary & Mid	4	4.5
-Translate any text on [GD]		GD & TranslatePrimary	2	3
-Translate any text on [OPC]		OPC & TranslatePrimary	3	3
-Translate any text on [DB]		DB & TranslatePrimary	3	3.5
-Translate any text on [WHS]		WHS & TranslatePrimary	3	3.5
-Translate any text on [TI]		TI & TranslatePrimary	5	5
-Translate any text on [QM]		QM & TranslatePrimary	4	4
-Translate text on $3/4/5$ different planet(s)	Excludes moons and artificial structures in space. Includes The Eye.	TextHunt	$4/5.5/7$	$4/5.5/7$
-Translate text on $3/4/5/6$ different celestial bodie(s)	Excludes artificial structures in space. Includes The Eye.	TextHunt	$3/4.3/5.6/7$	$3/4.3/5.6/7$
-Translate text on $3/4/5/6$ different primary location(s)	Any location on the computer log's map or The Eye.	TextHunt	$2/4.3/5.6/7$	$3/4.3/5.6/7$
-Press the eject button		Misc & (ShitCreek | Shipless)	3	1.5
-Touch the "Sky Shutter" satellite orbiting [TH]		TH & Early	3	1.5
-Go through the black hole in [BH]		BlackHoleExclusive	2	2.5
-Go through the black hole in [BH] without your ship		Shipless & BlackHoleExclusive	2.5	3.5
-Talk to Solanum		QM	6	6.5
-Get inside the electric core of [GD]		ElectricCore	4	4.5
-Ride one CW tornado and one CCW tornado		(GD | SouthernObs) & Tornado	2.5	3
-Activate emergency scout recall		Sun | HL	2	2
-Enter the black hole formed inside the ATP		ATP & Late	4	7
-Translate any text inside [ToQK]	Text at the base of the tower does not count	Late & (BH | WHS)	4	6
+Translate any text on [SS]		SS, TranslatePrimary	5	5
+Translate any text on [AT]		AT, TranslatePrimary	1.5	4
+Translate any text on [ET]		ET, TranslatePrimary	1.5	2.5
+Translate any text on [TH]		TH, TranslatePrimary	1	2
+Translate any text on [AR]		AR, TranslatePrimary	1.5	2
+Translate any text on [BH]	Text that has fallen through the black hole is allowed	BH, TranslatePrimary	1.5	2
+Translate any text on [HL]		HL, TranslatePrimary, Mid	4	4
+Translate any text on [GD]		GD, TranslatePrimary	2	3
+Translate any text on [OPC]		OPC, TranslatePrimary	3	3
+Translate any text on [DB]		DB, TranslatePrimary	3	3.5
+Translate any text on [WHS]		WHS, TranslatePrimary	3	3.5
+Translate any text on [TI]		TI, TranslatePrimary	4	4
+Translate any text on [QM]		QM, TranslatePrimary	5	5
+[COMMENT] A "hunt" is anything that can be done on at least 3 different primary locations				
+Translate text on $3/4/5$ planet(s)		TextHunt	$4/5.5/7$	$4/5.5/7$
+Translate text on $3/4/5/6$ celestial bodie(s)		TextHunt	$3/4.3/5.6/7$	$3/4.3/5.6/7$
+Translate text on $3/4/5/6$ primary location(s)		TextHunt	$2/4.3/5.6/7$	$3/4.3/5.6/7$
+Take $2/3/4/5/6$ different warp(s)	*Any* warp from a black hole to white hole counts. Warping back on a charged pad doesn't.	WarpHunt	$2/3/4/5.5/6.5$	$2/3/4/5.5/6.5$
+Eat a marshmallow at $2/3/4/5$ different fire(s)		FireHunt	$1/2/3/4.5$	$1.5/2.5/3.5/4.5$
+Talk to $2/3/4/5$ Hearthian traveler(s) outside of [TH]		TravelerHunt	$3/4/5/6$	$3.5/4.5/5.5/6.5$
+Touch $1/2/3$ distress beacon(s)		BeaconHunt	$2/4/7$	$2/4/7$
+Touch $2/3/4$ travelers' ship(s)		TravelerHunt	$1.5/3/4.5$	$1.5/3/5$
+Translate any text on $2/3$ moon(s)		MoonHunt, TranslatePrimary	$5/6.5$	$5/6.5$
+Use $2/3/4$ different projection pool(s)		ProjectionPoolHunt	$3/4.5/6$	$3/4.5/6$
+Touch the quantum cave shard on [ET]		ET, QShard	3.5	3
+Touch the quantum grove shard on [TH]		TH, QShard	1.5	1.5
+Touch the quantum museum shard on [TH]		Museum, QShard	1	2.5
+Touch the quantum tower shard on [BH]		BH, QShard	2	2.5
+Complete all trials in [ToQT] ([GD])		ToQT, QShard	5	5
+Touch $1/2/3/4$ quantum shards		QShardHunt	4	4.5
+Light $1/2/3$ camp fire(s)		UnlitFireHunt	$1.5/2.5/4$	$1.5/2.5/4$
+Refuel your jetpack at $3/4/5$ different canister(s)	Refueling via the canister in your ship counts as 1	JetFuelHunt	$2.5/3.5/5$	$2.5/3.5/5$
+Use $1/2/3/4/5/6$ Nomai telekinetic orb(s)	You must activate something. Just moving it isn't sufficient.	TKOrbHunt	$0.67/1.33/2/2.67/3.33/4$	$0.67/1.33/2/2.67/3.33/4$
+Touch a [DB] vine on $1/2/3$ different planet(s)		DBVineHunt	$1/2.5/4$	$1/2.5/4$
+[TODO] Walk with artificial gravity on $1/2/3$ different primary location(s)		FakeGravHunt		
+[TODO] Puncture your suit on $2/3/4$ primary locations		PunctureHunt	1.5	1
+Touch the "Sky Shutter" satellite orbiting [TH]		TH, Early	3	1.5
+Go through the black hole in [BH]$/ without your ship$		BHBlackHole $/, Shipless$	2	2.5
+Talk to Solanum		SixthLocation	6	6.5
+Translate any text inside the electric core of [GD]		ElectricCore, TranslateSecondary	4	4.5
+Ride one CW tornado and one CCW tornado		Tornado	2.5	3
+Get tornadoed into space on $1/2$ island(s) on GD		Tornado, GD	$2/4.5$	$2/4.5$
+Enter the black hole formed inside the ATP		ATP, Late	4	7
+Translate any text inside [ToQK]	Text at the base of the tower does not count	ToQK, TranslateSecondary	4	6
 Touch the Hearthian flag on [AR]		AR	2	2
-Complete all trials in [ToQT] ([GD])		GD & QShard	5	5
-Translate any text in the Southern Observatory		BH & TranslateSecondary	5	5
-Translate any text in the Hanging City		BH & TranslateSecondary	3	3.5
-Activate $1/2/3$ gravity cannon(s)	[OPC] counts, but only as 1	PlanetHopping & @BH;ET;OPC@	$2/3.5/5$	$2/4/6$
-Translate any text in the Sunless City		SunlessCity	3	3.5
-Translate any text in the High Energy Lab		HighNrg	4	4
-Supernova ending		Late	3	5
+Translate any text in the Southern Observatory		SouthernObs, TranslateSecondary	5	5
+Translate any text in the Hanging City		HangingCity, TranslateSecondary	3	3.5
+Activate $1/2/3$ gravity cannon(s)	[OPC] counts, but only as 1	GravCannonHunt	$2/3.5/5$	$2/4/6$
+Translate any text in the Sunless City		SunlessCity, TranslateSecondary	3	3.5
+Translate any text in the High Energy Lab		HighNrg, TranslateSecondary	4	4
 Touch the orbital probe	Launched by [OPC]	Early	4.5	3.5
 Ride an underwater current on Timber Hearth		TH	2	2.5
-Fly close enough to the sun to get scorch effects (but don't die to it)		Sun & Misc	1.5	1.5
-Travel between two celestial bodies without using ships or teleporters. [ET] <-> [AT] does not count.		ShitCreek	6	6
-Take $2/3/4/5/6$ different warp(s)	*Any* warp from a black hole to white hole counts. Warping back on a charged pad doesn't.	PlanetHopping & AT & Warp	$2/3/4/5.5/6.5$	$2/3/4/5.5/6.5$
-Translate any text in $1/2/3$ different [OPC] module(s)		$ OPC / OPC / ElectricCore $	$2/3/5.5$	$2/3.5/5.5$
-Eat a marshmallow at $2/3/4/5$ different fire(s)		LitFire | UnlitFire	$1/2/3/4.5$	$1.5/2.5/3.5/4.5$
-Use oxygen as a propellant		Misc	2	1.5
-Enter black hole forge		HangingCity & AT & Warp	8	8.5
-Talk to $2/3/4/5$ Hearthian traveler(s) outside of [TH]		PlanetHopping & @AR;GD;ET;DB;BH@	$3/4/5/6$	$3.5/4.5/5.5/6.5$
+Get scorched by sun (but don't die to it)		Sun	1.5	1.5
+Translate any text in $1/2/3$ different [OPC] module(s)		OPC, TranslatePrimary	$2/3/5.5$	$2/3.5/5.5$
+Use oxygen as a propellant			2	1.5
+Translate any text inside Black Hole Forge		BlackHoleForge, TranslateSecondary	8	8.5
 Aggro an anglerfish (and survive)		DB	2.5	3.5
-Touch a living or dead Jellyfish		GD | DB	3	3.5
-Translate any text inside [TI]		TranslateSecondary & (ShitCreek | End)	7	7.5
-Raise the black hole forge		HangingCity	3	3.5
-Enter the museum		TH & Misc	1	2.5
-Touch $1/2/3$ distress beacon(s)		PlanetHopping & @BH;ET;DB@	$2/4/7$	$2/4/7$
-Fully repair the satellite in the zero g cave		TH & Misc	2.5	3.5
-Touch $1/2/3/4$ explorer ship(s)		@AR;GD;ET;DB@	$1.5/3/4.5/6$	$1.5/3/5/7$
-Touch $1/2$ anglerfish skeleton(s)		@DB;SunlessCity@	$3.5/7$	$3/6.5$
-Translate any text on $2/3$ moon(s)		@AR; QM; HL@	$5/6.5$	$5/6.5$
-Use $2/3/4$ different projection pool(s)		PlanetHopping	$3/4.5/6$	$3/4.5/6$
-Translate any text inside Mine 2b		TH	2	2.5
-Use a storm shelter on Giants Deep		GD & Tornado	4	3
+Touch a living or dead Jellyfish		Jelly	3	3.5
+Translate any text inside [TI]		TI, TranslatePrimary, ShitCreek	7	7.5
+Read any text in the museum on [TH]		Museum	1	2.5
+Repair the satellite in the zero g cave	(Fully)	TH	2.5	3.5
+Touch $1/2$ anglerfish skeleton(s)		 	$3.5/7$	$3/6.5$
+Translate any text inside Mine 2b		MineTwoB, TranslateSecondary	2	2.5
+Use a storm shelter on Giants Deep		GD	4	3
 Touch the red anglerfish eggs		DB	3	4
-Translate any text inside statue island	Text on the outside does not count	GD & Tornado	3.5	3
-Touch a dead Nomai on $1/2/3/4$ primary location(s)	QM only counts as 1	@AT; QM; TI; DB@	$2/3.5/5/6.5$	$2/3.5/5/6.5$
-Shoot scout through 2 impassable bramble seed(s)		TH & DB	3.5	3.5
-Puncture your suit		Misc	1.5	1
-Touch the quantum cave shard on Ember Twin		QShard &ET	3.5	3
-[TODO] Light 1/2/3 camp fire(s)		UnlitFire		
-Touch the grove shard on Timber Hearth		QShard & TH	1.5	1.5
-[TODO] Touch quantum shards on $2/3/4$ different planet(s)		QShardHunt		
-[TODO] Touch island shard		QShard & GD		
-Find both kids in hide and go seek		TH	1	1.5
-Hold an advanced warp core	(Broken or functional…)	ATP | Vessel	4.5	4
-Enter $1/2$ Nomai ship(s)		@BH;QM;ET@	$2/4$	$2.5/4.5$
-Destroy fabric of spacetime	If doing the [ATP] method, you may not "set up" your file before the timer starts	HighNrg | End	7	7
-"You died" game ending	(Remove the warp core from [APT] and then die)	ATP	4.5	5.5
+Translate any text inside statue island	Text on the outside does not count	StatueIsland, TranslateSecondary	3.5	3
+Touch a clothed Nomai corpse on $1/2/3$ primary location(s)	[QM] only counts as 1. Clothed = not a skeleton	NomaiCorpseHunt	$2/4/6$	$2/4/6$
+Shoot scout through $1/2$ impassable bramble seed(s)		TinyBramble	3.5	3.5
+Find and talk to both kids in hide and go seek		TH	1	1.5
+Hold an advanced warp core	(Broken or functional…)	AdvWarpCore	4.5	4
+Pilot $1/2$ Nomai ship(s)		NomaiShip	$2/4$	$2.5/4.5$
+Land a Nomai Ship on any location different than its takeoff		NomaiShip	4	4
+Destroy fabric of spacetime	If doing the [ATP] method, you may not "set up" your file before the timer starts	HighNrg, End	7	7
+"You died" game ending	(Remove the warp core from [APT] and then die)	ATP, End	4.5	5.5
 Set foot on The Eye		Eye	10	11
-Isolation Ending	(Remove the warp core from [APT] and then outrun the supernova)	ATP & Late	10	10
-QM Ending	(Remove the warp core from [APT] and then await the supernova at the 6th [QM] location)	ATP & Late & QM	10	10
-Touch the Sun Station with your ship		SS & Sun	7	4
-Refuel your jetpack at $3/4/5$ different canister(s)	Refueling via the canister in your ship counts as 1	JetFuel	$2.5/3.5/5$	$2.5/3.5/5$
+Isolation Ending	(Remove the warp core from [APT] and then outrun the supernova)	Late, ATP	10	10
+QM Ending	(Remove the warp core from [APT] and then await the supernova at the 6th [QM] location)	Late, ATP, QM	10	10
+Watch the supernova with $Slate/Chert/Gabbro/Feldspar/Riebeck/Esker$		Late, $TH/ET/GD/DB/BH/AR$	3	6
+Touch [SS] with your ship		SS, Sun	7	4
 Ride 3 elevators on TH		TH	2	3.5
-Take a picture of ghost matter on $2/3/4$ different primary location(s)		@TH;TI;GD;BH;ET@	$3/4/5$	$3/4/5$
-Translate any text at Eye Signal Locator ([AR])		AR & TranslateSecondary	2	2
-Translate any text at the Construction Yard		GD & TranslateSecondary	2.5	3.5
-Translate any text at Quantum Moon Locator ([ET])		ET & TranslateSecondary	2	3
+[TODO] [Need to declare this tag + synergies] Detect ghost matter on $2/3/4$ primary location(s)		GhostMatterHunt	$3/4/5$	$3/4/5$
+Translate any text at Eye Signal Locator	(on [AR])	EyeSigLoc, TranslateSecondary	2	2
+Translate any text at the Construction Yard		ConstrYard, TranslateSecondary	2.5	3.5
+Translate any text at Quantum Moon Locator	(on [ET])	QMLoc, TranslateSecondary	2	3
 Touch or stand on SS as it begins getting engulfed by the Sun		SS	6.5	6.5
-Use any projection stone at the location that it projects	For example, use the [GD] projection stone at the [GD] projection pool	PlanetHopping	4.5	3.5
-Shoot your scout through a black hole and then touch it without going through the same black hole		(BH & WHS) | (AT)	4	4
+Use any projection stone at the location that it projects	For example, use the [GD] projection stone at the [GD] projection pool	ProjectionPoolHunt	4.5	3.5
+Get inside [SS] without warping to it		SS, ShitCreek	8	5
+Read Esker's Signalscope Log		AR	1.5	1.5
+Have your ship destroyed by the sun		Sun, Shipless	1.5	3
+Press the eject button		Shipless	3	1.5
+Ride sand pillar from [AT] -> [ET], w/o your ship		HT, Shipless	3	3
+[HT] <-> any primary location, w/o your ship or warps	Going from one [HT] to the other doesn't count	HT, Shipless	4	4
+[TH] <-> any primary location, w/o your ship or warps		TH, Shipless	5	5
+[AR] <-> any primary location, w/o your ship or warps		AR, Shipless	4	4
+[BH] <-> any primary location, w/o your ship or warps		BH, Shipless	4	4
+[HL] <-> any primary location, w/o your ship or warps		HL, Shipless	5	5
+[GD] <-> any primary location, w/o your ship or warps		GD, Shipless	6	6
+[OPC] <-> any primary location, w/o your ship or warps		OPC, Shipless	5	5
+[DB] <-> any primary location, w/o your ship or warps		DB, Shipless	4	4
+[WHS] <-> any primary location, w/o your ship or warps		WHS, Shipless	4	4
+[TI] <-> any primary location, w/o your ship or warps		TI, Shipless	5	5
+[QM] <-> any primary location, w/o your ship or warps		QM, Shipless	6	6
+Shock yourself or your ship		Shock	2	2.5
 				
 !!Eof				

@@ -2,6 +2,7 @@
 	"shorthands":
 	[
 		  { "short": "SS", "long": "Sun Station" }
+		, { "short": "HT", "long": "Hourglass Twins" }
 		, { "short": "AT", "long": "Ash Twin" }
 		, { "short": "ET", "long": "Ember Twin" }
 		, { "short": "TH", "long": "Timber Hearth" }
@@ -16,5 +17,5 @@
 		, { "short": "QM", "long": "Quantum Moon" }
 		, { "short": "ToQT", "long": "Tower of Quantum Trials" }
 		, { "short": "ToQK", "long": "Tower of Quantum Knowledge" }
-	]
+	],
 }

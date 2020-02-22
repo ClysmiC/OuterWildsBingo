@@ -17,9 +17,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\tag_expr.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\bingo_gen.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -69,9 +66,6 @@
     </ClInclude>
     <ClInclude Include="src\common_parse.h">
       <Filter>Header Files\als</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tag_expr.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

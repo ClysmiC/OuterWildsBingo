@@ -2,8 +2,6 @@
 
 #include "bingo_gen.h"
 
-#include "tag_expr.h"
-
 #include <cstdarg>
 #include <stdio.h>
 
@@ -13,12 +11,11 @@ char *		g_pChzMan;					// Manifest
 int			g_iChMan;					// Index
 int			g_nLine;					// Line #
 bool		g_fEof;						// Have we hit the end of current file
-bool		g_fIsGeneratedMan;			// Are we processing the generated manifest?
 
 DynamicArray<Tag>						g_aryTag;
 DynamicArray<Synergy>					g_arySynrg;
 DynamicArray<Shorthand>					g_aryShorthand;
-DynamicPoolAllocator<TagExpression>		g_dpaTagexpr;
+DynamicArray<Goal>						g_aryGoal;
 
 
 
@@ -28,7 +25,7 @@ void ErrorAndExit(const char * errFormat, ...)
 {
 	if (g_nLine >= 0)
 	{
-		fprintf(stderr, "[Error on line %d%s]: ", g_nLine, g_fIsGeneratedMan ? " (generated)" : "");
+		fprintf(stderr, "[Error on line %d]: ", g_nLine);
 	}
 
 	va_list arglist;
@@ -41,6 +38,28 @@ void ErrorAndExit(const char * errFormat, ...)
 
 	getchar();
 	exit(EXIT_FAILURE);
+}
+
+void ErrorAndExitStrvHack(const char * errFormat, const StringView & strv0)
+{
+	// Convenience hack to use %s like printf with a non-zero terminated string.
+
+	String str0;
+	init(&str0, strv0.pCh, strv0.cCh);
+	ErrorAndExit(errFormat, str0.pBuffer);
+}
+
+void ErrorAndExitStrvHack(const char * errFormat, const StringView & strv0, const StringView & strv1)
+{
+	// Convenience hack to use %s like printf with a non-zero terminated string.
+
+	String str0;
+	init(&str0, strv0.pCh, strv0.cCh);
+
+	String str1;
+	init(&str1, strv1.pCh, strv1.cCh);
+
+	ErrorAndExit(errFormat, str0.pBuffer, str1.pBuffer);
 }
 
 StringView StrvNextCell()
@@ -94,7 +113,7 @@ bool FIsLegalTagCharacter(char c)
 	return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_';
 }
 
-TAGID TagidFromStrv(const StringView & strv)
+TAGID TagidFromStrv(const StringView & strv, bool fErrorOnNotFound)
 {
 	for (int iTag = 0; iTag < g_aryTag.cItem; iTag++)
 	{
@@ -104,11 +123,15 @@ TAGID TagidFromStrv(const StringView & strv)
 	// NOTE (andrew) Any unknown tag lookup ultimately results in an error. To free the caller of the burden of error
 	//	checking, we report it right here.
 
-	char * pChzStrvCopy = new char[strv.cCh + 1];
-	memcpy(pChzStrvCopy, strv.pCh, strv.cCh);
-	pChzStrvCopy[strv.cCh] = '\0';
+	if (fErrorOnNotFound)
+	{
+		char * pChzStrvCopy = new char[strv.cCh + 1];
+		memcpy(pChzStrvCopy, strv.pCh, strv.cCh);
+		pChzStrvCopy[strv.cCh] = '\0';
 
-	ErrorAndExit("Unknown tag: %s", pChzStrvCopy);
+		ErrorAndExit("Unknown tag: %s", pChzStrvCopy);
+	}
+
 	return TAGID_Nil;
 }
 
@@ -186,446 +209,24 @@ bool FTryCompileDollarExpr(const StringView & strvCell, DynamicArray<String> * p
 	return true;
 }
 
-StringView StrvCompileAtExpr(const StringView & strvCell, int iDollarCtx)
+void NextCellVerify(const char * pChzExpected)
 {
-	// E.g., "PlanetHopping & @BH;ET;DB@" compiles into the following:
-	//	iDollarCtx = 0: "PlanetHopping & ((BH) | (ET) | (DB))"
-	//	iDollarCtx = 1: "PlanetHopping & ((BH & ET) | (BH & DB) | (ET & DB))"
-	//	iDollarCtx = 2: "PlanetHopping & ((BH & ET &DB))"
-
-	int iChAt0 = -1;
-	int iChAt1 = -1;
-
-	{
-		int cAt = 0;
-
-		for (int iChCell = 0; iChCell < strvCell.cCh; )
-		{
-			char c = strvCell.pCh[iChCell++];
-
-			if (c == '@')
-			{
-				if (cAt == 0)
-				{
-					iChAt0 = iChCell - 1;
-				}
-				else if (cAt == 1)
-				{
-					iChAt1 = iChCell - 1;
-				}
-
-				cAt++;
-			}
-		}
-
-		if (cAt == 0)		return strvCell;
-		if (cAt != 2)		ErrorAndExit("Could not parse @-expression");
-	}
-
-	DynamicArray<StringView> aryStrvSub;
-	init(&aryStrvSub);
-
-	{
-		int iChStrvSubStart = iChAt0 + 1;
-		int cChStrvSub = 0;
-
-		for (int iCh = iChAt0 + 1; iCh < iChAt1; )
-		{
-			char c = strvCell.pCh[iCh++];
-			cChStrvSub++;
-
-			if (c == ';' || iCh == iChAt1)
-			{
-				if (c == ';')		cChStrvSub--;
-
-				StringView * pStrvSub = appendNew(&aryStrvSub);
-				pStrvSub->pCh = strvCell.pCh + iChStrvSubStart;
-				pStrvSub->cCh = cChStrvSub;
-
-				iChStrvSubStart = iCh;
-				cChStrvSub = 0;
-			}
-		}
-	}
-
-	int n = aryStrvSub.cItem;	// As in "n choose k"
-	int k = iDollarCtx + 1;		// As in "n choose k"
-
-	Assert(k > 0);
-	if (n == 0)		ErrorAndExit("Could not parse @-expression");
-	if (n > 32)		ErrorAndExit("Cannot exceed 32 items in @-expression");
-
-	typedef u32 bitfield;
-	struct Combine
-	{
-		void operator()(int n, int k, DynamicArray<bitfield> * poAryBitfield, int nShift=0)
-		{
-			if (k == 0)
-			{
-				append(poAryBitfield, 0u);
-			}
-			else
-			{
-				for (int i = nShift; i < n - (k - 1); i++)
-				{
-					int cItemPrev = poAryBitfield->cItem;
-
-					(*this)(n, k - 1, poAryBitfield, i + 1);
-
-					for (int iBitfield = cItemPrev; iBitfield < poAryBitfield->cItem; iBitfield++)
-					{
-						(*poAryBitfield)[iBitfield] |= (1 << i);
-					}
-				}
-			}
-		}
-	};
-
-	DynamicArray<bitfield> aryBitfield;
-	init(&aryBitfield);
-
-	Combine()(n, k, &aryBitfield);
-
-	// Init with string before opening @
-
-	String strResult;
-	init(&strResult, strvCell.pCh, iChAt0);
-
-	// Append substituted @-expr
-	
-	append(&strResult, "(");
-
-	for (int iBitfield = 0; iBitfield < aryBitfield.cItem; iBitfield++)
-	{
-		if (iBitfield > 0)		append(&strResult, " | ");
-
-		append(&strResult, "(");
-		int cBitSet = 0;
-		for (int iBit = 0; iBit < n; iBit++)
-		{
-			if (aryBitfield[iBitfield] & (1 << iBit))
-			{
-				if (cBitSet > 0)		append(&strResult, " & ");
-
-				append(&strResult, aryStrvSub[iBit].pCh, aryStrvSub[iBit].cCh);
-				cBitSet++;
-			}
-		}
-
-		Assert(cBitSet == k);
-	
-		append(&strResult, ")");
-	}
-
-	append(&strResult, ")");
-
-	// Append string after closing @ to finish compiling
-
-	int cChPostAt1 = strvCell.cCh - (iChAt1 + 1);
-	append(&strResult, strvCell.pCh + iChAt1 + 1, cChPostAt1);
-
-	StringView strvResult;
-	strvResult.pCh = strResult.pBuffer;
-	strvResult.cCh = strResult.cChar;
-
-	return strvResult;
+	if (StrvNextCell() != pChzExpected)		ErrorAndExit("Expected \"%s\"", pChzExpected);
 }
 
-void CreateGeneratedManifestFromRaw()
+void CompileManifest()
 {
 	// Init needed globals
 
-	g_pChzMan = nullptr;
-	g_iChMan = 0;
-	g_nLine = -1;
-	g_fEof = false;
-	g_fIsGeneratedMan = false;
-
-	// Read in raw manifest
-
-	int cBManifestMax = 1024 * 1024;				// Max = 1MB
-	int cChManifestMax = cBManifestMax - 1;
-
-	// NOTE (andrew) Since this is a one-off tool with fairly limited scope, we allocate memory when we need it and never bother to free it.
-
-	g_pChzMan = new char[cChManifestMax + 1];
-
-	{
-		memset((void *)(g_pChzMan), 0, cChManifestMax + 1);
-
-		FILE * file = fopen("./res/manifest.tsv", "rb");
-		Defer(if (file) fclose(file));
-
-		int cB = file ? fread(g_pChzMan, 0x1, cChManifestMax + 1, file) : -1;
-		if (cB < 0)
-		{
-			ErrorAndExit("Error opening manifest file");
-		}
-		else if (cB == cChManifestMax + 1)
-		{
-			ErrorAndExit("Manifest file of size >= %d bytes is not yet supported", cBManifestMax);
-		}
-	}
-
-	// Create generated manifest
-
-	FILE * fileGenerated = fopen("./res/manifest_generated.tsv", "wb");
-	Defer (if (fileGenerated) fclose(fileGenerated));
-
-	if (!fileGenerated)
-	{
-		ErrorAndExit("Failed to create generated manifest file");
-	}
-
-	g_nLine = 1;
-	while (true)
-	{
-		if (StrvNextCell() == "!!Goals")		break;
-
-		if (g_fEof)		ErrorAndExit("Could not find !!Goals in raw manifest");
-		SkipToNextLine();
-	}
-
-	SkipToNextLine();		// Skip !!Goals
-	SkipToNextLine();		// Skip headers
-
-	// Copy all text up before goals are listed
-
-	if (fwrite(g_pChzMan, 0x1, g_iChMan, fileGenerated) != g_iChMan)
-	{
-		g_nLine = -1;
-		ErrorAndExit("Failed to write to generated manifest file");
-	}
-
-	int iChEmptyCell = -1;
-
-	while (true)
-	{
-		struct GoalGen		// tag = goalg
-		{
-			StringView		m_strvText;
-			StringView		m_strvAlt;
-			StringView		m_strvTags;
-			StringView		m_strvDifficulty;
-			StringView		m_strvLength;
-		};
-
-		DynamicArray<GoalGen> aryGoalg;
-		init(&aryGoalg);
-
-		// Text
-
-		{
-			StringView strv = StrvNextCell();
-			if (strv.cCh == 0)
-			{
-				// Assume an empty first cell is an entirely empty line
-
-				iChEmptyCell = strv.pCh - g_pChzMan;
-				SkipToNextLine();
-				break;
-			}
-
-			if (startsWith(strv, "[TODO]"))
-			{
-				SkipToNextLine();
-				continue;
-			}
-
-			DynamicArray<String> aryStrSubstituted;
-			init(&aryStrSubstituted);
-				
-			if (FTryCompileDollarExpr(strv, &aryStrSubstituted))
-			{
-				for (int iStr = 0; iStr < aryStrSubstituted.cItem; iStr++)
-				{
-					GoalGen * pGoalg = appendNew(&aryGoalg);
-					pGoalg->m_strvText.pCh = aryStrSubstituted[iStr].pBuffer;
-					pGoalg->m_strvText.cCh = aryStrSubstituted[iStr].cChar;
-				}
-			}
-			else
-			{
-				GoalGen * pGoalg = appendNew(&aryGoalg);
-				pGoalg->m_strvText = strv;
-			}
-		}
-
-		// Clarification
-
-		{
-			StringView strv = StrvNextCell();
-
-			for (int iGoal = 0; iGoal < aryGoalg.cItem; iGoal++)
-			{
-				aryGoalg[iGoal].m_strvAlt = strv;
-			}
-		}
-
-		// Tags
-
-		{
-			StringView strv = StrvNextCell();
-
-			DynamicArray<String> aryStrSubstituted;
-			init(&aryStrSubstituted);
-				
-			if (FTryCompileDollarExpr(strv, &aryStrSubstituted))
-			{
-				if (aryStrSubstituted.cItem != aryGoalg.cItem)		ErrorAndExit("Inconsistent number of goals in $-expressions");
-
-				for (int iGoal = 0; iGoal < aryGoalg.cItem; iGoal++)
-				{
-					GoalGen * pGoalg = &aryGoalg[iGoal];
-					pGoalg->m_strvTags.pCh = aryStrSubstituted[iGoal].pBuffer;
-					pGoalg->m_strvTags.cCh = aryStrSubstituted[iGoal].cChar;
-				}
-			}
-			else
-			{
-				for (int iGoal = 0; iGoal < aryGoalg.cItem; iGoal++)
-				{
-					GoalGen * pGoalg = &aryGoalg[iGoal];
-					pGoalg->m_strvTags = strv;
-				}
-			}
-
-			for (int iGoal = 0; iGoal < aryGoalg.cItem; iGoal++)
-			{
-				GoalGen * pGoalg = &aryGoalg[iGoal];
-				pGoalg->m_strvTags = StrvCompileAtExpr(pGoalg->m_strvTags, iGoal);
-			}
-		}
-
-		// Difficulty
-
-		{
-			static const char * s_pChzCol = "Difficulty";
-
-			StringView strv = StrvNextCell();
-			if (strv.cCh == 0)		ErrorAndExit("Illegal empty cell in \"%s\"", s_pChzCol);
-
-			DynamicArray<String> aryStrSubstituted;
-			init(&aryStrSubstituted);
-				
-			if (FTryCompileDollarExpr(strv, &aryStrSubstituted))
-			{
-				if (aryStrSubstituted.cItem != aryGoalg.cItem)		ErrorAndExit("Inconsistent number of goals in $-expressions");
-
-				for (int iGoal = 0; iGoal < aryGoalg.cItem; iGoal++)
-				{
-					GoalGen * pGoalg = &aryGoalg[iGoal];
-					pGoalg->m_strvDifficulty.pCh = aryStrSubstituted[iGoal].pBuffer;
-					pGoalg->m_strvDifficulty.cCh = aryStrSubstituted[iGoal].cChar;
-				}
-			}
-			else
-			{
-				for (int iGoal = 0; iGoal < aryGoalg.cItem; iGoal++)
-				{
-					GoalGen * pGoalg = &aryGoalg[iGoal];
-					pGoalg->m_strvDifficulty = strv;
-				}
-			}
-		}
-
-		// Length
-
-		{
-			static const char * s_pChzCol = "Length";
-
-			StringView strv = StrvNextCell();
-			if (strv.cCh == 0)		ErrorAndExit("Illegal empty cell in \"%s\"", s_pChzCol);
-
-			DynamicArray<String> aryStrSubstituted;
-			init(&aryStrSubstituted);
-				
-			if (FTryCompileDollarExpr(strv, &aryStrSubstituted))
-			{
-				if (aryStrSubstituted.cItem != aryGoalg.cItem)		ErrorAndExit("Inconsistent number of goals in $-expressions");
-
-				for (int iGoal = 0; iGoal < aryGoalg.cItem; iGoal++)
-				{
-					GoalGen * pGoalg = &aryGoalg[iGoal];
-					pGoalg->m_strvLength.pCh = aryStrSubstituted[iGoal].pBuffer;
-					pGoalg->m_strvLength.cCh = aryStrSubstituted[iGoal].cChar;
-				}
-			}
-			else
-			{
-				for (int iGoal = 0; iGoal < aryGoalg.cItem; iGoal++)
-				{
-					GoalGen * pGoalg = &aryGoalg[iGoal];
-					pGoalg->m_strvLength = strv;
-				}
-			}
-		}
-
-		for (int iGoal = 0; iGoal < aryGoalg.cItem; iGoal++)
-		{
-			GoalGen * pGoalg = &aryGoalg[iGoal];
-
-			bool fFail = false;
-			fFail = fFail || (fwrite(pGoalg->m_strvText.pCh, 0x1, pGoalg->m_strvText.cCh, fileGenerated) != pGoalg->m_strvText.cCh);
-			fFail = fFail || (fputs("\t", fileGenerated) < 0);
-			fFail = fFail || (fwrite(pGoalg->m_strvAlt.pCh, 0x1, pGoalg->m_strvAlt.cCh, fileGenerated) != pGoalg->m_strvAlt.cCh);
-			fFail = fFail || (fputs("\t", fileGenerated) < 0);
-			fFail = fFail || (fwrite(pGoalg->m_strvTags.pCh, 0x1, pGoalg->m_strvTags.cCh, fileGenerated) != pGoalg->m_strvTags.cCh);
-			fFail = fFail || (fputs("\t", fileGenerated) < 0);
-			fFail = fFail || (fwrite(pGoalg->m_strvDifficulty.pCh, 0x1, pGoalg->m_strvDifficulty.cCh, fileGenerated) != pGoalg->m_strvDifficulty.cCh);
-			fFail = fFail || (fputs("\t", fileGenerated) < 0);
-			fFail = fFail || (fwrite(pGoalg->m_strvLength.pCh, 0x1, pGoalg->m_strvLength.cCh, fileGenerated) != pGoalg->m_strvLength.cCh);
-			fFail = fFail || (fputs("\n", fileGenerated) < 0);
-
-			// BB (andrew) Not making any effort to prevent a ragged row here. It's fine though, since idc if it's ragged when I parse it back out
-
-			if (fFail)
-			{
-				g_nLine = -1;
-				ErrorAndExit("Failed to write to generated manifest file");
-			}
-		}
-
-		SkipToNextLine();
-	}
-
-	// Verify eof
-
-	{
-		StringView strv = StrvNextCell();
-		if (strv != "!!Eof")		ErrorAndExit("Expected \"!!Eof\"");
-
-		SkipToNextLine();
-
-		if (!g_fEof)				ErrorAndExit("File has content after \"!!Eof\"");
-	}
-
-	bool fFail = false;
-	fFail = fFail || (fwrite(g_pChzMan + iChEmptyCell, 0x1, g_iChMan - iChEmptyCell, fileGenerated) != g_iChMan - iChEmptyCell);
-	fFail = fFail || (fputs("\0", fileGenerated) < 0);
-
-	if (fFail)
-	{
-		g_nLine = -1;
-		ErrorAndExit("Failed to write to generated manifest file");
-	}
-}
-
-void CompileGeneratedManifest()
-{
-	// Init needed globals
-
+	init(&g_aryShorthand);
 	init(&g_aryTag);
 	init(&g_arySynrg);
-	init(&g_aryShorthand);
-	init(&g_dpaTagexpr);
+	init(&g_aryGoal);
+
 	g_pChzMan = nullptr;
 	g_iChMan = 0;
 	g_nLine = -1;
 	g_fEof = false;
-	g_fIsGeneratedMan = true;
-
-	// Read in generated manifest
 
 	int cBManifestMax = 1024 * 1024;				// Max = 1MB
 	int cChManifestMax = cBManifestMax - 1;
@@ -638,7 +239,7 @@ void CompileGeneratedManifest()
 	{
 		// TODO: Allow command line override (?)
 
-		char * pChzManifestFile = "./res/manifest_generated.tsv";
+		char * pChzManifestFile = "./res/manifest.tsv";
 
 		FILE * file = fopen(pChzManifestFile, "rb");
 		Defer(if (file) fclose(file));
@@ -656,22 +257,72 @@ void CompileGeneratedManifest()
 
 	g_nLine = 1;
 
+	// Shorthands
+
+	{
+		// Verify header
+
+		{
+			NextCellVerify("!!Shorthands");
+			SkipToNextLine();
+			NextCellVerify("Short");
+			NextCellVerify("Long");
+			SkipToNextLine();
+		}
+
+		// Parse shorthand list
+
+		while (true)
+		{
+			// Short
+
+			StringView strvShort;
+
+			{
+				strvShort = StrvNextCell();
+				if (strvShort.cCh == 0)
+				{
+					// Assume an empty first cell is an entirely empty line
+
+					SkipToNextLine();
+					break;
+				}
+
+				if (strvShort.cCh > 4)		ErrorAndExit("Shorthand cannot exceed 4 characters");		// NOTE (andrew) This limit is arbitrary, but anything much greater than 4 defeats the purpose
+			}
+
+			StringView strvLong;
+
+			{
+				strvLong = StrvNextCell();
+				if (strvLong.cCh == 0)		ErrorAndExit("Illegal empty cell");
+			}
+
+			Shorthand * pShorthand = appendNew(&g_aryShorthand);
+			pShorthand->m_strvShort = strvShort;
+			pShorthand->m_strvLong = strvLong;
+
+			SkipToNextLine();
+		}
+	}
+
 	// Tags
 
 	{
 		// Verify header
 
 		{
-			StringView strv = StrvNextCell();
-			if (strv != "!!Tags")		ErrorAndExit("Expected \"!!Tags\"");
-
-			SkipToNextLine();	// Skip !!Tags
-			SkipToNextLine();	// Skip Headers
+			NextCellVerify("!!Tags");
+			SkipToNextLine();
+			NextCellVerify("Tag");
+			NextCellVerify("Implies");
+			NextCellVerify("MaxPerRow");
+			NextCellVerify("SelfSynergy");
+			SkipToNextLine();
 		}
 
 		// Parse tag list
 
-		int cTag = 0;
 		while (true)
 		{
 			// Tag
@@ -680,6 +331,7 @@ void CompileGeneratedManifest()
 
 			{
 				StringView strv = StrvNextCell();
+
 				if (strv.cCh == 0)
 				{
 					// Assume an empty first cell is an entirely empty line
@@ -688,58 +340,111 @@ void CompileGeneratedManifest()
 					break;
 				}
 
+				trim(&strv);
+
 				for (int iCh = 0; iCh < strv.cCh; iCh++)
 				{
 					if (!FIsLegalTagCharacter(strv.pCh[iCh]))		ErrorAndExit("Tags may only contain letters and underscores");
 				}
 
+				static const bool s_fErrorOnNotFound = false;
+				if (TagidFromStrv(strv, s_fErrorOnNotFound) != TAGID_Nil)
+				{
+					String str;
+					init(&str, strv.pCh, strv.cCh);
+					ErrorAndExit("Duplicate tag: %s", str.pBuffer);
+				}
+
 				pTag = appendNew(&g_aryTag);
 				pTag->m_strv = strv;
-				pTag->m_tagid = TAGID(cTag);
-				cTag++;
+				pTag->m_tagid = TAGID(g_aryTag.cItem - 1);
 			}
 
 			// Implies
 
 			{
-				StringView strv = StrvNextCell();
-				if (strv.cCh == 0)
+				StringView strvCell = StrvNextCell();
+				trim(&strvCell);
+				
+				init(&pTag->m_aryTagidImplied);
+
+				if (strvCell.cCh > 0)
 				{
-					pTag->m_pTagexprImplied = nullptr;
-				}
-				else
-				{
-					pTag->m_pTagexprImplied = PTagexprCompile(strv.pCh, strv.cCh);
+					int iChPostPrevComma = 0;
+					for (int iCh = 0; iCh <= strvCell.cCh; iCh++)
+					{
+						char c = (iCh < strvCell.cCh) ? strvCell.pCh[iCh] : ',';
+
+						if (c == ',')
+						{
+							StringView strvTagImplied;
+							strvTagImplied.pCh = strvCell.pCh + iChPostPrevComma;
+							strvTagImplied.cCh = iCh - iChPostPrevComma;
+
+							trim(&strvTagImplied);
+
+							TAGID tagidImplied = TagidFromStrv(strvTagImplied);
+
+							DynamicArray<TAGID> aryTagidProcess;
+							init(&aryTagidProcess);
+							append(&aryTagidProcess, tagidImplied);
+
+							while (aryTagidProcess.cItem > 0)
+							{
+								TAGID tagidProcess = aryTagidProcess[0];
+								Assert(tagidProcess != TAGID_Nil);
+
+								if (tagidProcess == pTag->m_tagid)
+								{
+									ErrorAndExitStrvHack("Tag cannot imply itself: %s", pTag->m_strv);
+								}
+
+								Tag * pTagProcess = &g_aryTag[tagidProcess];
+								if (indexOf(pTag->m_aryTagidImplied, tagidProcess) == -1)
+								{
+									append(&pTag->m_aryTagidImplied, tagidProcess);
+
+									for (int iTagidProcessImplied = 0; iTagidProcessImplied < pTagProcess->m_aryTagidImplied.cItem; iTagidProcessImplied++)
+									{
+										append(&aryTagidProcess, pTagProcess->m_aryTagidImplied[iTagidProcessImplied]);
+									}
+								}
+
+								unorderedRemove(&aryTagidProcess, 0);
+							}
+
+							iChPostPrevComma = iCh + 1;
+						}
+					}
 				}
 			}
 
 			// Max per row
 
 			{
-				static const char * s_pChzCol = "Max Per Row";
-
 				StringView strv = StrvNextCell();
-				if (strv.cCh == 0)													ErrorAndExit("Illegal empty cell in \"%s\"", s_pChzCol);
+				if (strv.cCh == 0)													ErrorAndExit("Illegal empty cell");
 
 				int iChStrv = 0;
-				if (!tryConsumeInt(strv.pCh, &iChStrv, &pTag->m_cMaxPerRow))		ErrorAndExit("Expected integer in \"%s\"", s_pChzCol);
-				if (pTag->m_cMaxPerRow <= 0)										ErrorAndExit("\"%s\" must be > 0", s_pChzCol);
+				if (!tryConsumeInt(strv.pCh, &iChStrv, &pTag->m_cMaxPerRow))		ErrorAndExit("Expected integer");
+				if (pTag->m_cMaxPerRow <= 0)										ErrorAndExit("Expected number > 0");
 			}
 
 			// Self synergy
 
 			{
-				static const char * s_pChzCol = "Self Synergy";
-
 				StringView strv = StrvNextCell();
-				if (strv.cCh == 0)													ErrorAndExit("Illegal empty cell in \"%s\"", s_pChzCol);
+
+				if (strv.cCh == 0)													ErrorAndExit("Illegal empty cell");
 
 				float gSynrg;
 				int iChStrv = 0;
-				if (!tryConsumeFloatApprox(strv.pCh, &iChStrv, &gSynrg))			ErrorAndExit("Expected float in \"%s\"", s_pChzCol);
+				if (!tryConsumeFloatApprox(strv.pCh, &iChStrv, &gSynrg))			ErrorAndExit("Expected float");
 
 				if (!FloatEq(gSynrg, 0, 0.01))
 				{
+					if (pTag->m_cMaxPerRow == 1)									ErrorAndExit("Expected no self-synergy for goal with max per row of 1");
+
 					Synergy * pSynrg = appendNew(&g_arySynrg);
 					pSynrg->m_tagid0 = pTag->m_tagid;
 					pSynrg->m_tagid1 = pTag->m_tagid;
@@ -757,11 +462,12 @@ void CompileGeneratedManifest()
 		// Verify header
 
 		{
-			StringView strv = StrvNextCell();
-			if (strv != "!!Synergies")		ErrorAndExit("Expected \"!!Synergies\"");
-
-			SkipToNextLine();	// Skip !!Synergies
-			SkipToNextLine();	// Skip Headers
+			NextCellVerify("!!Synergies");
+			SkipToNextLine();
+			NextCellVerify("Tag0");
+			NextCellVerify("Tag1");
+			NextCellVerify("Synergy");
+			SkipToNextLine();
 		}
 
 		// Parse synergy list
@@ -789,38 +495,68 @@ void CompileGeneratedManifest()
 
 			int cSynrgAdded = 0;
 			{
-				static const char * s_pChzCol = "Tag 1";
+				StringView strvCell = StrvNextCell();
+				if (strvCell.cCh == 0)		ErrorAndExit("Illegal empty cell");
 
-				StringView strv = StrvNextCell();
-				if (strv.cCh == 0)		ErrorAndExit("Illegal empty cell in \"%s\"", s_pChzCol);
-
-				StringView strvSubstr;
-				strvSubstr.pCh = strv.pCh;
-				strvSubstr.cCh = 0;
-
-				int iStrv = 0;
-				while (iStrv < strv.cCh)
+				int iChPostPrevComma = 0;
+				for (int iCh = 0; iCh <= strvCell.cCh; iCh++)
 				{
-					// Split on ';'
+					char c = (iCh < strvCell.cCh) ? strvCell.pCh[iCh] : ',';
 
-					char c = strv.pCh[iStrv++];
-					if (c != ';')
+					if (c == ',')
 					{
-						strvSubstr.cCh++;
-					}
+						StringView strvTag1;
+						strvTag1.pCh = strvCell.pCh + iChPostPrevComma;
+						strvTag1.cCh = iCh - iChPostPrevComma;
 
-					if (iStrv == strv.cCh || strv.pCh[iStrv] == ';')
-					{
-						trim(&strvSubstr);
+						trim(&strvTag1);
 
-						Synergy * pSynrg = appendNew(&g_arySynrg);
-						pSynrg->m_tagid0 = tagid0;
-						pSynrg->m_tagid1 = TagidFromStrv(strvSubstr);
-						pSynrg->m_nSynrg = 0;		// Haven't parsed this cell yet
+						bool fOneWay = false;
+						if (strvTag1.pCh[0] == '[' && strvTag1.pCh[strvTag1.cCh - 1] == ']')
+						{
+							fOneWay = true;
+							strvTag1.pCh += 1;		// Strip []
+							strvTag1.cCh -= 2;
+						}
 
+						auto AddSynrg = [](TAGID tagid0, TAGID tagid1)
+						{
+							// NOTE (andrew) Actual synergy value gets filled in once we parse the next cell
+
+							if (tagid0 == tagid1)
+							{
+								ErrorAndExitStrvHack("Self synergy of %s cannot be listed in !!Synergies (should be in !!Tags)", g_aryTag[tagid0].m_strv);
+							}
+
+							for (int iSynrg = 0; iSynrg < g_arySynrg.cItem; iSynrg++)
+							{
+								Synergy * pSynrg = &g_arySynrg[iSynrg];
+								if (pSynrg->m_tagid0 == tagid0 && pSynrg->m_tagid1 == tagid1)
+								{
+									ErrorAndExitStrvHack(
+										"Duplicate synergy %s -> %s",
+										g_aryTag[pSynrg->m_tagid0].m_strv,
+										g_aryTag[pSynrg->m_tagid1].m_strv
+									);
+								}
+							}
+
+							Synergy * pSynrg = appendNew(&g_arySynrg);
+							pSynrg->m_tagid0 = tagid0;
+							pSynrg->m_tagid1 = tagid1;
+						};
+
+						TAGID tagid1 = TagidFromStrv(strvTag1);
+						AddSynrg(tagid0, tagid1);
 						cSynrgAdded++;
-						strvSubstr.pCh = strv.pCh + iStrv + 1;
-						strvSubstr.cCh = 0;
+
+						if (!fOneWay)
+						{
+							AddSynrg(tagid1, tagid0);
+							cSynrgAdded++;
+						}
+
+						iChPostPrevComma = iCh + 1;
 					}
 				}
 			}
@@ -828,14 +564,12 @@ void CompileGeneratedManifest()
 			// Synergy
 
 			{
-				static const char * s_pChzCol = "Synergy";
-
 				StringView strv = StrvNextCell();
-				if (strv.cCh == 0)											ErrorAndExit("Illegal empty cell in \"%s\"", s_pChzCol);
+				if (strv.cCh == 0)											ErrorAndExit("Illegal empty cell");
 
 				float gSynrg = 0;
 				int iStrv = 0;
-				if (!tryConsumeFloatApprox(strv.pCh, &iStrv, &gSynrg))		ErrorAndExit("Expected float in \"%s\"", s_pChzCol);
+				if (!tryConsumeFloatApprox(strv.pCh, &iStrv, &gSynrg))		ErrorAndExit("Expected float");
 
 				if (!FloatEq(gSynrg, 0, 0.01))
 				{
@@ -858,81 +592,39 @@ void CompileGeneratedManifest()
 		}
 	}
 
-	// Shorthands
-
-	{
-		// Verify header
-
-		{
-			StringView strv = StrvNextCell();
-			if (strv != "!!Shorthands")		ErrorAndExit("Expected \"!!Shorthands\"");
-
-			SkipToNextLine();	// Skip !!Shorthands
-			SkipToNextLine();	// Skip Headers
-		}
-
-		// Parse shorthand list
-
-		while (true)
-		{
-			// Short
-
-			StringView strvShort;
-
-			{
-				static const char * s_pChzCol = "Short";
-
-				strvShort = StrvNextCell();
-				if (strvShort.cCh == 0)
-				{
-					// Assume an empty first cell is an entirely empty line
-
-					SkipToNextLine();
-					break;
-				}
-
-				if (strvShort.cCh > 4)		ErrorAndExit("Shorthand cannot exceed 4 characters");		// NOTE (andrew) This limit is arbitrary, but anything much greater than 4 defeats the purpose
-			}
-
-			StringView strvLong;
-			{
-				static const char * s_pChzCol = "Long";
-
-				strvLong = StrvNextCell();
-				if (strvLong.cCh == 0)		ErrorAndExit("Illegal empty cell in \"%s\"", s_pChzCol);
-			}
-
-			Shorthand * pShorthand = appendNew(&g_aryShorthand);
-			pShorthand->m_strvShort = strvShort;
-			pShorthand->m_strvLong = strvLong;
-
-			SkipToNextLine();
-		}
-	}
-
 	// Goals
 
 	{
 		// Verify header
 
 		{
-			StringView strv = StrvNextCell();
-			if (strv != "!!Goals")		ErrorAndExit("Expected \"!!Goals\"");
-
-			SkipToNextLine();	// Skip !!Goals
-			SkipToNextLine();	// Skip Headers
+			NextCellVerify("!!Goals");
+			SkipToNextLine();
+			NextCellVerify("Text");
+			NextCellVerify("Clarification");
+			NextCellVerify("Tags");
+			NextCellVerify("Difficulty");
+			NextCellVerify("Length");
+			SkipToNextLine();
 		}
 
 		// Parse goal list
 
 		while (true)
 		{
-			DynamicArray<Goal> aryGoal;
-			init(&aryGoal);
+			struct GoalCtx		// tag = gctx
+			{
+				StringView		m_strvText;
+				StringView		m_strvAlt;
+				StringView		m_strvTags;
+				StringView		m_strvDifficulty;
+				StringView		m_strvLength;
+			};
+
+			DynamicArray<GoalCtx> aryGctx;
+			init(&aryGctx);
 
 			// Text
-
-			Goal * pGoal = nullptr;
 
 			{
 				StringView strv = StrvNextCell();
@@ -945,17 +637,40 @@ void CompileGeneratedManifest()
 					break;
 				}
 
-				pGoal = appendNew(&aryGoal);
-				pGoal->m_strvText = strv;
-			}
+				if (startsWith(strv, "[TODO]") || startsWith(strv, "[COMMENT]"))
+				{
+					SkipToNextLine();
+					continue;
+				}
 
-			Assert(pGoal);
+				DynamicArray<String> aryStrSubstituted;
+				init(&aryStrSubstituted);
+				
+				if (FTryCompileDollarExpr(strv, &aryStrSubstituted))
+				{
+					for (int iStr = 0; iStr < aryStrSubstituted.cItem; iStr++)
+					{
+						GoalCtx * pGctx = appendNew(&aryGctx);
+						pGctx->m_strvText.pCh = aryStrSubstituted[iStr].pBuffer;
+						pGctx->m_strvText.cCh = aryStrSubstituted[iStr].cChar;
+					}
+				}
+				else
+				{
+					GoalCtx * pGctx = appendNew(&aryGctx);
+					pGctx->m_strvText = strv;
+				}
+			}
 
 			// Clarification
 
 			{
 				StringView strv = StrvNextCell();
-				pGoal->m_strvAlt = strv;
+
+				for (int iGctx = 0; iGctx < aryGctx.cItem; iGctx++)
+				{
+					aryGctx[iGctx].m_strvAlt = strv;
+				}
 			}
 
 			// Tags
@@ -963,40 +678,173 @@ void CompileGeneratedManifest()
 			{
 				StringView strv = StrvNextCell();
 
-				if (strv.cCh == 0)
+				DynamicArray<String> aryStrSubstituted;
+				init(&aryStrSubstituted);
+		
+				// $-expr
+
+				if (FTryCompileDollarExpr(strv, &aryStrSubstituted))
 				{
-					pGoal->m_pTagexpr = nullptr;
+					if (aryStrSubstituted.cItem != aryGctx.cItem)		ErrorAndExit("Inconsistent number of goals in $-expressions");
+
+					for (int iGctx = 0; iGctx < aryGctx.cItem; iGctx++)
+					{
+						GoalCtx * pGctx = &aryGctx[iGctx];
+						pGctx->m_strvTags.pCh = aryStrSubstituted[iGctx].pBuffer;
+						pGctx->m_strvTags.cCh = aryStrSubstituted[iGctx].cChar;
+					}
 				}
 				else
 				{
-					pGoal->m_pTagexpr = PTagexprCompile(strv.pCh, strv.cCh);
+					for (int iGctx = 0; iGctx < aryGctx.cItem; iGctx++)
+					{
+						GoalCtx * pGctx = &aryGctx[iGctx];
+						pGctx->m_strvTags = strv;
+					}
 				}
 			}
 
 			// Difficulty
 
 			{
-				static const char * s_pChzCol = "Difficulty";
-
 				StringView strv = StrvNextCell();
-				if (strv.cCh == 0)		ErrorAndExit("Illegal empty cell in \"%s\"", s_pChzCol);
+				if (strv.cCh == 0)		ErrorAndExit("Illegal empty cell");
 
-				int iChStrv = 0;
-				if (!tryConsumeFloatApprox(strv.pCh, &iChStrv, &pGoal->m_gDifficulty))		ErrorAndExit("Expected float in \"%s\"", s_pChzCol);
-				if (pGoal->m_gDifficulty <= 0)												ErrorAndExit("\"%s\" must be > 0", s_pChzCol);
+				DynamicArray<String> aryStrSubstituted;
+				init(&aryStrSubstituted);
+				
+				if (FTryCompileDollarExpr(strv, &aryStrSubstituted))
+				{
+					if (aryStrSubstituted.cItem != aryGctx.cItem)		ErrorAndExit("Inconsistent number of goals in $-expressions");
+
+					for (int iGoal = 0; iGoal < aryGctx.cItem; iGoal++)
+					{
+						GoalCtx * pGctx = &aryGctx[iGoal];
+						pGctx->m_strvDifficulty.pCh = aryStrSubstituted[iGoal].pBuffer;
+						pGctx->m_strvDifficulty.cCh = aryStrSubstituted[iGoal].cChar;
+					}
+				}
+				else
+				{
+					for (int iGoal = 0; iGoal < aryGctx.cItem; iGoal++)
+					{
+						GoalCtx * pGctx = &aryGctx[iGoal];
+						pGctx->m_strvDifficulty = strv;
+					}
+				}
 			}
 
 			// Length
 
 			{
-				static const char * s_pChzCol = "Length";
-
 				StringView strv = StrvNextCell();
-				if (strv.cCh == 0)		ErrorAndExit("Illegal empty cell in \"%s\"", s_pChzCol);
+				if (strv.cCh == 0)		ErrorAndExit("Illegal empty cell");
 
-				int iChStrv = 0;
-				if (!tryConsumeFloatApprox(strv.pCh, &iChStrv, &pGoal->m_gLength))			ErrorAndExit("Expected float in \"%s\"", s_pChzCol);
-				if (pGoal->m_gDifficulty <= 0)												ErrorAndExit("\"%s\" must be > 0", s_pChzCol);
+				DynamicArray<String> aryStrSubstituted;
+				init(&aryStrSubstituted);
+				
+				if (FTryCompileDollarExpr(strv, &aryStrSubstituted))
+				{
+					if (aryStrSubstituted.cItem != aryGctx.cItem)		ErrorAndExit("Inconsistent number of goals in $-expressions");
+
+					for (int iGoal = 0; iGoal < aryGctx.cItem; iGoal++)
+					{
+						GoalCtx * pGctx = &aryGctx[iGoal];
+						pGctx->m_strvLength.pCh = aryStrSubstituted[iGoal].pBuffer;
+						pGctx->m_strvLength.cCh = aryStrSubstituted[iGoal].cChar;
+					}
+				}
+				else
+				{
+					for (int iGoal = 0; iGoal < aryGctx.cItem; iGoal++)
+					{
+						GoalCtx * pGctx = &aryGctx[iGoal];
+						pGctx->m_strvLength = strv;
+					}
+				}
+			}
+
+			// Generate actual goals now that we have substituted $-expressions
+
+			for (int iCtx = 0; iCtx < aryGctx.cItem; iCtx++)
+			{
+				GoalCtx * pGctx = &aryGctx[iCtx];
+
+				// Text
+
+				Goal * pGoal = appendNew(&g_aryGoal);
+				pGoal->m_strvText = pGctx->m_strvText;
+				pGoal->m_strvAlt = pGctx->m_strvAlt;
+
+				// Tags
+
+				init(&pGoal->m_aryTagid);
+				StringView strvTags = pGctx->m_strvTags;
+
+				if (strvTags.cCh > 0)
+				{
+					int iChPostPrevComma = 0;
+					for (int iCh = 0; iCh <= strvTags.cCh; iCh++)
+					{
+						char c = (iCh < strvTags.cCh) ? strvTags.pCh[iCh] : ',';
+
+						if (c == ',')
+						{
+							StringView strvTag;
+							strvTag.pCh = strvTags.pCh + iChPostPrevComma;
+							strvTag.cCh = iCh - iChPostPrevComma;
+
+							trim(&strvTag);
+
+							// Add tag
+
+							TAGID tagid = TagidFromStrv(strvTag);
+							Tag * pTag = &g_aryTag[tagid];
+							if (indexOf(pGoal->m_aryTagid, tagid) != -1)
+							{
+								ErrorAndExitStrvHack("Goal \"%s\" includes tag %s multiple times (possibly indirectly)", pGoal->m_strvText, pTag->m_strv);
+							}
+
+							append(&pGoal->m_aryTagid, tagid);
+
+							// Add any tags that it implies
+
+							for (int iTagidImplied = 0; iTagidImplied < pTag->m_aryTagidImplied.cItem; iTagidImplied++)
+							{
+								TAGID tagidImplied = pTag->m_aryTagidImplied[iTagidImplied];
+								Tag * pTagImplied = &g_aryTag[tagidImplied];
+								if (indexOf(pGoal->m_aryTagid, tagidImplied) != -1)
+								{
+									ErrorAndExitStrvHack("Goal \"%s\" includes tag %s multiple times (possibly indirectly)", pGoal->m_strvText, pTagImplied->m_strv);
+								}
+
+								append(&pGoal->m_aryTagid, tagidImplied);
+							}
+
+							iChPostPrevComma = iCh + 1;
+						}
+					}
+				}
+
+				// Difficulty
+
+				{
+					Assert(pGctx->m_strvDifficulty.cCh > 0);
+
+					int iChStrv = 0;
+					if (!tryConsumeFloatApprox(pGctx->m_strvDifficulty.pCh, &iChStrv, &pGoal->m_gDifficulty))		ErrorAndExit("Expected float");
+					if (pGoal->m_gDifficulty <= 0)																	ErrorAndExit("Expected number > 0");
+				}
+
+				// Length
+
+				{
+					Assert(pGctx->m_strvLength.cCh > 0);
+
+					int iChStrv = 0;
+					if (!tryConsumeFloatApprox(pGctx->m_strvLength.pCh, &iChStrv, &pGoal->m_gLength))		ErrorAndExit("Expected float");
+					if (pGoal->m_gLength<= 0)																ErrorAndExit("Expected number > 0");
+				}
 			}
 
 			SkipToNextLine();
@@ -1048,6 +896,8 @@ void DumpToJson()
 	bool fFail = false;
 	fFail = fFail || fputs("{\n", file) < 0;
 
+	// Dump shorthands
+
 	cTab++;
 	{
 		fFail = fFail || !printTabs(file, cTab);
@@ -1084,10 +934,7 @@ void DumpToJson()
 
 int main()
 {
-	CreateGeneratedManifestFromRaw();
-	fprintf(stdout, "Manifest generated\n");
-
-	CompileGeneratedManifest();
+	CompileManifest();
 	fprintf(stdout, "Manifest compiled\n");
 
 	DumpToJson();

@@ -4,8 +4,6 @@
 
 #include "als/als.h"
 
-
-
 // Definitions
 
 enum TAGID
@@ -20,26 +18,11 @@ enum TAGEXPRK
 	TAGEXPRK_Or
 };
 
-struct TagExpression			// tag = tagexpr
-{
-	TAGEXPRK					m_tagexprk;
-
-	union
-	{
-		TAGID					m_tagid;
-		struct
-		{
-			TagExpression *		m_pTagexprLhs;
-			TagExpression *		m_pTagexprRhs;
-		};
-	};
-};
-
 struct Tag						// tag = tag
 {
 	TAGID						m_tagid;
 	StringView					m_strv;
-	TagExpression *				m_pTagexprImplied;
+	DynamicArray<TAGID>			m_aryTagidImplied;
 	int							m_cMaxPerRow;
 };
 
@@ -60,7 +43,7 @@ struct Goal
 {
 	StringView					m_strvText;				// Main displayed text
 	StringView					m_strvAlt;				// Clarification / description
-	TagExpression *				m_pTagexpr;				// Tags associated with this goal
+	DynamicArray<TAGID>			m_aryTagid;				// Tags associated with this goal
 	f32							m_gDifficulty;			// Unit-less, ballparked difficulty. Only has meaning relative to other difficulties.
 	f32							m_gLength;				//	... length.
 };
@@ -76,13 +59,13 @@ extern int			g_nLine;			// Line #
 extern DynamicArray<Tag>						g_aryTag;
 extern DynamicArray<Synergy>					g_arySynrg;
 extern DynamicArray<Shorthand>					g_aryShorthand;
-extern DynamicPoolAllocator<TagExpression>		g_dpaTagexpr;
 
 
 
 // API
 
 void ErrorAndExit(const char * errFormat, ...);
+void ErrorAndExitStrvHack(const char * errFormat, const StringView & strv);
 bool FIsLegalTagCharacter(char c);
 
 
@@ -91,12 +74,10 @@ bool FIsLegalTagCharacter(char c);
 
 StringView StrvNextCell();
 void SkipToNextLine();
-TAGID TagidFromStrv(const StringView & strv);
+TAGID TagidFromStrv(const StringView & strv, bool fErrorOnNotFound=true);
 bool FTryCompileDollarExpr(const StringView & strvCell, DynamicArray<String> * poAryStrCompiled);
-StringView StrvCompileAtExpr(const StringView & strvCell, int iDollarCtx);
 
-void CreateGeneratedManifestFromRaw();
-void CompileGeneratedManifest();
+void CompileManifest();
 void DumpToJson();
 
 
