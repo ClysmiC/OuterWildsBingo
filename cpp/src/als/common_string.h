@@ -191,6 +191,17 @@ inline void append(String * pString, const char * pCh, int cCh)
     pString->pBuffer[pString->cChar] = '\0';
 }
 
+inline void append(String * pString, char c)
+{
+	ensureCapacity(pString, pString->cChar + 1);
+	pString->pBuffer[pString->cChar] = c;
+	pString->cChar++;
+
+	// NOTE: This is always safe due to the extra byte requested inside ensureCapacity
+
+    pString->pBuffer[pString->cChar] = '\0';
+}
+
 struct StringView
 {
 	const char * pCh = nullptr;

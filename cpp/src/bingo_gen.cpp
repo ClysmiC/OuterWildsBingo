@@ -239,7 +239,7 @@ void CompileManifest()
 	{
 		// TODO: Allow command line override (?)
 
-		char * pChzManifestFile = "./res/manifest.tsv";
+		char * pChzManifestFile = "../res/manifest.tsv";
 
 		FILE * file = fopen(pChzManifestFile, "rb");
 		Defer(if (file) fclose(file));
@@ -448,7 +448,7 @@ void CompileManifest()
 					Synergy * pSynrg = appendNew(&g_arySynrg);
 					pSynrg->m_tagid0 = pTag->m_tagid;
 					pSynrg->m_tagid1 = pTag->m_tagid;
-					pSynrg->m_nSynrg = gSynrg;
+					pSynrg->m_gSynrg = gSynrg;
 				}
 			}
 
@@ -577,7 +577,7 @@ void CompileManifest()
 
 					for (int iSynrgAdded = 0; iSynrgAdded < cSynrgAdded; iSynrgAdded++)
 					{
-						g_arySynrg[g_arySynrg.cItem - iSynrgAdded - 1].m_nSynrg = gSynrg;
+						g_arySynrg[g_arySynrg.cItem - iSynrgAdded - 1].m_gSynrg = gSynrg;
 					}
 				}
 				else
@@ -865,80 +865,259 @@ void CompileManifest()
 
 void DumpToJson()
 {
-	auto printTabs = [](FILE * file, int cTab)
+	auto AppendTabs = [](String * pStr, int cTab)
 	{
-		bool fFail = false;
 		for (int iTab = 0; iTab < cTab; iTab++)
 		{
-			fFail = fFail || fputc('\t', file) < 0;
+			append(pStr, "\t");
 		}
-
-		return !fFail;
 	};
 
-	auto printStrv = [](FILE * file, StringView strv)
+	auto PChzEscapedFromStrv = [](StringView strv)
 	{
-		bool fFail = false;
+		String str;
+		init(&str);
+
 		for (int iCh = 0; iCh < strv.cCh; iCh++)
 		{
-			fFail = fFail || fputc(strv.pCh[iCh], file) < 0;
+			// TODO: Add any other escape characters that I need
+
+			char c = strv.pCh[iCh];
+			if (c == '"')
+			{
+				append(&str, '\\');
+			}
+
+			append(&str, c);
 		}
 
-		return !fFail;
+		return str.pBuffer;
 	};
 
-	FILE * file = fopen("./res/compiled.json", "wb");
-	Defer (if (file) fclose(file));
-
-	int cTab = 0;
-	if (!file)		ErrorAndExit("Failed to create compiled JSON file");
-
-	bool fFail = false;
-	fFail = fFail || fputs("{\n", file) < 0;
-
-	// Dump shorthands
-
-	cTab++;
+	auto PChzFromInt = [](int n)
 	{
-		fFail = fFail || !printTabs(file, cTab);
-		fFail = fFail || fputs("\"shorthands\":\n", file) < 0;
+		char * pChzBuffer = new char[16];
+		int nPrinted = sprintf(pChzBuffer, "%d", n);
 
-		fFail = fFail || !printTabs(file, cTab);
-		fFail = fFail || fputs("[\n", file) < 0;
+		if (nPrinted >= 16)		ErrorAndExit("Integer cannot exceed 15 digits");
+		return pChzBuffer;
+	};
 
-		cTab++;
+	auto PChzFromFloat = [](float f)
+	{
+		char * pChzBuffer = new char[16];
+		int nPrinted = sprintf(pChzBuffer, "%0.4f", f);
+
+		if (nPrinted >= 16)		ErrorAndExit("Float cannot exceed 15 digits");
+		return pChzBuffer;
+	};
+
+	auto PChzShorthands = [AppendTabs, PChzEscapedFromStrv, PChzFromInt, PChzFromFloat](int cTab)
+	{
+		String str;
+		init(&str);
+
 		for (int iShorthand = 0; iShorthand < g_aryShorthand.cItem; iShorthand++)
 		{
-			fFail = fFail || !printTabs(file, cTab);
+			Shorthand * pShorthand = &g_aryShorthand[iShorthand];
 
-			if (iShorthand == 0)		fFail = fFail || fputs("  ", file) < 0;
-			else						fFail = fFail || fputs(", ", file) < 0;
+			if (iShorthand != 0)
+			{
+				AppendTabs(&str, cTab);
+			}
 
-			fFail = fFail || fputs("{ \"short\": \"", file) < 0;
-			fFail = fFail || !printStrv(file, g_aryShorthand[iShorthand].m_strvShort);
-			fFail = fFail || fputs("\", \"long\": \"", file) < 0;
-			fFail = fFail || !printStrv(file, g_aryShorthand[iShorthand].m_strvLong);
-			fFail = fFail || fputs("\" }\n", file) < 0;
+			if (iShorthand == 0)		append(&str, "  ");
+			else						append(&str, ", ");
+
+			append(&str, "{ ");
+
+			append(&str, "\"short\": \"");
+			append(&str, PChzEscapedFromStrv(pShorthand->m_strvShort));
+			append(&str, "\", \"long\": \"");
+			append(&str, PChzEscapedFromStrv(pShorthand->m_strvLong));
+			append(&str, "\"");
+
+			append(&str, " }");
+
+			if (iShorthand != g_aryShorthand.cItem - 1)		append(&str, "\n");
 		}
-		cTab--;
 
-		fFail = fFail || !printTabs(file, cTab);
-		fFail = fFail || fputs("],\n", file);
+		return str.pBuffer;
+	};
+
+	auto PChzTags = [AppendTabs, PChzEscapedFromStrv, PChzFromInt, PChzFromFloat](int cTab)
+	{
+		String str;
+		init(&str);
+
+		for (int iTag = 0; iTag < g_aryTag.cItem; iTag++)
+		{
+			Tag * pTag = &g_aryTag[iTag];
+
+			if (iTag != 0)
+			{
+				AppendTabs(&str, cTab);
+			}
+
+			if (iTag == 0)		append(&str, "  ");
+			else				append(&str, ", ");
+
+			append(&str, "{ ");
+
+			append(&str, "\"max_per_row\": ");
+			append(&str, PChzFromInt(pTag->m_cMaxPerRow));
+			append(&str, ", \"synergies\": [");
+
+			int cSynrgPrinted = 0;
+			for (int iSynrg = 0; iSynrg < g_arySynrg.cItem; iSynrg++)
+			{
+				Synergy * pSynrg = &g_arySynrg[iSynrg];
+
+				if (pSynrg->m_tagid0 != pTag->m_tagid)		continue;
+
+				if (cSynrgPrinted == 0)		append(&str, " ");
+				else						append(&str, ", ");
+
+				append(&str, "{ ");
+				append(&str, "\"tag_other\": ");
+				append(&str, PChzFromInt(pSynrg->m_tagid1));
+				append(&str, ", \"synergy\": ");
+				append(&str, PChzFromFloat(pSynrg->m_gSynrg));
+				append(&str, "}");
+
+				cSynrgPrinted++;
+			}
+
+			if (cSynrgPrinted > 0)		append(&str, " ");
+
+			append(&str, "] }");
+
+			if (iTag != g_aryTag.cItem - 1)		append(&str, "\n");
+		}
+
+		return str.pBuffer;
+	};
+
+	auto PChzGoals = [AppendTabs, PChzEscapedFromStrv, PChzFromInt, PChzFromFloat](int cTab)
+	{
+		String str;
+		init(&str);
+
+		for (int iGoal = 0; iGoal < g_aryGoal.cItem; iGoal++)
+		{
+			Goal * pGoal = &g_aryGoal[iGoal];
+
+			if (iGoal != 0)
+			{
+				AppendTabs(&str, cTab);
+			}
+
+			append(&str, "{\n");
+
+			AppendTabs(&str, cTab + 1);
+			append(&str, "\"text\": \"");
+			append(&str, PChzEscapedFromStrv(pGoal->m_strvText));
+			append(&str, "\",\n");
+
+			AppendTabs(&str, cTab + 1);
+			append(&str, "\"difficulty\": ");
+			append(&str, PChzFromFloat(pGoal->m_gDifficulty));
+			append(&str, ",\n");
+
+			AppendTabs(&str, cTab + 1);
+			append(&str, "\"length\": ");
+			append(&str, PChzFromFloat(pGoal->m_gLength));
+			append(&str, ",\n");
+
+			AppendTabs(&str, cTab + 1);
+			append(&str, "\"tags\": [");
+			
+			for (int iTag = 0; iTag < pGoal->m_aryTagid.cItem; iTag++)
+			{
+				TAGID tagid = pGoal->m_aryTagid[iTag];
+
+				if (iTag == 0)		append(&str, " ");
+				else				append(&str, ", ");
+
+				append(&str, PChzFromInt(tagid));
+
+				if (iTag == pGoal->m_aryTagid.cItem - 1)		append(&str, " ");
+			}
+			append(&str, "],\n");
+
+			AppendTabs(&str, cTab + 1);
+			append(&str, "\"alt\": \"");
+			append(&str, PChzEscapedFromStrv(pGoal->m_strvAlt));
+			append(&str, "\"\n");
+
+			AppendTabs(&str, cTab);
+			append(&str, "}");
+
+			if (iGoal != g_aryGoal.cItem - 1)		append(&str, ",\n");
+		}
+
+		return str.pBuffer;
+	};
+
+	FILE * file = fopen("../res/compiled.json", "wb");
+	Defer (if (file) fclose(file));
+	if (!file)		ErrorAndExit("Failed to create compiled JSON file");
+
+	int nResult = fprintf(file,
+R"jsonblob({
+	"shorthands":
+	[
+		%s
+	],
+
+	"tags":
+	[
+		%s
+	],
+
+	"goals":
+	[
+		%s
+	]
+})jsonblob",
+	PChzShorthands(2),
+	PChzTags(2),
+	PChzGoals(2));
+
+	if (nResult < 0)		ErrorAndExit("Failed to write to compiled JSON file");
+}
+
+void CopyToSite()
+{
+	FILE * fileSrc = fopen("../res/compiled.json", "rb");
+	FILE * fileDst = fopen("../site/manifest/compiled.json", "wb");
+
+	Defer(
+		fclose(fileSrc);
+		fclose(fileDst);
+	);
+
+	if (!fileSrc || !fileDst)		ErrorAndExit("Failed to copy compiled.json to site directory");
+
+	char c;
+	while ((c = fgetc(fileSrc)) != EOF)
+	{
+		if (fputc(c, fileDst) < 0)		ErrorAndExit("Failed to copy compiled.json to site directory");
 	}
-	cTab--;
-
-	fFail = fFail || fputs("}\n", file) < 0;
-	
-	if (fFail)		ErrorAndExit("Failed to write to compiled JSON file");
 }
 
 int main()
 {
 	CompileManifest();
-	fprintf(stdout, "Manifest compiled\n");
+	fprintf(stdout, "Manifest compiled...\n");
 
 	DumpToJson();
-	fprintf(stdout, "Dumped to JSON");
+	fprintf(stdout, "Dumped to JSON...\n");
+
+	CopyToSite();
+	fprintf(stdout, "Copied to site directory...\n");
+
+	fprintf(stdout, "[Complete]");
 
 	getchar();		// Hack to make seeing output easier in debug
 	return 0;

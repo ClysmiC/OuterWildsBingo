@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
@@ -10,18 +14,21 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\als">
-      <UniqueIdentifier>{42c84b2c-5350-4680-9526-b95368be9bf7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source">
-      <UniqueIdentifier>{c5900a89-9158-492c-8799-f2457821822c}</UniqueIdentifier>
+      <UniqueIdentifier>{302621df-f5c0-41ff-8344-ed7abeaedf6d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\bingo_gen.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
+    <None Include="..\res\manifest.tsv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\compiled.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\bingo_gen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\als\als.h">
       <Filter>Header Files\als</Filter>
     </ClInclude>
@@ -35,6 +42,9 @@
       <Filter>Header Files\als</Filter>
     </ClInclude>
     <ClInclude Include="src\als\common_hash.h">
+      <Filter>Header Files\als</Filter>
+    </ClInclude>
+    <ClInclude Include="src\als\common_parse.h">
       <Filter>Header Files\als</Filter>
     </ClInclude>
     <ClInclude Include="src\als\common_string.h">
@@ -61,16 +71,10 @@
     <ClInclude Include="src\als\macro_util.h">
       <Filter>Header Files\als</Filter>
     </ClInclude>
-    <ClInclude Include="src\bingo_gen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common_parse.h">
-      <Filter>Header Files\als</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\manifest.csv">
-      <Filter>Resource Files</Filter>
-    </None>
+    <ClCompile Include="src\bingo_gen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

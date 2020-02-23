@@ -1,0 +1,114 @@
+body {
+    background-color: #292929;
+    color: #F8FFFF;
+}
+
+table {
+	margin: 50px 80px 0px 50px;
+	border-collapse: collapse;
+
+	font-family: arial;
+	font-size: 0.8rem;
+	text-align: center;
+	word-wrap: break-word;
+	cursor: pointer;
+
+	/* unselectable text */
+
+	/*-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;*/
+}
+
+th {
+	background-color: #141435;
+	border: 1px solid #D5D5D5;
+    color: #D5D5D5;
+	padding: 3px;
+}
+
+td {
+	display: table-cell;
+	border: 1px solid #E2E2E2;
+    color: #E2E2E2;
+	padding: 5px;
+	background-color: #1F1F1F;
+}
+
+td:hover,
+td.fakeHover,
+td.selected {
+	background-color: Gray;
+}
+
+td.preselected {
+    background-color: White;
+}
+
+td.greenCell {
+	background-color: LightGreen;
+}
+
+td.greenCell:hover,
+td.greenCell.fakeHover {
+	background-color: Green;
+}
+
+td.redCell {
+	background-color: LightCoral;
+}
+td.redCell:hover {
+	background-color: Red;
+}
+
+#panelCard {
+	display: inline-block;
+}
+#panelRight {
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+}
+
+#btnNewCard {
+	padding: 10px;
+	margin-left: 2em;
+	margin-bottom: 2em;
+}
+
+h2 {
+	font-family: arial;
+	font-size: 150%;
+}
+
+#txtAbout {
+	font-size: 0.8rem;
+	font-family: arial;
+	line-height: 1.5em;
+}
+
+#txtCredit {
+	font-size: 0.6rem;
+	font-family: arial;
+	position: absolute;
+	bottom: 10px;
+    left: 10px;
+}
+
+/* unvisited link */
+a:link,
+a:visited {
+  color: #588CC0;
+}
+
+/* mouse over link */
+a:hover {
+  color: #5FB2BF;
+}
+
+/* selected link */
+a:active {
+  color: #86D5E0;
+}

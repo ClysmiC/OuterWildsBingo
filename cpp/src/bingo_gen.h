@@ -30,7 +30,7 @@ struct Synergy					// tag = synrg
 {
 	TAGID						m_tagid0;
 	TAGID						m_tagid1;
-	f32							m_nSynrg;
+	f32							m_gSynrg;
 };
 
 struct Shorthand				// tag = shorthand
