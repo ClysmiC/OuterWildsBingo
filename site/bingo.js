@@ -94,25 +94,7 @@ function htmlFromGoal(goal) {
 	return result;
 }
 
-function initLayoutAndHandlers() {
-
-	// Get random seed from URL or generate one
-
-	if (window.location.href.includes("?seed=")) {
-		let seedIndex = window.location.href.indexOf("?seed=");
-		seedIndex += "?seed=".length;
-
-		seedRng(parseInt(window.location.href.slice(seedIndex)));
-	}
-	else {
-		let generatedSeed = Math.floor(Math.random() * 1000000000);
-
-		// NOTE (this performs a redirect)
-
-		window.location.replace(window.location.href + "?seed=" + generatedSeed);
-		return;
-	}
-
+function initLayout() {
 	// Set cell size
 
 	{
@@ -136,6 +118,26 @@ function initLayoutAndHandlers() {
 
 	panelRight.style.height = panelCard.offsetHeight + 0.5 * (window.innerHeight - panelCard.offsetHeight) + "px";
 	panelRight.style.width = (window.innerWidth - panelCard.offsetWidth - 50) + "px";
+}
+
+function initHandlers() {
+
+	// Get random seed from URL or generate one
+
+	if (window.location.href.includes("?seed=")) {
+		let seedIndex = window.location.href.indexOf("?seed=");
+		seedIndex += "?seed=".length;
+
+		seedRng(parseInt(window.location.href.slice(seedIndex)));
+	}
+	else {
+		let generatedSeed = Math.floor(Math.random() * 1000000000);
+
+		// NOTE (this performs a redirect)
+
+		window.location.replace(window.location.href + "?seed=" + generatedSeed);
+		return;
+	}
 
 	// Initialize new card button
 
@@ -235,10 +237,10 @@ function initLayoutAndHandlers() {
 			});
 		}
 	}
+	
+	// Recalculate layout on window resize
 
-	// Make visible
-
-	document.getElementById("panelMain").style.visibility = "visible";
+	addEventListener("resize", initLayout);
 }
 
 function initGoals() {
@@ -307,5 +309,7 @@ function initGoals() {
 	}
 }
 
-initLayoutAndHandlers();
+initLayout();
+initHandlers();
 initGoals();
+document.getElementById("panelMain").style.visibility = "visible";
