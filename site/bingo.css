@@ -1,6 +1,6 @@
 body {
-    background-color: #292929;
-    color: #F8FFFF;
+    background-color: #2A2A2F;
+    color: #F8FFFF;     /* TODO: Relpace */
 }
 
 table {
@@ -23,49 +23,61 @@ table {
 }
 
 th {
-	background-color: #141435;
-	border: 1px solid #D5D5D5;
-    color: #D5D5D5;
+	background-color: #0D142D;
+	border: 1px solid #253456;      /* TODO: Replace */
+    color: #5066BF;     /* TODO: Replace */
 	padding: 3px;
+}
+
+th:hover,
+th.selected {
+    background-color: #000042;
 }
 
 td {
 	display: table-cell;
-	border: 1px solid #E2E2E2;
-    color: #E2E2E2;
+	border: 1px solid #4F4F4F;      /* TODO: Replace */
+    color: #E2E2E2;     /* TODO: Replace */
 	padding: 5px;
 	background-color: #1F1F1F;
 }
 
-td:hover,
-td.fakeHover,
-td.selected {
-	background-color: Gray;
+td.fakeHover {
+	background-color: #000029;
 }
 
-td.preselected {
-    background-color: White;
+td.preselected,
+td.selected {
+    background-color: #000042;
+}
+
+td:hover {
+	background-color: #000029;      /* Sync w/ td.fakeHover */
 }
 
 td.greenCell {
-	background-color: LightGreen;
+	background-color: #315E3F;
 }
 
-td.greenCell:hover,
-td.greenCell.fakeHover {
-	background-color: Green;
+td.greenCell:hover {
+	background-color: #357A49;
 }
 
 td.redCell {
-	background-color: LightCoral;
+	background-color: #63352F;
 }
 td.redCell:hover {
-	background-color: Red;
+	background-color: #7F3930;
+}
+
+#panelMain{
+    visibility: hidden;     /* Revealed after JS computes layout */
 }
 
 #panelCard {
 	display: inline-block;
 }
+
 #panelRight {
 	display: inline-block;
 	vertical-align: top;
@@ -84,6 +96,12 @@ h2 {
 }
 
 #txtAbout {
+	font-size: 0.8rem;
+	font-family: arial;
+	line-height: 1.5em;
+}
+
+#txtRules {
 	font-size: 0.8rem;
 	font-family: arial;
 	line-height: 1.5em;

@@ -45,7 +45,7 @@ function cellsFromHeaderId(headerId) {
 	return cells;
 }
 
-function init() {
+function initLayoutAndHandlers() {
 	let seed;
 
 	// Get random seed from URL or generate one
@@ -58,7 +58,7 @@ function init() {
 	}
 	else {
 		let generatedSeed = Math.floor(Math.random() * 1000000000);
-		window.location.replace = "?seed=" + generatedSeed;
+		window.location.replace(window.location.href + "?seed=" + generatedSeed);
 	}
 
 	// Set cell size
@@ -88,8 +88,13 @@ function init() {
 	// Initialize new card button
 
 	document.getElementById("btnNewCard").addEventListener("click", function () {
+		let locationSubstring = window.location.href;
+		if (window.location.href.includes("?seed=")) {
+			locationSubstring = locationSubstring.substring(0, window.location.href.indexOf("?seed="));
+		}
+		
 		let generatedSeed = Math.floor(Math.random() * 1000000000);
-		window.location.replace = "?seed=" + generatedSeed;
+		window.location.replace(locationSubstring + "?seed=" + generatedSeed);
 
 		// TODO: Kick off new generation. Was previously relying on hard redirect.
 	});
@@ -128,6 +133,10 @@ function init() {
 
 		headers[i].addEventListener("click", function () {
 			if (headerSelected !== null) {
+
+				assert(headerSelected.classList.contains("selected"));
+				headerSelected.classList.remove("selected");
+
 				let cellsPrev = cellsFromHeaderId(headerSelected.id);
 				for (let i = 0; i < cellsPrev.length; i++) {
 					cellsPrev[i].classList.remove("selected");
@@ -139,6 +148,10 @@ function init() {
 			}
 			else {
 				headerSelected = this;
+
+				assert(!headerSelected.classList.contains("selected"));
+				headerSelected.classList.add("selected");
+
 				for (let i = 0; i < cells.length; i++) {
 					cells[i].classList.add("selected");
 				}
@@ -168,6 +181,15 @@ function init() {
 			});
 		}
 	}
+
+	// Make visible
+
+	document.getElementById("panelMain").style.visibility = "visible";
 }
 
-init();
+function initGoals() {
+
+}
+
+initLayoutAndHandlers();
+initGoals();
