@@ -45,6 +45,55 @@ function cellsFromHeaderId(headerId) {
 	return cells;
 }
 
+function shorthandLookup(strShort) {
+	for (let i = 0; i < manifest.shorthands.length; i++) {
+		if (manifest.shorthands[i].short === strShort) {
+			return manifest.shorthands[i].long;
+		}
+	}
+
+	return "";
+}
+
+function htmlFromStringWithShorthands(str) {
+	let iLBrack = -1;
+	let iRBrack = -1;
+	let result = "";
+
+	for (let i = 0; i < str.length; i++) {
+		let c = str[i];
+
+		if (c === "[") {
+			iLBrack = i;
+		}
+		else if (c === "]") {
+			iRBrack = i;
+
+			if (iLBrack !== -1) {
+				let strShort = str.substring(iLBrack + 1, iRBrack);
+				result += "<span class='ttCrumb'>" + strShort + "<span class='ttText'>" + shorthandLookup(strShort) + "</span></span>";
+				iLBrack = -1;
+				iRBrack = -1;
+			}
+		}
+		else if (iLBrack === -1) {
+			result += c;
+		}
+	}
+
+	return result;
+}
+
+function htmlFromGoal(goal) {
+	let result = htmlFromStringWithShorthands(goal.text);
+
+	if (goal.alt !== "") {
+		result += " <span class='ttCrumb'>[?]<span class='ttText'>" + htmlFromStringWithShorthands(goal.alt) + "</span></span>";
+	}
+
+	return result;
+}
+
 function initLayoutAndHandlers() {
 
 	// Get random seed from URL or generate one
@@ -194,6 +243,12 @@ function initLayoutAndHandlers() {
 
 function initGoals() {
 
+	// Init extra fields on goals
+
+	for (let i = 0; i < manifest.goals.length; i++) {
+		manifest.goals[i].isInBoard = false;
+	}
+
 	// Shuffle goals in manifest
 
 	for (let i = 0; i < manifest.goals.length; i++) {
@@ -225,7 +280,7 @@ function initGoals() {
 			oldGoal.isInBoard = false;
 		}
 
-		cell.textContent = goal.text;
+		cell.innerHTML = htmlFromGoal(goal);
 		// cell.prop("title", goal.tooltip);
 
 		board[row][col] = goal;
