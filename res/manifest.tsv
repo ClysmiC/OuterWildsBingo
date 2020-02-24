@@ -3,6 +3,7 @@ Short	Long
 SS	Sun Station			
 HT	Hourglass Twins			
 AT	Ash Twin			
+ATP	Ash Twin Project			
 ET	Ember Twin			
 TH	Timber Hearth			
 AR	Attlerock			
@@ -225,10 +226,10 @@ Hold an advanced warp core	(Broken or functional…)	AdvWarpCore	4.5	4
 Pilot $1/2$ Nomai ship(s)		NomaiShip	$2/4$	$2.5/4.5$
 Land a Nomai Ship on any location different than its takeoff		NomaiShip	4	4
 Destroy fabric of spacetime	If doing the [ATP] method, you may not "set up" your file before the timer starts	HighNrg, End	7	7
-"You died" game ending	(Remove the warp core from [APT] and then die)	ATP, End	4.5	5.5
+"You died" game ending	(Remove the warp core from [ATP] and then die)	ATP, End	4.5	5.5
 Set foot on The Eye		Eye	10	11
-Isolation Ending	(Remove the warp core from [APT] and then outrun the supernova)	Late, ATP	10	10
-QM Ending	(Remove the warp core from [APT] and then await the supernova at the 6th [QM] location)	Late, ATP, QM	10	10
+Isolation Ending	(Remove the warp core from [ATP] and then outrun the supernova)	Late, ATP	10	10
+QM Ending	(Remove the warp core from [ATP] and then await the supernova at the 6th [QM] location)	Late, ATP, QM	10	10
 Watch the supernova with $Slate/Chert/Gabbro/Feldspar/Riebeck/Esker$		Late, $TH/ET/GD/DB/BH/AR$	3	6
 Touch [SS] with your ship		SS, Sun	7	4
 Ride 3 elevators on TH		TH	2	3.5

@@ -4,6 +4,7 @@
 		  { "short": "SS", "long": "Sun Station" }
 		, { "short": "HT", "long": "Hourglass Twins" }
 		, { "short": "AT", "long": "Ash Twin" }
+		, { "short": "ATP", "long": "Ash Twin Project" }
 		, { "short": "ET", "long": "Ember Twin" }
 		, { "short": "TH", "long": "Timber Hearth" }
 		, { "short": "AR", "long": "Attlerock" }
@@ -937,7 +938,7 @@
 			"difficulty": 4.5000,
 			"length": 5.5000,
 			"tags": [ 28, 27, 20, 21 ],
-			"alt": "(Remove the warp core from [APT] and then die)"
+			"alt": "(Remove the warp core from [ATP] and then die)"
 		},
 		{
 			"text": "Set foot on The Eye",
@@ -951,14 +952,14 @@
 			"difficulty": 10.0000,
 			"length": 10.0000,
 			"tags": [ 22, 21, 28, 27, 20 ],
-			"alt": "(Remove the warp core from [APT] and then outrun the supernova)"
+			"alt": "(Remove the warp core from [ATP] and then outrun the supernova)"
 		},
 		{
 			"text": "QM Ending",
 			"difficulty": 10.0000,
 			"length": 10.0000,
 			"tags": [ 22, 21, 28, 27, 20, 58 ],
-			"alt": "(Remove the warp core from [APT] and then await the supernova at the 6th [QM] location)"
+			"alt": "(Remove the warp core from [ATP] and then await the supernova at the 6th [QM] location)"
 		},
 		{
 			"text": "Watch the supernova with Slate",

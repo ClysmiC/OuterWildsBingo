@@ -243,7 +243,7 @@ function initHandlers() {
 	addEventListener("resize", initLayout);
 }
 
-function initGoals() {
+function chooseGoals() {
 
 	// Init extra fields on goals
 
@@ -274,30 +274,24 @@ function initGoals() {
 		return result;
 	}
 
-	function setGoal(row, col, goal) {
-		let cell = document.getElementById(row + "_" + col);
+	// Set up 5x5 buffer
 
-		let oldGoal = board[row][col];
+	let goals = [];
+	for (let i = 0; i < 5; i++) {
+		goals.push([]);
+		for (let j = 0; j < 5; j++) {
+			goals[i].push(null);
+		}
+	}
+
+	function setGoal(row, col, goal) {
+		let oldGoal = goals[row][col];
 		if (oldGoal !== null) {
 			oldGoal.isInBoard = false;
 		}
 
-		cell.innerHTML = htmlFromGoal(goal);
-		// cell.prop("title", goal.tooltip);
-
-		board[row][col] = goal;
+		goals[row][col] = goal;
 		goal.isInBoard = true;
-	}
-
-	// Create empty null array because I don't really know how JavaScript arrays work so
-	//	I'd like to explicitly set its capacity.
-
-	let board = [];
-	for (let i = 0; i < 5; i++) {
-		board.push([]);
-		for (let j = 0; j < 5; j++) {
-			board[i].push(null);
-		}
 	}
 
 	// Pick random goals for each cell
@@ -307,9 +301,24 @@ function initGoals() {
 			setGoal(i, j, nextGoal());
 		}
 	}
+
+	return goals;
+}
+
+function buildBoardHtml(goals) {
+	for (let i = 0; i < 5; i++) {
+		for (let j = 0; j < 5; j++) {
+			let cell = document.getElementById(i + "_" + j);
+			let goal = goals[i][j];
+
+			cell.innerHTML = htmlFromGoal(goal);
+		}
+	}
 }
 
 initLayout();
 initHandlers();
-initGoals();
+let goals = chooseGoals();
+buildBoardHtml(goals);
+
 document.getElementById("panelMain").style.visibility = "visible";

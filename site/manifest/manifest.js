@@ -1,4 +1,4 @@
-// Hello curious Hearthian! The contents of this file are auto-generated from a master spreadsheet that I use to define goals and their various synergies. If you are interested in helping contribute goals or balance suggestions, please contact me @ClysmiC11 on Twitter!
+// Hello curious Hearthian! The contents of this file are auto-generated from a master spreadsheet that I use to define goals and their various synergies. If you are interested in helping contribute goal ideas or balance suggestions, please contact me @ClysmiC11 on Twitter!
 
 let manifest = {
 	"shorthands":
@@ -6,6 +6,7 @@ let manifest = {
 		  { "short": "SS", "long": "Sun Station" }
 		, { "short": "HT", "long": "Hourglass Twins" }
 		, { "short": "AT", "long": "Ash Twin" }
+		, { "short": "ATP", "long": "Ash Twin Project" }
 		, { "short": "ET", "long": "Ember Twin" }
 		, { "short": "TH", "long": "Timber Hearth" }
 		, { "short": "AR", "long": "Attlerock" }
@@ -939,7 +940,7 @@ let manifest = {
 			"difficulty": 4.5000,
 			"length": 5.5000,
 			"tags": [ 28, 27, 20, 21 ],
-			"alt": "(Remove the warp core from [APT] and then die)"
+			"alt": "(Remove the warp core from [ATP] and then die)"
 		},
 		{
 			"text": "Set foot on The Eye",
@@ -953,14 +954,14 @@ let manifest = {
 			"difficulty": 10.0000,
 			"length": 10.0000,
 			"tags": [ 22, 21, 28, 27, 20 ],
-			"alt": "(Remove the warp core from [APT] and then outrun the supernova)"
+			"alt": "(Remove the warp core from [ATP] and then outrun the supernova)"
 		},
 		{
 			"text": "QM Ending",
 			"difficulty": 10.0000,
 			"length": 10.0000,
 			"tags": [ 22, 21, 28, 27, 20, 58 ],
-			"alt": "(Remove the warp core from [APT] and then await the supernova at the 6th [QM] location)"
+			"alt": "(Remove the warp core from [ATP] and then await the supernova at the 6th [QM] location)"
 		},
 		{
 			"text": "Watch the supernova with Slate",

@@ -114,7 +114,7 @@ bool FIsLegalTagCharacter(char c)
 	return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_';
 }
 
-TAGID TagidFromStrv(const StringView & strv, bool fErrorOnNotFound)
+TAGID TagidFromStrv(const StringView & strv, bool fErrorOnNotFound=true)
 {
 	for (int iTag = 0; iTag < g_aryTag.cItem; iTag++)
 	{
@@ -208,6 +208,47 @@ bool FTryCompileDollarExpr(const StringView & strvCell, DynamicArray<String> * p
 	}
 
 	return true;
+}
+
+void AuditShorthands(StringView strv)
+{
+	int iChLBrack = -1;
+
+	for (int iCh = 0; iCh < strv.cCh; iCh++)
+	{
+		char c = strv.pCh[iCh];
+
+		if (c == '[')
+		{
+			if (iChLBrack != -1)		ErrorAndExit("Shorthand brackets must be balanced and un-nested");
+
+			iChLBrack = iCh;
+		}
+		else if (c == ']')
+		{
+			if (iChLBrack == -1)		ErrorAndExit("Shorthand brackets must be balanced and un-nested");
+
+			StringView strvShort;
+			strvShort.pCh = strv.pCh + iChLBrack + 1;
+			strvShort.cCh = iCh - (iChLBrack + 1);
+
+			bool fFound = false;
+			for (int iShorthand = 0; iShorthand < g_aryShorthand.cItem; iShorthand++)
+			{
+				if (g_aryShorthand[iShorthand].m_strvShort == strvShort)
+				{
+					fFound = true;
+					break;
+				}
+			}
+
+			if (!fFound)		ErrorAndExitStrvHack("Unknown shorthand: %s", strvShort);
+
+			iChLBrack = -1;
+		}
+	}
+
+	if (iChLBrack != -1)		ErrorAndExit("Shorthand brackets must be balanced and unnested");
 }
 
 void NextCellVerify(const char * pChzExpected)
@@ -651,13 +692,20 @@ void CompileManifest()
 				{
 					for (int iStr = 0; iStr < aryStrSubstituted.cItem; iStr++)
 					{
+						StringView strvSubstituted;
+						strvSubstituted.pCh = aryStrSubstituted[iStr].pBuffer;
+						strvSubstituted.cCh = aryStrSubstituted[iStr].cChar;
+
+						AuditShorthands(strvSubstituted);
+
 						GoalCtx * pGctx = appendNew(&aryGctx);
-						pGctx->m_strvText.pCh = aryStrSubstituted[iStr].pBuffer;
-						pGctx->m_strvText.cCh = aryStrSubstituted[iStr].cChar;
+						pGctx->m_strvText = strvSubstituted;
 					}
 				}
 				else
 				{
+					AuditShorthands(strv);
+
 					GoalCtx * pGctx = appendNew(&aryGctx);
 					pGctx->m_strvText = strv;
 				}
@@ -667,6 +715,7 @@ void CompileManifest()
 
 			{
 				StringView strv = StrvNextCell();
+				AuditShorthands(strv);
 
 				for (int iGctx = 0; iGctx < aryGctx.cItem; iGctx++)
 				{
@@ -1144,7 +1193,7 @@ void CopyToSite()
 
 	bool fFail = false;
 
-	fFail = fFail || (fputs("// Hello curious Hearthian! The contents of this file are auto-generated from a master spreadsheet that I use to define goals and their various synergies. If you are interested in helping contribute goals or balance suggestions, please contact me @ClysmiC11 on Twitter!\n\n", fileDst) < 0);
+	fFail = fFail || (fputs("// Hello curious Hearthian! The contents of this file are auto-generated from a master spreadsheet that I use to define goals and their various synergies. If you are interested in helping contribute goal ideas or balance suggestions, please contact me @ClysmiC11 on Twitter!\n\n", fileDst) < 0);
 	fFail = fFail || (fputs("let manifest = ", fileDst) < 0);
 
 	char c;
