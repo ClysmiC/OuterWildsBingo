@@ -5,61 +5,48 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManifestCompiler", "cpp\ManifestCompiler.vcxproj", "{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "site", "site\", "{80A04005-B44B-4EB0-8365-47BC87EBF087}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_55681"
-		Debug.AspNetCompiler.PhysicalPath = "site\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55681\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_55681"
-		Release.AspNetCompiler.PhysicalPath = "site\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55681\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "55681"
-		SlnRelativePath = "site\"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "site", "site", "{F460B729-AE6C-41EA-BDA0-D44A336E2439}"
+	ProjectSection(SolutionItems) = preProject
+		site\bingo.css = site\bingo.css
+		site\bingo.js = site\bingo.js
+		site\index.html = site\index.html
+		site\rng.js = site\rng.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "manifest", "manifest", "{67FAC81D-27E1-4DBE-9B14-E88F6691DCA5}"
+	ProjectSection(SolutionItems) = preProject
+		site\manifest\manifest.js = site\manifest\manifest.js
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Debug|ARM.ActiveCfg = Debug|Win32
 		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Debug|x64.ActiveCfg = Debug|x64
 		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Debug|x64.Build.0 = Debug|x64
 		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Debug|x86.ActiveCfg = Debug|Win32
 		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Debug|x86.Build.0 = Debug|Win32
 		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Release|Any CPU.ActiveCfg = Release|Win32
+		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Release|ARM.ActiveCfg = Release|Win32
 		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Release|x64.ActiveCfg = Release|x64
 		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Release|x64.Build.0 = Release|x64
 		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Release|x86.ActiveCfg = Release|Win32
 		{46EB16F0-40DA-4E96-89D0-E46B9E33A3B8}.Release|x86.Build.0 = Release|Win32
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Debug|x64.Build.0 = Debug|Any CPU
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Debug|x86.Build.0 = Debug|Any CPU
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Release|x64.ActiveCfg = Debug|Any CPU
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Release|x64.Build.0 = Debug|Any CPU
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Release|x86.ActiveCfg = Debug|Any CPU
-		{80A04005-B44B-4EB0-8365-47BC87EBF087}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{67FAC81D-27E1-4DBE-9B14-E88F6691DCA5} = {F460B729-AE6C-41EA-BDA0-D44A336E2439}
 	EndGlobalSection
 EndGlobal
