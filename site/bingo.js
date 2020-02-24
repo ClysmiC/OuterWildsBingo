@@ -46,7 +46,6 @@ function cellsFromHeaderId(headerId) {
 }
 
 function initLayoutAndHandlers() {
-	let seed;
 
 	// Get random seed from URL or generate one
 
@@ -54,11 +53,15 @@ function initLayoutAndHandlers() {
 		let seedIndex = window.location.href.indexOf("?seed=");
 		seedIndex += "?seed=".length;
 
-		seed = parseInt(window.location.href.slice(seedIndex));
+		seedRng(parseInt(window.location.href.slice(seedIndex)));
 	}
 	else {
 		let generatedSeed = Math.floor(Math.random() * 1000000000);
+
+		// NOTE (this performs a redirect)
+
 		window.location.replace(window.location.href + "?seed=" + generatedSeed);
+		return;
 	}
 
 	// Set cell size
@@ -94,9 +97,11 @@ function initLayoutAndHandlers() {
 		}
 		
 		let generatedSeed = Math.floor(Math.random() * 1000000000);
-		window.location.replace(locationSubstring + "?seed=" + generatedSeed);
 
-		// TODO: Kick off new generation. Was previously relying on hard redirect.
+		// NOTE (this performs a redirect)
+
+		window.location.replace(locationSubstring + "?seed=" + generatedSeed);
+		return;
 	});
 
 	// Initialize row/column headers
@@ -189,6 +194,62 @@ function initLayoutAndHandlers() {
 
 function initGoals() {
 
+	// Shuffle goals in manifest
+
+	for (let i = 0; i < manifest.goals.length; i++) {
+		let iNew = i + rngInt(manifest.goals.length - i);
+
+		var tmp = manifest.goals[i];
+		manifest.goals[i] = manifest.goals[iNew];
+		manifest.goals[iNew] = tmp;
+	}
+
+	let iGoalNext = 0;
+	function nextGoal() {
+		while (manifest.goals[iGoalNext].isInBoard) {
+			iGoalNext += 1;
+			iGoalNext %= manifest.goals.length;
+		}
+
+		var result = manifest.goals[iGoalNext];
+		iGoalNext += 1;
+		iGoalNext %= manifest.goals.length;
+		return result;
+	}
+
+	function setGoal(row, col, goal) {
+		let cell = document.getElementById(row + "_" + col);
+
+		let oldGoal = board[row][col];
+		if (oldGoal !== null) {
+			oldGoal.isInBoard = false;
+		}
+
+		cell.textContent = goal.text;
+		// cell.prop("title", goal.tooltip);
+
+		board[row][col] = goal;
+		goal.isInBoard = true;
+	}
+
+	// Create empty null array because I don't really know how JavaScript arrays work so
+	//	I'd like to explicitly set its capacity.
+
+	let board = [];
+	for (let i = 0; i < 5; i++) {
+		board.push([]);
+		for (let j = 0; j < 5; j++) {
+			board[i].push(null);
+		}
+	}
+
+	// Pick random goals for each cell
+
+	for (let i = 0; i < 5; i++) {
+		for (let j = 0; j < 5; j++) {
+			setGoal(i, j, nextGoal());
+		}
+	}
 }
 
 initLayoutAndHandlers();

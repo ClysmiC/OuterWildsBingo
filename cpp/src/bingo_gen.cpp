@@ -3,6 +3,7 @@
 #include "bingo_gen.h"
 
 #include <cstdarg>
+#include <math.h>
 #include <stdio.h>
 
 // Global state
@@ -1059,9 +1060,42 @@ void DumpToJson()
 		return str.pBuffer;
 	};
 
+	auto StatsFromGoalList = [](const DynamicArray<Goal> & aryGoal, int cBFloatOffset, float * poGAvg, float * poGStddev)
+	{
+		Goal g;
+		void * foo = static_cast<void *>(&g);
+
+		// Compute average 
+
+		float gSum = 0;
+		for (int i = 0; i < aryGoal.cItem; i++)
+		{
+			gSum += *(reinterpret_cast<float *>(reinterpret_cast<char *>(aryGoal.pBuffer + i) + cBFloatOffset));
+		}
+
+		*poGAvg = gSum / aryGoal.cItem;
+
+		// Compute std dev
+
+		float gStddev = 0;
+		for (int i = 0; i < aryGoal.cItem; i++)
+		{
+			float g = *(reinterpret_cast<float *>(reinterpret_cast<char *>(aryGoal.pBuffer + i) + cBFloatOffset));
+			gStddev += (g - *poGAvg) * (g - *poGAvg);
+		}
+
+		gStddev /= aryGoal.cItem;
+		gStddev = sqrtf(gStddev);
+		*poGStddev = gStddev;
+	};
+
 	FILE * file = fopen("../res/compiled.json", "wb");
 	Defer (if (file) fclose(file));
 	if (!file)		ErrorAndExit("Failed to create compiled JSON file");
+
+	float gDifficultyAvg, gDifficultyStddev, gLengthAvg, gLengthStddev;
+	StatsFromGoalList(g_aryGoal, offsetof(Goal, m_gDifficulty), &gDifficultyAvg, &gDifficultyStddev);
+	StatsFromGoalList(g_aryGoal, offsetof(Goal, m_gLength), &gLengthAvg, &gLengthStddev);
 
 	int nResult = fprintf(file,
 R"jsonblob({
@@ -1078,11 +1112,20 @@ R"jsonblob({
 	"goals":
 	[
 		%s
-	]
+	],
+
+	"goalDifficultyAvg": %f,
+	"goalDifficultyStddev": %f,
+	"goalLengthAvg": %f,
+	"goalLengthStddev": %f
 })jsonblob",
 	PChzShorthands(2),
 	PChzTags(2),
-	PChzGoals(2));
+	PChzGoals(2),
+	gDifficultyAvg,
+	gDifficultyStddev,
+	gLengthAvg,
+	gLengthStddev);
 
 	if (nResult < 0)		ErrorAndExit("Failed to write to compiled JSON file");
 }
@@ -1090,7 +1133,7 @@ R"jsonblob({
 void CopyToSite()
 {
 	FILE * fileSrc = fopen("../res/compiled.json", "rb");
-	FILE * fileDst = fopen("../site/manifest/compiled.json", "wb");
+	FILE * fileDst = fopen("../site/manifest/manifest.js", "wb");
 
 	Defer(
 		fclose(fileSrc);
@@ -1099,11 +1142,19 @@ void CopyToSite()
 
 	if (!fileSrc || !fileDst)		ErrorAndExit("Failed to copy compiled.json to site directory");
 
+	bool fFail = false;
+
+	fFail = fFail || (fputs("// Hello curious Hearthian! The contents of this file are auto-generated from a master spreadsheet that I use to define goals and their various synergies. If you are interested in helping contribute goals or balance suggestions, please contact me @ClysmiC11 on Twitter!\n\n", fileDst) < 0);
+	fFail = fFail || (fputs("let manifest = ", fileDst) < 0);
+
 	char c;
 	while ((c = fgetc(fileSrc)) != EOF)
 	{
-		if (fputc(c, fileDst) < 0)		ErrorAndExit("Failed to copy compiled.json to site directory");
+		fFail = fFail || (fputc(c, fileDst) < 0);
 	}
+
+	fFail = fFail || (fputs(";", fileDst) < 0);
+	if (fFail)		ErrorAndExit("Failed to copy compiled.json to site directory");
 }
 
 int main()

@@ -1170,5 +1170,10 @@
 			"tags": [ 66 ],
 			"alt": ""
 		}
-	]
+	],
+
+	"goalDifficultyAvg": 3.751948,
+	"goalDifficultyStddev": 1.866937,
+	"goalLengthAvg": 4.050649,
+	"goalLengthStddev": 1.827532
 }

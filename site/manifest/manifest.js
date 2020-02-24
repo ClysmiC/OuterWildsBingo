@@ -1,4 +1,6 @@
-{
+// Hello curious Hearthian! The contents of this file are auto-generated from a master spreadsheet that I use to define goals and their various synergies. If you are interested in helping contribute goals or balance suggestions, please contact me @ClysmiC11 on Twitter!
+
+let manifest = {
 	"shorthands":
 	[
 		  { "short": "SS", "long": "Sun Station" }
@@ -1170,5 +1172,10 @@
 			"tags": [ 66 ],
 			"alt": ""
 		}
-	]
-}
+	],
+
+	"goalDifficultyAvg": 3.751948,
+	"goalDifficultyStddev": 1.866937,
+	"goalLengthAvg": 4.050649,
+	"goalLengthStddev": 1.827532
+};
