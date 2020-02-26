@@ -154,23 +154,23 @@ Shock	DB	0.5
 !!Goals				
 Text	Clarification	Tags	Difficulty	Length
 Translate any text on [SS]		SS, TranslatePrimary	5	5
-Translate any text on [AT]		AT, TranslatePrimary	1.5	4
-Translate any text on [ET]		ET, TranslatePrimary	1.5	2.5
+Translate any text on [AT]		AT, TranslatePrimary	2.5	2
+Translate any text on [ET]		ET, TranslatePrimary	1.5	2
 Translate any text on [TH]		TH, TranslatePrimary	1	2
 Translate any text on [AR]		AR, TranslatePrimary	1.5	2
-Translate any text on [BH]	Text that has fallen through the black hole is allowed	BH, TranslatePrimary	1.5	2
-Translate any text on [HL]		HL, TranslatePrimary, Mid	4	4
+Translate any text on [BH]	Text that has fallen through the black hole is not allowed	BH, TranslatePrimary	1.5	2
+Translate any text on [HL]		HL, TranslatePrimary, Mid	4	3
 Translate any text on [GD]		GD, TranslatePrimary	2	3
 Translate any text on [OPC]		OPC, TranslatePrimary	3	3
 Translate any text on [DB]		DB, TranslatePrimary	3	3.5
-Translate any text on [WHS]		WHS, TranslatePrimary	3	3.5
-Translate any text on [TI]		TI, TranslatePrimary	4	4
+Translate any text on [WHS]		WHS, TranslatePrimary	4	3.5
+Translate any text on [TI]		TI, TranslatePrimary	5	3.5
 Translate any text on [QM]		QM, TranslatePrimary	5	5
 [COMMENT] A "hunt" is anything that can be done on at least 3 different primary locations				
 Translate text on $3/4/5$ planet(s)		TextHunt	$4/5.5/7$	$4/5.5/7$
 Translate text on $3/4/5/6$ celestial bodie(s)		TextHunt	$3/4.3/5.6/7$	$3/4.3/5.6/7$
 Translate text on $3/4/5/6$ primary location(s)		TextHunt	$2/4.3/5.6/7$	$3/4.3/5.6/7$
-Take $2/3/4/5/6$ different warp(s)	*Any* warp from a black hole to white hole counts. Warping back on a charged pad doesn't.	WarpHunt	$2/3/4/5.5/6.5$	$2/3/4/5.5/6.5$
+Take $2/3/4$ different warp(s)	*Any* warp from a black hole to white hole counts. Warping back on a charged pad doesn't.	WarpHunt	$2/3/4$	$2/3/4$
 Eat a marshmallow at $2/3/4/5$ different fire(s)		FireHunt	$1/2/3/4.5$	$1.5/2.5/3.5/4.5$
 Talk to $2/3/4/5$ Hearthian traveler(s) outside of [TH]		TravelerHunt	$3/4/5/6$	$3.5/4.5/5.5/6.5$
 Touch $1/2/3$ distress beacon(s)		BeaconHunt	$2/4/7$	$2/4/7$

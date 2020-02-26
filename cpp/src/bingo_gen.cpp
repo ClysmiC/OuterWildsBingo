@@ -1014,7 +1014,7 @@ void DumpToJson()
 
 			append(&str, "{ ");
 
-			append(&str, "\"max_per_row\": ");
+			append(&str, "\"maxPerRow\": ");
 			append(&str, PChzFromInt(pTag->m_cMaxPerRow));
 			append(&str, ", \"synergies\": [");
 
@@ -1029,7 +1029,7 @@ void DumpToJson()
 				else						append(&str, ", ");
 
 				append(&str, "{ ");
-				append(&str, "\"tag_other\": ");
+				append(&str, "\"tagOther\": ");
 				append(&str, PChzFromInt(pSynrg->m_tagid1));
 				append(&str, ", \"synergy\": ");
 				append(&str, PChzFromFloat(pSynrg->m_gSynrg));
@@ -1046,6 +1046,16 @@ void DumpToJson()
 		}
 
 		return str.pBuffer;
+	};
+
+	struct GoalStats		// tag = gstats
+	{
+		float		m_gDifficultyAvg;
+		float		m_gDifficultyStddev;
+		float		m_gLengthAvg;
+		float		m_gLengthStddev;
+		float		m_gScoreAvg;
+		float		m_gScoreStddev;
 	};
 
 	auto PChzGoals = [AppendTabs, PChzEscapedFromStrv, PChzFromInt, PChzFromFloat](int cTab)
@@ -1070,13 +1080,8 @@ void DumpToJson()
 			append(&str, "\",\n");
 
 			AppendTabs(&str, cTab + 1);
-			append(&str, "\"difficulty\": ");
-			append(&str, PChzFromFloat(pGoal->m_gDifficulty));
-			append(&str, ",\n");
-
-			AppendTabs(&str, cTab + 1);
-			append(&str, "\"length\": ");
-			append(&str, PChzFromFloat(pGoal->m_gLength));
+			append(&str, "\"score\": ");
+			append(&str, PChzFromFloat(pGoal->m_gScore));
 			append(&str, ",\n");
 
 			AppendTabs(&str, cTab + 1);
@@ -1109,42 +1114,103 @@ void DumpToJson()
 		return str.pBuffer;
 	};
 
-	auto StatsFromGoalList = [](const DynamicArray<Goal> & aryGoal, int cBFloatOffset, float * poGAvg, float * poGStddev)
+	auto GstatsComputeAndFinalizeGoals = [](DynamicArray<Goal> * pAryGoal)
 	{
-		Goal g;
-		void * foo = static_cast<void *>(&g);
+		GoalStats gstats;
 
-		// Compute average 
+		// Compute raw averages
 
-		float gSum = 0;
-		for (int i = 0; i < aryGoal.cItem; i++)
 		{
-			gSum += *(reinterpret_cast<float *>(reinterpret_cast<char *>(aryGoal.pBuffer + i) + cBFloatOffset));
+			float gDifficultySum = 0;
+			float gLengthSum = 0;
+
+			for (int iGoal = 0; iGoal < pAryGoal->cItem; iGoal++)
+			{
+				gDifficultySum += (*pAryGoal)[iGoal].m_gDifficulty;
+				gLengthSum += (*pAryGoal)[iGoal].m_gLength;
+			}
+
+			gstats.m_gDifficultyAvg = gDifficultySum / pAryGoal->cItem;
+			gstats.m_gLengthAvg = gLengthSum / pAryGoal->cItem;
 		}
 
-		*poGAvg = gSum / aryGoal.cItem;
+		// Compute raw stddevs
 
-		// Compute std dev
-
-		float gStddev = 0;
-		for (int i = 0; i < aryGoal.cItem; i++)
 		{
-			float g = *(reinterpret_cast<float *>(reinterpret_cast<char *>(aryGoal.pBuffer + i) + cBFloatOffset));
-			gStddev += (g - *poGAvg) * (g - *poGAvg);
+			float gDifficultyStddev = 0;
+			float gLengthStddev = 0;
+			{
+				for (int iGoal = 0; iGoal < pAryGoal->cItem; iGoal++)
+				{
+					float dDifficulty = (*pAryGoal)[iGoal].m_gDifficulty - gstats.m_gDifficultyAvg;
+					gDifficultyStddev += dDifficulty * dDifficulty;
+
+					float dLength = (*pAryGoal)[iGoal].m_gLength - gstats.m_gLengthAvg;
+					gLengthStddev += dLength * dLength;
+				}
+
+				gDifficultyStddev /= pAryGoal->cItem;
+				gDifficultyStddev = sqrtf(gDifficultyStddev);
+
+				gLengthStddev /= pAryGoal->cItem;
+				gLengthStddev = sqrtf(gLengthStddev);
+			}
+
+			gstats.m_gDifficultyStddev = gDifficultyStddev;
+			gstats.m_gLengthStddev = gLengthStddev;
 		}
 
-		gStddev /= aryGoal.cItem;
-		gStddev = sqrtf(gStddev);
-		*poGStddev = gStddev;
+
+		// Finalize goal scores and compute avg
+
+		{
+			float gScoreSum = 0;
+			for (int iGoal = 0; iGoal < pAryGoal->cItem; iGoal++)
+			{
+				Goal * pGoal = &(*pAryGoal)[iGoal];
+				float dSigmaDifficulty = (pGoal->m_gDifficulty - gstats.m_gDifficultyAvg) / gstats.m_gDifficultyStddev;
+
+				// NOTE (andrew) The idea is that the "score" is a fusion of the length and the difficulty of a goal. The actual formula
+				//	for combining them is pretty arbitrary. Basically, I want to add 1 to the length per sigma that the difficulty is above
+				//	some minimum threshold that is effectively "zero" difficulty. I don't want to use the minimum difficulty to prevent against
+				//	outliers, so the baseline is just a negative sigma that will cover almost every goal. Again, it is fairly arbitrary and
+				//	is just another knob I can tweak to balance the board.
+
+				static const float s_dSigmaBaseline = -3;
+				pGoal->m_gScore = pGoal->m_gLength + (dSigmaDifficulty - s_dSigmaBaseline);
+				gScoreSum += pGoal->m_gScore;
+			}
+
+			gstats.m_gScoreAvg = gScoreSum / pAryGoal->cItem;
+		}
+
+		// Compute score stddev
+
+		{
+			float gScoreStddev = 0;
+			{
+				for (int iGoal = 0; iGoal < pAryGoal->cItem; iGoal++)
+				{
+					float dScore = (*pAryGoal)[iGoal].m_gScore - gstats.m_gScoreAvg;
+					gScoreStddev += dScore * dScore;
+				}
+
+				gScoreStddev /= pAryGoal->cItem;
+				gScoreStddev = sqrtf(gScoreStddev);
+			}
+
+			gstats.m_gScoreStddev = gScoreStddev;
+		}
+
+
+		return gstats;
 	};
 
 	FILE * file = fopen("../res/compiled.json", "wb");
 	Defer (if (file) fclose(file));
 	if (!file)		ErrorAndExit("Failed to create compiled JSON file");
 
-	float gDifficultyAvg, gDifficultyStddev, gLengthAvg, gLengthStddev;
-	StatsFromGoalList(g_aryGoal, offsetof(Goal, m_gDifficulty), &gDifficultyAvg, &gDifficultyStddev);
-	StatsFromGoalList(g_aryGoal, offsetof(Goal, m_gLength), &gLengthAvg, &gLengthStddev);
+	GoalStats gstats = GstatsComputeAndFinalizeGoals(&g_aryGoal);
 
 	int nResult = fprintf(file,
 R"jsonblob({
@@ -1163,18 +1229,14 @@ R"jsonblob({
 		%s
 	],
 
-	"goalDifficultyAvg": %f,
-	"goalDifficultyStddev": %f,
-	"goalLengthAvg": %f,
-	"goalLengthStddev": %f
+	"goalScoreAvg": %f,
+	"goalScoreStddev": %f
 })jsonblob",
 	PChzShorthands(2),
 	PChzTags(2),
 	PChzGoals(2),
-	gDifficultyAvg,
-	gDifficultyStddev,
-	gLengthAvg,
-	gLengthStddev);
+	gstats.m_gScoreAvg,
+	gstats.m_gScoreStddev);
 
 	if (nResult < 0)		ErrorAndExit("Failed to write to compiled JSON file");
 }

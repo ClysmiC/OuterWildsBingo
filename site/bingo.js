@@ -5,46 +5,6 @@
 	}
 }
 
-function cellsFromHeaderId(headerId) {
-	let cells = [];
-
-	if (headerId === "tlbr") {
-		cells.push(document.getElementById("0_0"));
-		cells.push(document.getElementById("1_1"));
-		cells.push(document.getElementById("2_2"));
-		cells.push(document.getElementById("3_3"));
-		cells.push(document.getElementById("4_4"));
-	}
-	else if (headerId === "bltr") {
-		cells.push(document.getElementById("4_0"));
-		cells.push(document.getElementById("3_1"));
-		cells.push(document.getElementById("2_2"));
-		cells.push(document.getElementById("1_3"));
-		cells.push(document.getElementById("0_4"));
-	}
-	else if (headerId.startsWith("col")) {
-		let col = headerId.slice(-1);
-		col = parseInt(col) - 1;
-
-		for (let i = 0; i < 5; i++) {
-			cells.push(document.getElementById(i + "_" + col));
-		}
-	}
-	else if (headerId.startsWith("row")) {
-		let row = headerId.slice(-1);
-		row = parseInt(row) - 1;
-
-		for (let i = 0; i < 5; i++) {
-			cells.push(document.getElementById(row + "_" + i));
-		}
-	}
-	else {
-		assert(false);
-	}
-
-	return cells;
-}
-
 function shorthandLookup(strShort) {
 	for (let i = 0; i < manifest.shorthands.length; i++) {
 		if (manifest.shorthands[i].short === strShort) {
@@ -95,6 +55,7 @@ function htmlFromGoal(goal) {
 }
 
 function initLayout() {
+
 	// Set cell size
 
 	{
@@ -156,6 +117,46 @@ function initHandlers() {
 	});
 
 	// Initialize row/column headers
+
+	function cellsFromHeaderId(headerId) {
+		let cells = [];
+
+		if (headerId === "tlbr") {
+			cells.push(document.getElementById("0_0"));
+			cells.push(document.getElementById("1_1"));
+			cells.push(document.getElementById("2_2"));
+			cells.push(document.getElementById("3_3"));
+			cells.push(document.getElementById("4_4"));
+		}
+		else if (headerId === "bltr") {
+			cells.push(document.getElementById("4_0"));
+			cells.push(document.getElementById("3_1"));
+			cells.push(document.getElementById("2_2"));
+			cells.push(document.getElementById("1_3"));
+			cells.push(document.getElementById("0_4"));
+		}
+		else if (headerId.startsWith("col")) {
+			let col = headerId.slice(-1);
+			col = parseInt(col) - 1;
+
+			for (let i = 0; i < 5; i++) {
+				cells.push(document.getElementById(i + "_" + col));
+			}
+		}
+		else if (headerId.startsWith("row")) {
+			let row = headerId.slice(-1);
+			row = parseInt(row) - 1;
+
+			for (let i = 0; i < 5; i++) {
+				cells.push(document.getElementById(row + "_" + i));
+			}
+		}
+		else {
+			assert(false);
+		}
+
+		return cells;
+	}
 
 	let headerSelected = null;
 	let headers = document.getElementsByTagName("th");
@@ -276,21 +277,21 @@ function chooseGoals() {
 
 	// Set up 5x5 buffer
 
-	let goals = [];
+	let goalGrid = [];
 	for (let i = 0; i < 5; i++) {
-		goals.push([]);
+		goalGrid.push([]);
 		for (let j = 0; j < 5; j++) {
-			goals[i].push(null);
+			goalGrid[i].push(null);
 		}
 	}
 
 	function setGoal(row, col, goal) {
-		let oldGoal = goals[row][col];
+		let oldGoal = goalGrid[row][col];
 		if (oldGoal !== null) {
 			oldGoal.isInBoard = false;
 		}
 
-		goals[row][col] = goal;
+		goalGrid[row][col] = goal;
 		goal.isInBoard = true;
 	}
 
@@ -302,7 +303,162 @@ function chooseGoals() {
 		}
 	}
 
-	return goals;
+	function goalsFromHeaderId(headerId) {
+		let goals = [];
+
+		if (headerId === "tlbr") {
+			goals.push(goalGrid[0][0]);
+			goals.push(goalGrid[1][1]);
+			goals.push(goalGrid[2][2]);
+			goals.push(goalGrid[3][3]);
+			goals.push(goalGrid[4][4]);
+		}
+		else if (headerId === "bltr") {
+			goals.push(goalGrid[4][0]);
+			goals.push(goalGrid[3][1]);
+			goals.push(goalGrid[2][2]);
+			goals.push(goalGrid[1][3]);
+			goals.push(goalGrid[0][4]);
+		}
+		else if (headerId.startsWith("col")) {
+			let col = headerId.slice(-1);
+			col = parseInt(col) - 1;
+
+			for (let i = 0; i < 5; i++) {
+				goals.push(goalGrid[i][col]);
+			}
+		}
+		else if (headerId.startsWith("row")) {
+			let row = headerId.slice(-1);
+			row = parseInt(row) - 1;
+
+			for (let i = 0; i < 5; i++) {
+				goals.push(goalGrid[row][i]);
+			}
+		}
+		else {
+			assert(false);
+		}
+
+		return goals;
+	}
+
+	function evaluateGoals(goals) {
+		function getSynergy(goal0, goal1) {
+			// NOTE (andrew) You only get the biggest synergy. You don't get to double dip multiple synergies, as there are certain tags
+			//	that always imply other less specific tags. It is very likely that both tags synergize with similar things, and it would
+			//	be silly to give you the synergy twice. Just choose the one that is biggest. The tag synergies are authored with this in mind.
+
+			// TODO: Go thru all tags pairwise and choose the biggest synergy to return.
+
+			return 0;
+		}
+
+		assert(goals.length === 5);
+
+		let result = {
+			rawScore: 0,
+			totalSynergy: 0,
+			finalScore: 0,
+			tagViolations: [],
+			nearTagViolations: []		// Tags that are 1 away from exceeding limit
+		}
+
+		for (let iGoal = 0; iGoal < 5; iGoal++) {
+			let goal = goals[iGoal];
+			let mpTagidGoals = Array(manifest.tags.length).fill({ goals: []});
+
+			// Check max tag per header
+
+			for (let iTag = 0; iTag < goal.tags.length; iTag++) {
+				let tagid = goal.tags[iTag];
+				let maxTagPerHeader = manifest.tags[tagid].maxPerRow;
+
+				mpTagidGoals[tagid].goals.push(goal);
+
+				if (mpTagidGoals[tagid].length >= maxTagPerHeader) {
+
+					let ntvExisting = nearTagViolations.find(v => v.tag == tagid);
+					let tvExisting = tagViolations.find(v => v.tag == tagid);
+
+					if (mpTagidGoals[tagid].length === maxTagPerHeader) {
+						assert(!ntvExisting);
+						assert(!tvExisting);
+
+						nearTagViolations.push({ tag: tagid, goals: mpTagidGoals[tagid].goals });
+					}
+					else if (mpTagidGoals[tagid].length === maxTagPerHeader + 1) {
+						assert(ntvExisting);
+						assert(!tvExisting);
+
+						nearTagViolations.remove(ntvExisting);
+						tagViolations.push({ tag: tagid, goals: mpTagidGoals[tagid].goals });
+					}
+					else {
+						assert(!ntvExisting);
+						assert(tvExisting);
+
+						tvExisting.goals.push(goal);
+					}
+				}
+			}
+
+			// Check synergy
+
+			for (let iGoalOther = iGoal + 1; iGoalOther < 5; iGoalOther++) {
+				let goalOther = goals[iGoalOther];
+				result.totalSynergy += getSynergy(goal, goalOther);
+			}
+
+			result.rawScore += goal.score;
+		}
+
+		result.finalScore = result.rawScore - result.totalSynergy;
+	}
+	
+
+	let stopMutating = false;
+	let iterations = 0;
+	let iterationsMax = 50;
+	let headers = ["row1", "row2", "row3", "row4", "row5", "col1", "col2", "col3", "col4", "col5", "tlbr", "bltr"];
+
+	// TODO: Easy, medium, hard difficulties
+	// NOTE (andrew) sqrt is intended to dampen the volatility a little bit. It is definitely a knob that can be tweaked.
+
+	// TODO: Fix this. This is flawed considering that synergies will always trend towards lower scores. It's kind hard to compute the effect
+	//	that synergies will have. Maybe in the manifest compiler also print out the average synergy between every pair of goals? We can subtract
+	//	that * 10 (ten pairs total in a row/col) to get our ideal score.
+
+	let headerScoreMin = manifest.goalScoreAvg * 5 - Math.sqrt(5 * manifest.goalScoreStddev);
+	let headerScoreIdeal = manifest.goalScoreAvg;
+	let headerScoreMax = manifest.goalScoreAvg * 5 + Math.sqrt(5 * manifest.goalScoreStddev);
+
+	while (iterations < iterationsMax && !stopMutating) {
+		stopMutating = true;
+
+		for (let i = 0; i < headers.length; i++) {
+			let header = headers[i];
+			let goals = getGoalsForHeader(header);
+			let evaluation = evaluateGoals(goals);
+
+			let dScoreIdeal = headerScoreIdeal - evaluation.total
+			let cNeedReplaceDueToTag = 0;	// TODO: compute. Keep in mind that multiple violations could be fixed by a single replace if it has multiple tags...
+
+			let dScorePerReplace = dScoreIdeal / cNeedReplaceDueToTag;	// TODO: watch for divide by zero here. Need different strategy to nudge difficulty up/down if the tags are fine but difficulty isn't.
+
+			// TODO: If tag violations, try to replace them with better tags (use neartagviolations to guide you)
+			// BB (andrew) Maybe the result value should just have a full index of tagid -> goals, sorted by count. That way we can keep the value updated as we swap
+			//	potentially multiple goals out.
+		}
+	}
+
+	if (!stopMutating)
+	{
+		assert(iterations == iterationsMax);
+		console.log("Reached max iteration count while mutating board");
+	}
+
+	return goalGrid;
 }
 
 function buildBoardHtml(goals) {
