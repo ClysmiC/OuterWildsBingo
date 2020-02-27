@@ -1218,7 +1218,7 @@ void DumpToJson()
 					const Goal & goalOther = g_aryGoal[iGoalOther];
 
 					// NOTE (andrew) Start at -FLT_MAX so if goals are anti-synergistic (i.e., -synergy) we will
-					//	account for that. But if they have no synergy we will swap in a 0.
+					//	account for that. But if they have no synergies we will swap in a 0.
 
 					float gMaxSynrgFound = -FLT_MAX;
 
@@ -1230,24 +1230,26 @@ void DumpToJson()
 						{
 							TAGID tagidOther = goalOther.m_aryTagid[iTagidOther];
 
-							if (tagid == tagidOther && g_aryTag[tagid].m_cMaxPerRow == 1)
+							if (tagid == tagidOther && g_aryTag[tagid].m_cMaxPerRow == 1)		goto LNextGoalOther;
+
+							// @Slow Search through every synergy to find if we have one with both tagid's
+
+							Synergy * pSynrg = nullptr;
 							{
-								goto LNextGoalOther;
-							}
-
-							// @Slow
-
-							for (int iSynrg = 0; iSynrg < g_arySynrg.cItem; iSynrg++)
-							{
-								const Synergy & synrg = g_arySynrg[iSynrg];
-
-								if ((synrg.m_tagid0 == tagid && synrg.m_tagid1 == tagidOther) ||
-									(synrg.m_tagid0 == tagidOther && synrg.m_tagid1 == tagid))
+								for (int iSynrg = 0; iSynrg < g_arySynrg.cItem; iSynrg++)
 								{
-									gMaxSynrgFound = Max(gMaxSynrgFound, synrg.m_gSynrg);
-									break;
+									Synergy * pSynrgCandidate = &g_arySynrg[iSynrg];
+
+									if ((pSynrgCandidate->m_tagid0 == tagid && pSynrgCandidate->m_tagid1 == tagidOther) ||
+										(pSynrgCandidate->m_tagid0 == tagidOther && pSynrgCandidate->m_tagid1 == tagid))
+									{
+										pSynrg = pSynrgCandidate;;
+										break;
+									}
 								}
 							}
+
+							if (pSynrg)		gMaxSynrgFound = Max(gMaxSynrgFound, pSynrg->m_gSynrg);
 						}
 					}
 
@@ -1262,7 +1264,6 @@ void DumpToJson()
 
 			gstats.m_gPairwiseGoalSynergyAvg = gSynergyTotal / cSynergyValid;
 		}
-
 
 		return gstats;
 	};

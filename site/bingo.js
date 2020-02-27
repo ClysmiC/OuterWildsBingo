@@ -425,13 +425,10 @@ function chooseGoals() {
 	// TODO: Easy, medium, hard difficulties
 	// NOTE (andrew) sqrt is intended to dampen the volatility a little bit. It is definitely a knob that can be tweaked.
 
-	// TODO: Fix this. This is flawed considering that synergies will always trend towards lower scores. It's kind hard to compute the effect
-	//	that synergies will have. Maybe in the manifest compiler also print out the average synergy between every pair of goals? We can subtract
-	//	that * 10 (ten pairs total in a row/col) to get our ideal score.
-
-	let headerScoreMin = manifest.goalScoreAvg * 5 - Math.sqrt(5 * manifest.goalScoreStddev);
-	let headerScoreIdeal = manifest.goalScoreAvg;
-	let headerScoreMax = manifest.goalScoreAvg * 5 + Math.sqrt(5 * manifest.goalScoreStddev);
+	let avgScorePostSynergy = manifest.goalScoreAvg - manifest.pairwiseGoalSynergyAvg;
+	let headerScoreMin = avgScorePostSynergy * 5 - Math.sqrt(5 * manifest.goalScoreStddev);
+	let headerScoreIdeal = avgScorePostSynergy * 5;
+	let headerScoreMax = avgScorePostSynergy * 5 + Math.sqrt(5 * manifest.goalScoreStddev);
 
 	while (iterations < iterationsMax && !stopMutating) {
 		stopMutating = true;
