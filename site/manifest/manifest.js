@@ -24,73 +24,72 @@ let manifest = {
 
 	"tags":
 	[
-		  { "max_per_row": 2, "synergies": [ { "tag_other": 3, "synergy": 2.0000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 3, "synergy": 2.0000} ] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 2, "synergy": 3.5000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 0, "synergy": 2.0000}, { "tag_other": 1, "synergy": 2.0000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 63, "synergy": 1.0000}, { "tag_other": 39, "synergy": 1.0000}, { "tag_other": 60, "synergy": 2.0000}, { "tag_other": 27, "synergy": 2.5000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 34, "synergy": 1.5000}, { "tag_other": 29, "synergy": 1.0000}, { "tag_other": 39, "synergy": 1.0000}, { "tag_other": 46, "synergy": 0.5000}, { "tag_other": 61, "synergy": 2.0000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 9, "synergy": 4.5000}, { "tag_other": 8, "synergy": 4.5000}, { "tag_other": 39, "synergy": 1.0000}, { "tag_other": 29, "synergy": 1.0000}, { "tag_other": 37, "synergy": 1.0000}, { "tag_other": 46, "synergy": 0.5000}, { "tag_other": 54, "synergy": 0.5000}, { "tag_other": 24, "synergy": 0.5000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 46, "synergy": 1.0000}, { "tag_other": 39, "synergy": 1.0000}, { "tag_other": 29, "synergy": 1.0000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 6, "synergy": 4.5000}, { "tag_other": 7, "synergy": 4.5000}, { "tag_other": 9, "synergy": 4.5000}, { "tag_other": 29, "synergy": 1.0000}, { "tag_other": 37, "synergy": 1.0000}, { "tag_other": 46, "synergy": 1.0000}, { "tag_other": 54, "synergy": 1.0000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 6, "synergy": 4.5000}, { "tag_other": 8, "synergy": 4.5000}, { "tag_other": 29, "synergy": 1.5000}, { "tag_other": 37, "synergy": 1.5000}, { "tag_other": 46, "synergy": 1.0000}, { "tag_other": 39, "synergy": 1.0000}, { "tag_other": 54, "synergy": 0.5000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 39, "synergy": 1.0000}, { "tag_other": 29, "synergy": 1.0000}, { "tag_other": 54, "synergy": 0.5000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 58, "synergy": 0.7500}, { "tag_other": 45, "synergy": 1.0000}, { "tag_other": 37, "synergy": 1.2500} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 52, "synergy": 1.7500}, { "tag_other": 35, "synergy": 1.7500}, { "tag_other": 28, "synergy": 1.7500}, { "tag_other": 29, "synergy": 1.0000}, { "tag_other": 46, "synergy": 1.0000}, { "tag_other": 39, "synergy": 1.0000}, { "tag_other": 53, "synergy": 1.0000}, { "tag_other": 26, "synergy": 1.0000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 27, "synergy": 1.0000}, { "tag_other": 58, "synergy": 1.2500}, { "tag_other": 54, "synergy": 1.2500}, { "tag_other": 57, "synergy": 0.5000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 53, "synergy": 1.5000}, { "tag_other": 56, "synergy": 1.0000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 54, "synergy": 1.2500}, { "tag_other": 46, "synergy": 1.0000}, { "tag_other": 65, "synergy": 1.0000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 29, "synergy": 1.0000}, { "tag_other": 39, "synergy": 1.0000}, { "tag_other": 53, "synergy": 1.0000}, { "tag_other": 63, "synergy": 1.5000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 36, "synergy": 1.0000}, { "tag_other": 39, "synergy": 1.0000}, { "tag_other": 56, "synergy": 1.0000}, { "tag_other": 28, "synergy": 1.0000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 18, "synergy": -1.0000} ] }
-		, { "max_per_row": 1, "synergies": [] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 20, "synergy": -2.5000} ] }
-		, { "max_per_row": 1, "synergies": [] }
-		, { "max_per_row": 1, "synergies": [] }
-		, { "max_per_row": 4, "synergies": [] }
-		, { "max_per_row": 4, "synergies": [ { "tag_other": 24, "synergy": 1.0000}, { "tag_other": 6, "synergy": 0.5000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 25, "synergy": 1.5000}, { "tag_other": 26, "synergy": 3.0000}, { "tag_other": 27, "synergy": 1.5000}, { "tag_other": 29, "synergy": 1.5000} ] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 26, "synergy": 3.2500}, { "tag_other": 25, "synergy": 3.0000}, { "tag_other": 12, "synergy": 1.0000} ] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 27, "synergy": 2.0000}, { "tag_other": 28, "synergy": 2.5000}, { "tag_other": 25, "synergy": 1.5000}, { "tag_other": 29, "synergy": 1.5000}, { "tag_other": 4, "synergy": 2.5000}, { "tag_other": 13, "synergy": 1.0000}, { "tag_other": 44, "synergy": 2.0000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 28, "synergy": 3.7500}, { "tag_other": 27, "synergy": 2.5000}, { "tag_other": 60, "synergy": 3.0000}, { "tag_other": 12, "synergy": 1.7500}, { "tag_other": 17, "synergy": 1.0000}, { "tag_other": 62, "synergy": 2.0000} ] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 29, "synergy": 2.0000}, { "tag_other": 27, "synergy": 1.5000}, { "tag_other": 25, "synergy": 1.5000}, { "tag_other": 5, "synergy": 1.0000}, { "tag_other": 6, "synergy": 1.0000}, { "tag_other": 7, "synergy": 1.0000}, { "tag_other": 8, "synergy": 1.0000}, { "tag_other": 9, "synergy": 1.5000}, { "tag_other": 10, "synergy": 1.0000}, { "tag_other": 12, "synergy": 1.0000}, { "tag_other": 16, "synergy": 1.0000}, { "tag_other": 64, "synergy": 1.0000}, { "tag_other": 63, "synergy": 1.0000} ] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 30, "synergy": 2.0000} ] }
-		, { "max_per_row": 1, "synergies": [] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 32, "synergy": 2.5000}, { "tag_other": 64, "synergy": 1.5000} ] }
-		, { "max_per_row": 1, "synergies": [] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 37, "synergy": 0.5000}, { "tag_other": 5, "synergy": 1.5000}, { "tag_other": 65, "synergy": 0.5000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 12, "synergy": 1.7500} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 17, "synergy": 1.0000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 37, "synergy": 1.7500}, { "tag_other": 34, "synergy": 0.5000}, { "tag_other": 6, "synergy": 1.0000}, { "tag_other": 8, "synergy": 1.0000}, { "tag_other": 9, "synergy": 1.5000}, { "tag_other": 11, "synergy": 1.2500} ] }
-		, { "max_per_row": 1, "synergies": [] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 39, "synergy": 1.7500}, { "tag_other": 45, "synergy": 1.5000}, { "tag_other": 56, "synergy": 1.5000}, { "tag_other": 4, "synergy": 1.0000}, { "tag_other": 5, "synergy": 1.0000}, { "tag_other": 6, "synergy": 1.0000}, { "tag_other": 7, "synergy": 1.0000}, { "tag_other": 9, "synergy": 1.0000}, { "tag_other": 10, "synergy": 1.0000}, { "tag_other": 12, "synergy": 1.0000}, { "tag_other": 17, "synergy": 1.0000}, { "tag_other": 16, "synergy": 1.0000}, { "tag_other": 63, "synergy": 1.0000} ] }
-		, { "max_per_row": 1, "synergies": [] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 41, "synergy": 3.0000}, { "tag_other": 44, "synergy": 2.0000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 42, "synergy": 3.5000} ] }
-		, { "max_per_row": 1, "synergies": [] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 27, "synergy": 2.0000}, { "tag_other": 41, "synergy": 2.0000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 45, "synergy": 3.0000}, { "tag_other": 39, "synergy": 1.5000}, { "tag_other": 11, "synergy": 1.0000} ] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 46, "synergy": 2.0000}, { "tag_other": 50, "synergy": 2.0000}, { "tag_other": 49, "synergy": 1.5000}, { "tag_other": 53, "synergy": 1.5000}, { "tag_other": 5, "synergy": 0.5000}, { "tag_other": 6, "synergy": 0.5000}, { "tag_other": 7, "synergy": 1.0000}, { "tag_other": 8, "synergy": 1.0000}, { "tag_other": 9, "synergy": 1.0000}, { "tag_other": 12, "synergy": 1.0000}, { "tag_other": 15, "synergy": 1.0000}, { "tag_other": 66, "synergy": 1.0000} ] }
-		, { "max_per_row": 1, "synergies": [] }
-		, { "max_per_row": 1, "synergies": [] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 49, "synergy": 2.5000}, { "tag_other": 46, "synergy": 1.5000}, { "tag_other": 50, "synergy": 1.5000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 50, "synergy": 2.5000}, { "tag_other": 46, "synergy": 2.0000}, { "tag_other": 49, "synergy": 1.5000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 51, "synergy": 3.0000}, { "tag_other": 66, "synergy": 1.5000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 12, "synergy": 1.7500} ] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 53, "synergy": 2.0000}, { "tag_other": 46, "synergy": 1.5000}, { "tag_other": 12, "synergy": 1.0000}, { "tag_other": 14, "synergy": 1.5000}, { "tag_other": 16, "synergy": 1.0000} ] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 54, "synergy": 2.0000}, { "tag_other": 60, "synergy": 3.0000}, { "tag_other": 6, "synergy": 0.5000}, { "tag_other": 8, "synergy": 1.0000}, { "tag_other": 9, "synergy": 0.5000}, { "tag_other": 10, "synergy": 0.5000}, { "tag_other": 13, "synergy": 1.2500}, { "tag_other": 15, "synergy": 1.2500}, { "tag_other": 64, "synergy": 1.0000}, { "tag_other": 65, "synergy": 1.0000}, { "tag_other": 66, "synergy": 0.5000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 55, "synergy": 4.5000}, { "tag_other": 60, "synergy": 3.0000}, { "tag_other": 62, "synergy": 2.0000} ] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 56, "synergy": 2.0000}, { "tag_other": 39, "synergy": 1.5000}, { "tag_other": 14, "synergy": 1.0000}, { "tag_other": 17, "synergy": 1.0000} ] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 57, "synergy": 2.0000}, { "tag_other": 13, "synergy": 0.5000} ] }
-		, { "max_per_row": 3, "synergies": [ { "tag_other": 58, "synergy": 3.0000}, { "tag_other": 11, "synergy": 0.7500}, { "tag_other": 13, "synergy": 1.2500}, { "tag_other": 63, "synergy": 1.0000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 59, "synergy": 4.0000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 28, "synergy": 3.0000}, { "tag_other": 54, "synergy": 3.0000}, { "tag_other": 55, "synergy": 3.0000}, { "tag_other": 4, "synergy": 2.0000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 5, "synergy": 2.0000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 28, "synergy": 2.0000}, { "tag_other": 55, "synergy": 2.0000} ] }
-		, { "max_per_row": 2, "synergies": [ { "tag_other": 63, "synergy": 2.0000}, { "tag_other": 4, "synergy": 1.0000}, { "tag_other": 16, "synergy": 1.5000}, { "tag_other": 29, "synergy": 1.0000}, { "tag_other": 39, "synergy": 1.0000}, { "tag_other": 58, "synergy": 1.0000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 54, "synergy": 1.0000}, { "tag_other": 29, "synergy": 1.0000}, { "tag_other": 32, "synergy": 1.5000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 15, "synergy": 1.0000}, { "tag_other": 54, "synergy": 1.0000}, { "tag_other": 34, "synergy": 0.5000} ] }
-		, { "max_per_row": 1, "synergies": [ { "tag_other": 46, "synergy": 1.0000}, { "tag_other": 51, "synergy": 1.5000}, { "tag_other": 54, "synergy": 0.5000} ] }
+		  { "maxPerRow": 2, "synergies": [ { "tagOther": 3, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 3, "synergy": 2.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 2, "synergy": 3.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 0, "synergy": 2.0000}, { "tagOther": 1, "synergy": 2.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 62, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 59, "synergy": 2.0000}, { "tagOther": 26, "synergy": 2.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 33, "synergy": 1.5000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 45, "synergy": 0.5000}, { "tagOther": 60, "synergy": 2.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 9, "synergy": 4.5000}, { "tagOther": 8, "synergy": 4.5000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 36, "synergy": 1.0000}, { "tagOther": 45, "synergy": 0.5000}, { "tagOther": 53, "synergy": 0.5000}, { "tagOther": 23, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 28, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 6, "synergy": 4.5000}, { "tagOther": 7, "synergy": 4.5000}, { "tagOther": 9, "synergy": 4.5000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 36, "synergy": 1.0000}, { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 53, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 6, "synergy": 4.5000}, { "tagOther": 8, "synergy": 4.5000}, { "tagOther": 28, "synergy": 1.5000}, { "tagOther": 36, "synergy": 1.5000}, { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 53, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 53, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 57, "synergy": 0.7500}, { "tagOther": 44, "synergy": 1.0000}, { "tagOther": 36, "synergy": 1.2500} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 51, "synergy": 1.7500}, { "tagOther": 34, "synergy": 1.7500}, { "tagOther": 27, "synergy": 1.7500}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 52, "synergy": 1.0000}, { "tagOther": 25, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 26, "synergy": 1.0000}, { "tagOther": 57, "synergy": 1.2500}, { "tagOther": 53, "synergy": 1.2500}, { "tagOther": 56, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 52, "synergy": 1.5000}, { "tagOther": 55, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 53, "synergy": 1.2500}, { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 64, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 52, "synergy": 1.0000}, { "tagOther": 62, "synergy": 1.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 17, "synergy": -1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 19, "synergy": -2.5000} ] }
+		, { "maxPerRow": 1, "synergies": [] }
+		, { "maxPerRow": 1, "synergies": [] }
+		, { "maxPerRow": 4, "synergies": [] }
+		, { "maxPerRow": 4, "synergies": [ { "tagOther": 23, "synergy": 1.0000}, { "tagOther": 6, "synergy": 0.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 24, "synergy": 1.5000}, { "tagOther": 25, "synergy": 3.0000}, { "tagOther": 26, "synergy": 1.5000}, { "tagOther": 28, "synergy": 1.5000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 25, "synergy": 3.2500}, { "tagOther": 24, "synergy": 3.0000}, { "tagOther": 12, "synergy": 1.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 26, "synergy": 2.0000}, { "tagOther": 27, "synergy": 2.5000}, { "tagOther": 24, "synergy": 1.5000}, { "tagOther": 28, "synergy": 1.5000}, { "tagOther": 4, "synergy": 2.5000}, { "tagOther": 13, "synergy": 1.0000}, { "tagOther": 43, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 27, "synergy": 3.7500}, { "tagOther": 26, "synergy": 2.5000}, { "tagOther": 59, "synergy": 3.0000}, { "tagOther": 12, "synergy": 1.7500}, { "tagOther": 61, "synergy": 2.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 28, "synergy": 2.0000}, { "tagOther": 26, "synergy": 1.5000}, { "tagOther": 24, "synergy": 1.5000}, { "tagOther": 5, "synergy": 1.0000}, { "tagOther": 6, "synergy": 1.0000}, { "tagOther": 7, "synergy": 1.0000}, { "tagOther": 8, "synergy": 1.0000}, { "tagOther": 9, "synergy": 1.5000}, { "tagOther": 10, "synergy": 1.0000}, { "tagOther": 12, "synergy": 1.0000}, { "tagOther": 16, "synergy": 1.0000}, { "tagOther": 63, "synergy": 1.0000}, { "tagOther": 62, "synergy": 1.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 29, "synergy": 2.0000} ] }
+		, { "maxPerRow": 1, "synergies": [] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 31, "synergy": 2.5000}, { "tagOther": 63, "synergy": 1.5000} ] }
+		, { "maxPerRow": 1, "synergies": [] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 36, "synergy": 0.5000}, { "tagOther": 5, "synergy": 1.5000}, { "tagOther": 64, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 12, "synergy": 1.7500} ] }
+		, { "maxPerRow": 1, "synergies": [] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 36, "synergy": 1.7500}, { "tagOther": 33, "synergy": 0.5000}, { "tagOther": 6, "synergy": 1.0000}, { "tagOther": 8, "synergy": 1.0000}, { "tagOther": 9, "synergy": 1.5000}, { "tagOther": 11, "synergy": 1.2500} ] }
+		, { "maxPerRow": 1, "synergies": [] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 38, "synergy": 1.7500}, { "tagOther": 44, "synergy": 1.5000}, { "tagOther": 55, "synergy": 1.5000}, { "tagOther": 4, "synergy": 1.0000}, { "tagOther": 5, "synergy": 1.0000}, { "tagOther": 6, "synergy": 1.0000}, { "tagOther": 7, "synergy": 1.0000}, { "tagOther": 9, "synergy": 1.0000}, { "tagOther": 10, "synergy": 1.0000}, { "tagOther": 12, "synergy": 1.0000}, { "tagOther": 16, "synergy": 1.0000}, { "tagOther": 62, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 40, "synergy": 3.0000}, { "tagOther": 43, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 41, "synergy": 3.5000} ] }
+		, { "maxPerRow": 1, "synergies": [] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 26, "synergy": 2.0000}, { "tagOther": 40, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 44, "synergy": 3.0000}, { "tagOther": 38, "synergy": 1.5000}, { "tagOther": 11, "synergy": 1.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 45, "synergy": 2.0000}, { "tagOther": 49, "synergy": 2.0000}, { "tagOther": 48, "synergy": 1.5000}, { "tagOther": 52, "synergy": 1.5000}, { "tagOther": 5, "synergy": 0.5000}, { "tagOther": 6, "synergy": 0.5000}, { "tagOther": 7, "synergy": 1.0000}, { "tagOther": 8, "synergy": 1.0000}, { "tagOther": 9, "synergy": 1.0000}, { "tagOther": 12, "synergy": 1.0000}, { "tagOther": 15, "synergy": 1.0000}, { "tagOther": 65, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [] }
+		, { "maxPerRow": 1, "synergies": [] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 48, "synergy": 2.5000}, { "tagOther": 45, "synergy": 1.5000}, { "tagOther": 49, "synergy": 1.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 49, "synergy": 2.5000}, { "tagOther": 45, "synergy": 2.0000}, { "tagOther": 48, "synergy": 1.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 50, "synergy": 3.0000}, { "tagOther": 65, "synergy": 1.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 12, "synergy": 1.7500} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 52, "synergy": 2.0000}, { "tagOther": 45, "synergy": 1.5000}, { "tagOther": 12, "synergy": 1.0000}, { "tagOther": 14, "synergy": 1.5000}, { "tagOther": 16, "synergy": 1.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 53, "synergy": 2.0000}, { "tagOther": 59, "synergy": 3.0000}, { "tagOther": 6, "synergy": 0.5000}, { "tagOther": 8, "synergy": 1.0000}, { "tagOther": 9, "synergy": 0.5000}, { "tagOther": 10, "synergy": 0.5000}, { "tagOther": 13, "synergy": 1.2500}, { "tagOther": 15, "synergy": 1.2500}, { "tagOther": 63, "synergy": 1.0000}, { "tagOther": 64, "synergy": 1.0000}, { "tagOther": 65, "synergy": 0.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 54, "synergy": 4.5000}, { "tagOther": 59, "synergy": 3.0000}, { "tagOther": 61, "synergy": 2.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 55, "synergy": 2.0000}, { "tagOther": 38, "synergy": 1.5000}, { "tagOther": 14, "synergy": 1.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 56, "synergy": 2.0000}, { "tagOther": 13, "synergy": 0.5000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagOther": 57, "synergy": 3.0000}, { "tagOther": 11, "synergy": 0.7500}, { "tagOther": 13, "synergy": 1.2500}, { "tagOther": 62, "synergy": 1.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 58, "synergy": 4.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 27, "synergy": 3.0000}, { "tagOther": 53, "synergy": 3.0000}, { "tagOther": 54, "synergy": 3.0000}, { "tagOther": 4, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 5, "synergy": 2.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 27, "synergy": 2.0000}, { "tagOther": 54, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagOther": 62, "synergy": 2.0000}, { "tagOther": 4, "synergy": 1.0000}, { "tagOther": 16, "synergy": 1.5000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 57, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 53, "synergy": 1.0000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 31, "synergy": 1.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 15, "synergy": 1.0000}, { "tagOther": 53, "synergy": 1.0000}, { "tagOther": 33, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 50, "synergy": 1.5000}, { "tagOther": 53, "synergy": 0.5000} ] }
 	],
 
 	"goals":
@@ -98,79 +97,79 @@ let manifest = {
 		{
 			"text": "Translate any text on [SS]",
 			"score": 8.6777,
-			"tags": [ 26, 0 ],
+			"tags": [ 25, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text on [AT]",
 			"score": 4.3308,
-			"tags": [ 27, 0 ],
+			"tags": [ 26, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text on [ET]",
 			"score": 3.7920,
-			"tags": [ 29, 0 ],
+			"tags": [ 28, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text on [TH]",
 			"score": 3.5226,
-			"tags": [ 34, 0 ],
+			"tags": [ 33, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text on [AR]",
 			"score": 3.7920,
-			"tags": [ 37, 0 ],
+			"tags": [ 36, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text on [BH]",
 			"score": 3.7920,
-			"tags": [ 39, 0 ],
+			"tags": [ 38, 0 ],
 			"alt": "Text that has fallen through the black hole is not allowed"
 		},
 		{
 			"text": "Translate any text on [HL]",
 			"score": 6.1389,
-			"tags": [ 45, 0, 20 ],
+			"tags": [ 44, 0, 19 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text on [GD]",
 			"score": 5.0614,
-			"tags": [ 46, 0 ],
+			"tags": [ 45, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text on [OPC]",
 			"score": 5.6002,
-			"tags": [ 53, 0 ],
+			"tags": [ 52, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text on [DB]",
 			"score": 6.1002,
-			"tags": [ 54, 0 ],
+			"tags": [ 53, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text on [WHS]",
 			"score": 6.6389,
-			"tags": [ 56, 0 ],
+			"tags": [ 55, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text on [TI]",
 			"score": 7.1777,
-			"tags": [ 57, 0 ],
+			"tags": [ 56, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text on [QM]",
 			"score": 8.6777,
-			"tags": [ 58, 0 ],
+			"tags": [ 57, 0 ],
 			"alt": ""
 		},
 		{
@@ -374,31 +373,31 @@ let manifest = {
 		{
 			"text": "Touch the quantum cave shard on [ET]",
 			"score": 5.8696,
-			"tags": [ 29, 61 ],
+			"tags": [ 28, 60 ],
 			"alt": ""
 		},
 		{
 			"text": "Touch the quantum grove shard on [TH]",
 			"score": 3.2920,
-			"tags": [ 34, 61 ],
+			"tags": [ 33, 60 ],
 			"alt": ""
 		},
 		{
 			"text": "Touch the quantum museum shard on [TH]",
 			"score": 4.0226,
-			"tags": [ 36, 34, 61 ],
+			"tags": [ 35, 33, 60 ],
 			"alt": ""
 		},
 		{
 			"text": "Touch the quantum tower shard on [BH]",
 			"score": 4.5614,
-			"tags": [ 39, 61 ],
+			"tags": [ 38, 60 ],
 			"alt": ""
 		},
 		{
 			"text": "Complete all trials in [ToQT] ([GD])",
 			"score": 8.6777,
-			"tags": [ 47, 46, 61 ],
+			"tags": [ 46, 45, 60 ],
 			"alt": ""
 		},
 		{
@@ -518,79 +517,79 @@ let manifest = {
 		{
 			"text": "Touch the \"Sky Shutter\" satellite orbiting [TH]",
 			"score": 4.1002,
-			"tags": [ 34, 18 ],
+			"tags": [ 33, 17 ],
 			"alt": ""
 		},
 		{
 			"text": "Go through the black hole in [BH]",
 			"score": 4.5614,
-			"tags": [ 43, 39 ],
+			"tags": [ 42, 38 ],
 			"alt": ""
 		},
 		{
 			"text": "Go through the black hole in [BH] without your ship",
 			"score": 4.5614,
-			"tags": [ 43, 39, 24, 23 ],
+			"tags": [ 42, 38, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "Talk to Solanum",
 			"score": 10.7165,
-			"tags": [ 59, 58 ],
+			"tags": [ 58, 57 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text inside the electric core of [GD]",
 			"score": 7.6389,
-			"tags": [ 51, 46, 49, 50, 1 ],
+			"tags": [ 50, 45, 48, 49, 1 ],
 			"alt": ""
 		},
 		{
 			"text": "Ride one CW tornado and one CCW tornado",
 			"score": 5.3308,
-			"tags": [ 50 ],
+			"tags": [ 49 ],
 			"alt": ""
 		},
 		{
 			"text": "Get tornadoed into space on 1 island(s) on GD",
 			"score": 4.0614,
-			"tags": [ 50, 46 ],
+			"tags": [ 49, 45 ],
 			"alt": ""
 		},
 		{
 			"text": "Get tornadoed into space on 2 island(s) on GD",
 			"score": 7.9083,
-			"tags": [ 50, 46 ],
+			"tags": [ 49, 45 ],
 			"alt": ""
 		},
 		{
 			"text": "Enter the black hole formed inside the ATP",
 			"score": 10.1389,
-			"tags": [ 28, 27, 20, 22, 21 ],
+			"tags": [ 27, 26, 19, 21, 20 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text inside [ToQK]",
 			"score": 9.1389,
-			"tags": [ 40, 39, 1 ],
+			"tags": [ 39, 38, 1 ],
 			"alt": "Text at the base of the tower does not count"
 		},
 		{
 			"text": "Touch the Hearthian flag on [AR]",
 			"score": 4.0614,
-			"tags": [ 37 ],
+			"tags": [ 36 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text in the Southern Observatory",
 			"score": 8.6777,
-			"tags": [ 42, 39, 1 ],
+			"tags": [ 41, 38, 1 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text in the Hanging City",
 			"score": 6.1002,
-			"tags": [ 41, 39, 1 ],
+			"tags": [ 40, 38, 1 ],
 			"alt": ""
 		},
 		{
@@ -614,49 +613,49 @@ let manifest = {
 		{
 			"text": "Translate any text in the Sunless City",
 			"score": 6.1002,
-			"tags": [ 32, 18, 29, 1 ],
+			"tags": [ 31, 17, 28, 1 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text in the High Energy Lab",
 			"score": 7.1389,
-			"tags": [ 33, 19, 18, 32, 29, 1 ],
+			"tags": [ 32, 18, 17, 31, 28, 1 ],
 			"alt": ""
 		},
 		{
 			"text": "Touch the orbital probe",
 			"score": 6.9083,
-			"tags": [ 18 ],
+			"tags": [ 17 ],
 			"alt": "Launched by [OPC]"
 		},
 		{
 			"text": "Ride an underwater current on Timber Hearth",
 			"score": 4.5614,
-			"tags": [ 34 ],
+			"tags": [ 33 ],
 			"alt": ""
 		},
 		{
 			"text": "Get scorched by sun (but don't die to it)",
 			"score": 3.2920,
-			"tags": [ 25 ],
+			"tags": [ 24 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text in 1 different [OPC] module(s)",
 			"score": 4.0614,
-			"tags": [ 53, 0 ],
+			"tags": [ 52, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text in 2 different [OPC] module(s)",
 			"score": 6.1002,
-			"tags": [ 53, 0 ],
+			"tags": [ 52, 0 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text in 3 different [OPC] module(s)",
 			"score": 9.4471,
-			"tags": [ 53, 0 ],
+			"tags": [ 52, 0 ],
 			"alt": ""
 		},
 		{
@@ -668,37 +667,37 @@ let manifest = {
 		{
 			"text": "Translate any text inside Black Hole Forge",
 			"score": 13.7941,
-			"tags": [ 44, 39, 1 ],
+			"tags": [ 43, 38, 1 ],
 			"alt": ""
 		},
 		{
 			"text": "Aggro an anglerfish (and survive)",
 			"score": 5.8308,
-			"tags": [ 54 ],
+			"tags": [ 53 ],
 			"alt": ""
 		},
 		{
 			"text": "Touch a living or dead Jellyfish",
 			"score": 6.1002,
-			"tags": [ 49 ],
+			"tags": [ 48 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text inside [TI]",
 			"score": 12.2553,
-			"tags": [ 57, 0, 23 ],
+			"tags": [ 56, 0, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "Read any text in the museum on [TH]",
 			"score": 4.0226,
-			"tags": [ 36, 34 ],
+			"tags": [ 35, 33 ],
 			"alt": ""
 		},
 		{
 			"text": "Repair the satellite in the zero g cave",
 			"score": 5.8308,
-			"tags": [ 34 ],
+			"tags": [ 33 ],
 			"alt": "(Fully)"
 		},
 		{
@@ -716,25 +715,25 @@ let manifest = {
 		{
 			"text": "Translate any text inside Mine 2b",
 			"score": 4.5614,
-			"tags": [ 35, 34, 1 ],
+			"tags": [ 34, 33, 1 ],
 			"alt": ""
 		},
 		{
 			"text": "Use a storm shelter on Giants Deep",
 			"score": 6.1389,
-			"tags": [ 46 ],
+			"tags": [ 45 ],
 			"alt": ""
 		},
 		{
 			"text": "Touch the red anglerfish eggs",
 			"score": 6.6002,
-			"tags": [ 54 ],
+			"tags": [ 53 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text inside statue island",
 			"score": 5.8696,
-			"tags": [ 48, 46, 1 ],
+			"tags": [ 47, 45, 1 ],
 			"alt": "Text on the outside does not count"
 		},
 		{
@@ -758,145 +757,145 @@ let manifest = {
 		{
 			"text": "Shoot scout through 1 impassable bramble seed(s)",
 			"score": 6.3696,
-			"tags": [ 65 ],
+			"tags": [ 64 ],
 			"alt": ""
 		},
 		{
 			"text": "Shoot scout through 2 impassable bramble seed(s)",
 			"score": 6.3696,
-			"tags": [ 65 ],
+			"tags": [ 64 ],
 			"alt": ""
 		},
 		{
 			"text": "Find and talk to both kids in hide and go seek",
 			"score": 3.0226,
-			"tags": [ 34 ],
+			"tags": [ 33 ],
 			"alt": ""
 		},
 		{
 			"text": "Hold an advanced warp core",
 			"score": 7.4083,
-			"tags": [ 62 ],
+			"tags": [ 61 ],
 			"alt": "(Broken or functional…)"
 		},
 		{
 			"text": "Pilot 1 Nomai ship(s)",
 			"score": 4.5614,
-			"tags": [ 63 ],
+			"tags": [ 62 ],
 			"alt": ""
 		},
 		{
 			"text": "Pilot 2 Nomai ship(s)",
 			"score": 7.6389,
-			"tags": [ 63 ],
+			"tags": [ 62 ],
 			"alt": ""
 		},
 		{
 			"text": "Land a Nomai Ship on any location different than its takeoff",
 			"score": 7.1389,
-			"tags": [ 63 ],
+			"tags": [ 62 ],
 			"alt": ""
 		},
 		{
 			"text": "Destroy fabric of spacetime",
 			"score": 11.7553,
-			"tags": [ 33, 19, 18, 32, 29, 21 ],
+			"tags": [ 32, 18, 17, 31, 28, 20 ],
 			"alt": "If doing the [ATP] method, you may not \"set up\" your file before the timer starts"
 		},
 		{
 			"text": "\"You died\" game ending",
 			"score": 8.9083,
-			"tags": [ 28, 27, 20, 21 ],
+			"tags": [ 27, 26, 19, 20 ],
 			"alt": "(Remove the warp core from [ATP] and then die)"
 		},
 		{
 			"text": "Set foot on The Eye",
 			"score": 17.3716,
-			"tags": [ 60, 21, 28, 20, 27, 55, 54 ],
+			"tags": [ 59, 20, 27, 19, 26, 54, 53 ],
 			"alt": ""
 		},
 		{
 			"text": "Isolation Ending",
 			"score": 16.3716,
-			"tags": [ 22, 21, 28, 27, 20 ],
+			"tags": [ 21, 20, 27, 26, 19 ],
 			"alt": "(Remove the warp core from [ATP] and then outrun the supernova)"
 		},
 		{
 			"text": "QM Ending",
 			"score": 16.3716,
-			"tags": [ 22, 21, 28, 27, 20, 58 ],
+			"tags": [ 21, 20, 27, 26, 19, 57 ],
 			"alt": "(Remove the warp core from [ATP] and then await the supernova at the 6th [QM] location)"
 		},
 		{
 			"text": "Watch the supernova with Slate",
 			"score": 8.6002,
-			"tags": [ 22, 21, 34 ],
+			"tags": [ 21, 20, 33 ],
 			"alt": ""
 		},
 		{
 			"text": "Watch the supernova with Chert",
 			"score": 8.6002,
-			"tags": [ 22, 21, 29 ],
+			"tags": [ 21, 20, 28 ],
 			"alt": ""
 		},
 		{
 			"text": "Watch the supernova with Gabbro",
 			"score": 8.6002,
-			"tags": [ 22, 21, 46 ],
+			"tags": [ 21, 20, 45 ],
 			"alt": ""
 		},
 		{
 			"text": "Watch the supernova with Feldspar",
 			"score": 8.6002,
-			"tags": [ 22, 21, 54 ],
+			"tags": [ 21, 20, 53 ],
 			"alt": ""
 		},
 		{
 			"text": "Watch the supernova with Riebeck",
 			"score": 8.6002,
-			"tags": [ 22, 21, 39 ],
+			"tags": [ 21, 20, 38 ],
 			"alt": ""
 		},
 		{
 			"text": "Watch the supernova with Esker",
 			"score": 8.6002,
-			"tags": [ 22, 21, 37 ],
+			"tags": [ 21, 20, 36 ],
 			"alt": ""
 		},
 		{
 			"text": "Touch [SS] with your ship",
 			"score": 8.7553,
-			"tags": [ 26, 25 ],
+			"tags": [ 25, 24 ],
 			"alt": ""
 		},
 		{
 			"text": "Ride 3 elevators on TH",
 			"score": 5.5614,
-			"tags": [ 34 ],
+			"tags": [ 33 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text at Eye Signal Locator",
 			"score": 4.0614,
-			"tags": [ 38, 37, 1 ],
+			"tags": [ 37, 36, 1 ],
 			"alt": "(on [AR])"
 		},
 		{
 			"text": "Translate any text at the Construction Yard",
 			"score": 5.8308,
-			"tags": [ 52, 46, 1 ],
+			"tags": [ 51, 45, 1 ],
 			"alt": ""
 		},
 		{
 			"text": "Translate any text at Quantum Moon Locator",
 			"score": 5.0614,
-			"tags": [ 31, 29, 1 ],
+			"tags": [ 30, 28, 1 ],
 			"alt": "(on [ET])"
 		},
 		{
 			"text": "Touch or stand on SS as it begins getting engulfed by the Sun",
 			"score": 10.9859,
-			"tags": [ 26 ],
+			"tags": [ 25 ],
 			"alt": ""
 		},
 		{
@@ -908,107 +907,108 @@ let manifest = {
 		{
 			"text": "Get inside [SS] without warping to it",
 			"score": 10.2941,
-			"tags": [ 26, 23 ],
+			"tags": [ 25, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "Read Esker's Signalscope Log",
 			"score": 3.2920,
-			"tags": [ 37 ],
+			"tags": [ 36 ],
 			"alt": ""
 		},
 		{
 			"text": "Have your ship destroyed by the sun",
 			"score": 4.7920,
-			"tags": [ 25, 24, 23 ],
+			"tags": [ 24, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "Press the eject button",
 			"score": 4.1002,
-			"tags": [ 24, 23 ],
+			"tags": [ 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "Ride sand pillar from [AT] -> [ET], w/o your ship",
 			"score": 5.6002,
-			"tags": [ 30, 27, 29, 24, 23 ],
+			"tags": [ 29, 26, 28, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "[HT] <-> any primary location, w/o your ship or warps",
 			"score": 7.1389,
-			"tags": [ 30, 27, 29, 24, 23 ],
+			"tags": [ 29, 26, 28, 23, 22 ],
 			"alt": "Going from one [HT] to the other doesn't count"
 		},
 		{
 			"text": "[TH] <-> any primary location, w/o your ship or warps",
 			"score": 8.6777,
-			"tags": [ 34, 24, 23 ],
+			"tags": [ 33, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "[AR] <-> any primary location, w/o your ship or warps",
 			"score": 7.1389,
-			"tags": [ 37, 24, 23 ],
+			"tags": [ 36, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "[BH] <-> any primary location, w/o your ship or warps",
 			"score": 7.1389,
-			"tags": [ 39, 24, 23 ],
+			"tags": [ 38, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "[HL] <-> any primary location, w/o your ship or warps",
 			"score": 8.6777,
-			"tags": [ 45, 24, 23 ],
+			"tags": [ 44, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "[GD] <-> any primary location, w/o your ship or warps",
 			"score": 10.2165,
-			"tags": [ 46, 24, 23 ],
+			"tags": [ 45, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "[OPC] <-> any primary location, w/o your ship or warps",
 			"score": 8.6777,
-			"tags": [ 53, 24, 23 ],
+			"tags": [ 52, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "[DB] <-> any primary location, w/o your ship or warps",
 			"score": 7.1389,
-			"tags": [ 54, 24, 23 ],
+			"tags": [ 53, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "[WHS] <-> any primary location, w/o your ship or warps",
 			"score": 7.1389,
-			"tags": [ 56, 24, 23 ],
+			"tags": [ 55, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "[TI] <-> any primary location, w/o your ship or warps",
 			"score": 8.6777,
-			"tags": [ 57, 24, 23 ],
+			"tags": [ 56, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "[QM] <-> any primary location, w/o your ship or warps",
 			"score": 10.2165,
-			"tags": [ 58, 24, 23 ],
+			"tags": [ 57, 23, 22 ],
 			"alt": ""
 		},
 		{
 			"text": "Shock yourself or your ship",
 			"score": 4.5614,
-			"tags": [ 66 ],
+			"tags": [ 65 ],
 			"alt": ""
 		}
 	],
 
 	"goalScoreAvg": 6.998686,
-	"goalScoreStddev": 2.763853
+	"goalScoreStddev": 2.763853,
+	"pairwiseGoalSynergyAvg": 0.774889
 };

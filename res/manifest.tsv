@@ -37,7 +37,6 @@ NomaiCorpseHunt	Hunt	1	0
 TKOrbHunt	Hunt	1	0	
 DBVineHunt	Hunt	1	0	
 GravCannonHunt	Hunt	1	0	
-FakeGravHunt	Hunt	1	0	
 Early		2	-1	
 EarlyExclusive	Early	1	0	
 Mid		2	-2.5	
@@ -137,7 +136,6 @@ TKOrbHunt	OPC	1.5	Definitely a lot more I could put...
 TKOrbHunt	WHS	1		
 DBVineHunt	DB	1.25		
 DBVineHunt	GD, TinyBramble	1		
-FakeGravHunt	Museum, BH, WHS, ATP	1		
 GravCannonHunt	ET, BH, OPC	1		
 GravCannonHunt	NomaiShip	1.5		
 BlackHoleForge	AT, HangingCity	2		
@@ -187,7 +185,6 @@ Light $1/2/3$ camp fire(s)		UnlitFireHunt	$1.5/2.5/4$	$1.5/2.5/4$
 Refuel your jetpack at $3/4/5$ different canister(s)	Refueling via the canister in your ship counts as 1	JetFuelHunt	$2.5/3.5/5$	$2.5/3.5/5$
 Use $1/2/3/4/5/6$ Nomai telekinetic orb(s)	You must activate something. Just moving it isn't sufficient.	TKOrbHunt	$0.67/1.33/2/2.67/3.33/4$	$0.67/1.33/2/2.67/3.33/4$
 Touch a [DB] vine on $1/2/3$ different planet(s)		DBVineHunt	$1/2.5/4$	$1/2.5/4$
-[TODO] Walk with artificial gravity on $1/2/3$ different primary location(s)		FakeGravHunt		
 [TODO] Puncture your suit on $2/3/4$ primary locations		PunctureHunt	1.5	1
 Touch the "Sky Shutter" satellite orbiting [TH]		TH, Early	3	1.5
 Go through the black hole in [BH]$/ without your ship$		BHBlackHole $/, Shipless$	2	2.5

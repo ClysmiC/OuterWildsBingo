@@ -3,6 +3,7 @@
 #include "bingo_gen.h"
 
 #include <cstdarg>
+#include <float.h>
 #include <math.h>
 #include <stdio.h>
 
@@ -1056,6 +1057,7 @@ void DumpToJson()
 		float		m_gLengthStddev;
 		float		m_gScoreAvg;
 		float		m_gScoreStddev;
+		float		m_gPairwiseGoalSynergyAvg;
 	};
 
 	auto PChzGoals = [AppendTabs, PChzEscapedFromStrv, PChzFromInt, PChzFromFloat](int cTab)
@@ -1202,6 +1204,65 @@ void DumpToJson()
 			gstats.m_gScoreStddev = gScoreStddev;
 		}
 
+		// Compute average pairwise synergy
+
+		{
+			float gSynergyTotal = 0;
+			int cSynergyValid = 0;
+
+			for (int iGoal = 0; iGoal < g_aryGoal.cItem; iGoal++)
+			{
+				for (int iGoalOther = iGoal + 1; iGoalOther < g_aryGoal.cItem; iGoalOther++)
+				{
+					const Goal & goal = g_aryGoal[iGoal];
+					const Goal & goalOther = g_aryGoal[iGoalOther];
+
+					// NOTE (andrew) Start at -FLT_MAX so if goals are anti-synergistic (i.e., -synergy) we will
+					//	account for that. But if they have no synergy we will swap in a 0.
+
+					float gMaxSynrgFound = -FLT_MAX;
+
+					for (int iTagid = 0; iTagid < goal.m_aryTagid.cItem; iTagid++)
+					{
+						TAGID tagid = goal.m_aryTagid[iTagid];
+
+						for (int iTagidOther = 0; iTagidOther < goalOther.m_aryTagid.cItem; iTagidOther++)
+						{
+							TAGID tagidOther = goalOther.m_aryTagid[iTagidOther];
+
+							if (tagid == tagidOther && g_aryTag[tagid].m_cMaxPerRow == 1)
+							{
+								goto LNextGoalOther;
+							}
+
+							// @Slow
+
+							for (int iSynrg = 0; iSynrg < g_arySynrg.cItem; iSynrg++)
+							{
+								const Synergy & synrg = g_arySynrg[iSynrg];
+
+								if ((synrg.m_tagid0 == tagid && synrg.m_tagid1 == tagidOther) ||
+									(synrg.m_tagid0 == tagidOther && synrg.m_tagid1 == tagid))
+								{
+									gMaxSynrgFound = Max(gMaxSynrgFound, synrg.m_gSynrg);
+									break;
+								}
+							}
+						}
+					}
+
+					gMaxSynrgFound = (gMaxSynrgFound == -FLT_MAX) ? 0 : gMaxSynrgFound;
+					gSynergyTotal += gMaxSynrgFound;
+					cSynergyValid++;
+
+				LNextGoalOther:
+					continue;
+				}
+			}
+
+			gstats.m_gPairwiseGoalSynergyAvg = gSynergyTotal / cSynergyValid;
+		}
+
 
 		return gstats;
 	};
@@ -1230,13 +1291,15 @@ R"jsonblob({
 	],
 
 	"goalScoreAvg": %f,
-	"goalScoreStddev": %f
+	"goalScoreStddev": %f,
+	"pairwiseGoalSynergyAvg": %f
 })jsonblob",
 	PChzShorthands(2),
 	PChzTags(2),
 	PChzGoals(2),
 	gstats.m_gScoreAvg,
-	gstats.m_gScoreStddev);
+	gstats.m_gScoreStddev,
+	gstats.m_gPairwiseGoalSynergyAvg);
 
 	if (nResult < 0)		ErrorAndExit("Failed to write to compiled JSON file");
 }
