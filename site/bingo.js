@@ -303,47 +303,115 @@ function chooseGoals() {
 		}
 	}
 
-	function goalsFromHeaderId(headerId) {
-		let goals = [];
+	// @Slow
+	function getNextReplaceCandidate(headerId) {
 
-		if (headerId === "tlbr") {
-			goals.push(goalGrid[0][0]);
-			goals.push(goalGrid[1][1]);
-			goals.push(goalGrid[2][2]);
-			goals.push(goalGrid[3][3]);
-			goals.push(goalGrid[4][4]);
-		}
-		else if (headerId === "bltr") {
-			goals.push(goalGrid[4][0]);
-			goals.push(goalGrid[3][1]);
-			goals.push(goalGrid[2][2]);
-			goals.push(goalGrid[1][3]);
-			goals.push(goalGrid[0][4]);
-		}
-		else if (headerId.startsWith("col")) {
-			let col = headerId.slice(-1);
-			col = parseInt(col) - 1;
+		function goalsFromHeaderId(headerId) {
+			let goals = [];
 
-			for (let i = 0; i < 5; i++) {
-				goals.push(goalGrid[i][col]);
+			if (headerId === "tlbr") {
+				goals.push(goalGrid[0][0]);
+				goals.push(goalGrid[1][1]);
+				goals.push(goalGrid[2][2]);
+				goals.push(goalGrid[3][3]);
+				goals.push(goalGrid[4][4]);
 			}
-		}
-		else if (headerId.startsWith("row")) {
-			let row = headerId.slice(-1);
-			row = parseInt(row) - 1;
-
-			for (let i = 0; i < 5; i++) {
-				goals.push(goalGrid[row][i]);
+			else if (headerId === "bltr") {
+				goals.push(goalGrid[4][0]);
+				goals.push(goalGrid[3][1]);
+				goals.push(goalGrid[2][2]);
+				goals.push(goalGrid[1][3]);
+				goals.push(goalGrid[0][4]);
 			}
-		}
-		else {
-			assert(false);
+			else if (headerId.startsWith("col")) {
+				let col = headerId.slice(-1);
+				col = parseInt(col) - 1;
+
+				for (let i = 0; i < 5; i++) {
+					goals.push(goalGrid[i][col]);
+				}
+			}
+			else if (headerId.startsWith("row")) {
+				let row = headerId.slice(-1);
+				row = parseInt(row) - 1;
+
+				for (let i = 0; i < 5; i++) {
+					goals.push(goalGrid[row][i]);
+				}
+			}
+			else {
+				assert(false);
+			}
+
+			return goals;
 		}
 
-		return goals;
-	}
+		function headerIdsFromCell(row, col)
+		{
+			let headerIds = [];
+			switch (row)
+			{
+				case 0:
+					headerIds.push("row1");
+					break;
 
-	function evaluateGoals(goals) {
+				case 1:
+					headerIds.push("row2");
+					break;
+
+				case 2:
+					headerIds.push("row3");
+					break;
+
+				case 3:
+					headerIds.push("row4");
+					break;
+
+				case 4:
+					headerIds.push("row5");
+					break;
+
+				default:
+					assert(false);
+			}
+
+			switch (col) {
+				case 0:
+					headerIds.push("col1");
+					break;
+
+				case 1:
+					headerIds.push("col2");
+					break;
+
+				case 2:
+					headerIds.push("col3");
+					break;
+
+				case 3:
+					headerIds.push("col4");
+					break;
+
+				case 4:
+					headerIds.push("col5");
+					break;
+
+				default:
+					assert(false);
+			}
+
+			if (row === col) {
+				headerIds.push("tlbr");
+			}
+
+			if (row + col === 4) {
+				headerIds.push("bltr");
+			}
+
+			assert(headerIds.length === 2 || headerIds.length === 3);
+			return headerIds;
+		}
+
 		function getSynergy(goal0, goal1) {
 			// NOTE (andrew) You only get the biggest synergy. You don't get to double dip multiple synergies, as there are certain tags
 			//	that always imply other less specific tags. It is very likely that both tags synergize with similar things, and it would
@@ -354,91 +422,147 @@ function chooseGoals() {
 			return 0;
 		}
 
-		assert(goals.length === 5);
+		function getTagViolationsAndNearViolations(headerId, iGoalOmitFromConsideration) {
+			let result = {
+				tagViolations: [],
+				nearTagViolations: []		// Tags that are 1 away from exceeding limit
+			}
+			
+			for (let iGoal = 0; iGoal < 5; iGoal++) {
 
-		let result = {
-			rawScore: 0,
-			totalSynergy: 0,
-			finalScore: 0,
-			tagViolations: [],
-			nearTagViolations: []		// Tags that are 1 away from exceeding limit
-		}
+				// Useful when getting tag constraints when we are replacing a cell
 
-		for (let iGoal = 0; iGoal < 5; iGoal++) {
-			let goal = goals[iGoal];
-			let mpTagidGoals = Array(manifest.tags.length).fill({ goals: []});
+				if (iGoal === iGoalOmitFromConsideration)
+					continue;
 
-			// Check max tag per header
+				let goal = goals[iGoal];
+				let mpTagidCGoal = Array(manifest.tags.length).fill(0);
 
-			for (let iTag = 0; iTag < goal.tags.length; iTag++) {
-				let tagid = goal.tags[iTag];
-				let maxTagPerHeader = manifest.tags[tagid].maxPerRow;
+				// Check tag's MaxPerRow
 
-				mpTagidGoals[tagid].goals.push(goal);
+				for (let iTag = 0; iTag < goal.tags.length; iTag++) {
 
-				if (mpTagidGoals[tagid].length >= maxTagPerHeader) {
+					let tagid = goal.tags[iTag];
+					mpTagidCGoal[tagid]++;
 
-					let ntvExisting = nearTagViolations.find(v => v.tag == tagid);
-					let tvExisting = tagViolations.find(v => v.tag == tagid);
+					let maxTagPerRow = manifest.tags[tagid].maxPerRow;
 
-					if (mpTagidGoals[tagid].length === maxTagPerHeader) {
-						assert(!ntvExisting);
-						assert(!tvExisting);
+					if (mpTagidCGoal[tagid] >= maxTagPerRow) {
 
-						nearTagViolations.push({ tag: tagid, goals: mpTagidGoals[tagid].goals });
-					}
-					else if (mpTagidGoals[tagid].length === maxTagPerHeader + 1) {
-						assert(ntvExisting);
-						assert(!tvExisting);
+						let iNtvExisting = result.nearTagViolations.indexOf(tagid);
+						let iTvExisting = result.tagViolations.indexOf(tagid);
 
-						nearTagViolations.remove(ntvExisting);
-						tagViolations.push({ tag: tagid, goals: mpTagidGoals[tagid].goals });
-					}
-					else {
-						assert(!ntvExisting);
-						assert(tvExisting);
+						if (mpTagidCGoal[tagid] === maxTagPerRow) {
+							assert(iNtvExisting === -1);
+							assert(iTvExisting === -1);
 
-						tvExisting.goals.push(goal);
+							result.nearTagViolations.push(tagid);
+						}
+						else if (mpTagidCGoal[tagid] === maxTagPerRow + 1) {
+							assert(iNtvExisting !== -1);
+							assert(iTvExisting === -1);
+
+							result.nearTagViolations.splice(ntvExisting, 1);
+							result.tagViolations.push(tagid);
+						}
+						else {
+							assert(iNtvExisting === -1);
+							assert(iTvExisting !== -1);
+						}
 					}
 				}
 			}
 
-			// Check synergy
-
-			for (let iGoalOther = iGoal + 1; iGoalOther < 5; iGoalOther++) {
-				let goalOther = goals[iGoalOther];
-				result.totalSynergy += getSynergy(goal, goalOther);
-			}
-
-			result.rawScore += goal.score;
+			return result;
 		}
 
-		result.finalScore = result.rawScore - result.totalSynergy;
+		// Get list of tag violations (and near tag violations)
+
+		let tv;
+		let ntv;
+		{
+			let tvAndNtv = getTagViolationsAndNearViolations(headerId);
+			tv = tvAndNtv.tagViolations;
+			ntv = tvAndNtv.nearTagViolations;
+		}
+
+		let goals = getGoalsFromHeaderId(headerId);
+		assert(goals.length === 5);
+
+		let result = {
+			iGoalReplace: -1,
+			tagsDisallowed: [],
+			replacementRelativeScoreDesired: 0		// -1 = decrease, 0 = either, 1 = increase
+		};
+
+		if (tv.length > 0) {
+
+			// Find first goal w/ tag that is in violation. It will be our replace candidate.
+
+			for (let iGoal = 0; iGoal < 5; iGoal++) {
+				let goal = goals[iGoal];
+
+				for (let iTag = 0; iTag < goal.tags.length; iTag++) {
+
+					let tagid = goal.tags[iTag];
+					for (let iTagViolation = 0; iTagViolation < tv.length; iTagViolation++) {
+						let tagidViolation = tv[iTagViolation];
+
+						if (tagid === tagidViolation) {
+							result.iGoalReplace = iGoal;
+							
+							// TODO: compute tag violations in all headers from headerIdsFromCell(..) with iGoalOmitted.
+							//	Assign it to result.tagsDisallowed.
+							// NOTE: iGoal might not be best for the interface since we don't have it
+							//	on hand for the other headers. 
+
+							// TODO: Compute row score and use that to determine result of replacementRelativeScoreDesired
+							// NOTE: still need to think more about this...
+						}
+					}
+				}
+
+				assert(false);		// Surely, by definition, at least one of our goals must have contained the violating tag!
+			}
+		}
+		else {
+
+		}
 	}
 	
 
 	let stopMutating = false;
 	let iterations = 0;
 	let iterationsMax = 50;
-	let headers = ["row1", "row2", "row3", "row4", "row5", "col1", "col2", "col3", "col4", "col5", "tlbr", "bltr"];
+	let headerIds = ["row1", "row2", "row3", "row4", "row5", "col1", "col2", "col3", "col4", "col5", "tlbr", "bltr"];
 
 	// TODO: Easy, medium, hard difficulties
+
 	// NOTE (andrew) sqrt is intended to dampen the volatility a little bit. It is definitely a knob that can be tweaked.
+	// BB (andrew) In this overestimates the average score post synergy, since each goal has 4 candidates to choose the goal
+	//	it synergizes with the most. I'm not 100% sure that this is the best way to do it...
 
 	let avgScorePostSynergy = manifest.goalScoreAvg - manifest.pairwiseGoalSynergyAvg;
 	let headerScoreMin = avgScorePostSynergy * 5 - Math.sqrt(5 * manifest.goalScoreStddev);
 	let headerScoreIdeal = avgScorePostSynergy * 5;
 	let headerScoreMax = avgScorePostSynergy * 5 + Math.sqrt(5 * manifest.goalScoreStddev);
 
+	// @Slow. Probably a better way to do this using some sort of constraint satisfaction technique. I'm just using a bunch of heuristics
+	//	to get a half-baked genetic algorithm style solution. Seems to work good enough. It is quite inefficient, but at 5x5 it's fine.
 	while (iterations < iterationsMax && !stopMutating) {
 		stopMutating = true;
 
-		for (let i = 0; i < headers.length; i++) {
-			let header = headers[i];
-			let goals = getGoalsForHeader(header);
-			let evaluation = evaluateGoals(goals);
+		for (let i = 0; i < headerIds.length; i++) {
+			let headerId = headerIds[i];
+			let replaceCandidate = getNextReplaceCandidate(headerId);
 
-			let dScoreIdeal = headerScoreIdeal - evaluation.total
+			if (!replaceCandidate)
+				continue;
+
+			stopMutating = false;
+			
+
+			let dScoreIdeal = headerScoreIdeal - evaluation.finalScore;
 			let cNeedReplaceDueToTag = 0;	// TODO: compute. Keep in mind that multiple violations could be fixed by a single replace if it has multiple tags...
 
 			let dScorePerReplace = dScoreIdeal / cNeedReplaceDueToTag;	// TODO: watch for divide by zero here. Need different strategy to nudge difficulty up/down if the tags are fine but difficulty isn't.
