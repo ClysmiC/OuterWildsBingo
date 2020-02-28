@@ -24,72 +24,72 @@ let manifest = {
 
 	"tags":
 	[
-		  { "maxPerRow": 2, "synergies": [ { "tagOther": 3, "synergy": 2.0000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 3, "synergy": 2.0000} ] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 2, "synergy": 3.5000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 0, "synergy": 2.0000}, { "tagOther": 1, "synergy": 2.0000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 62, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 59, "synergy": 2.0000}, { "tagOther": 26, "synergy": 2.5000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 33, "synergy": 1.5000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 45, "synergy": 0.5000}, { "tagOther": 60, "synergy": 2.0000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 9, "synergy": 4.5000}, { "tagOther": 8, "synergy": 4.5000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 36, "synergy": 1.0000}, { "tagOther": 45, "synergy": 0.5000}, { "tagOther": 53, "synergy": 0.5000}, { "tagOther": 23, "synergy": 0.5000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 28, "synergy": 1.0000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 6, "synergy": 4.5000}, { "tagOther": 7, "synergy": 4.5000}, { "tagOther": 9, "synergy": 4.5000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 36, "synergy": 1.0000}, { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 53, "synergy": 1.0000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 6, "synergy": 4.5000}, { "tagOther": 8, "synergy": 4.5000}, { "tagOther": 28, "synergy": 1.5000}, { "tagOther": 36, "synergy": 1.5000}, { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 53, "synergy": 0.5000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 53, "synergy": 0.5000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 57, "synergy": 0.7500}, { "tagOther": 44, "synergy": 1.0000}, { "tagOther": 36, "synergy": 1.2500} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 51, "synergy": 1.7500}, { "tagOther": 34, "synergy": 1.7500}, { "tagOther": 27, "synergy": 1.7500}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 52, "synergy": 1.0000}, { "tagOther": 25, "synergy": 1.0000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 26, "synergy": 1.0000}, { "tagOther": 57, "synergy": 1.2500}, { "tagOther": 53, "synergy": 1.2500}, { "tagOther": 56, "synergy": 0.5000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 52, "synergy": 1.5000}, { "tagOther": 55, "synergy": 1.0000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 53, "synergy": 1.2500}, { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 64, "synergy": 1.0000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 52, "synergy": 1.0000}, { "tagOther": 62, "synergy": 1.5000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 17, "synergy": -1.0000} ] }
+		  { "maxPerRow": 2, "synergies": [ { "tagidOther": 3, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 3, "synergy": 2.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 2, "synergy": 3.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 0, "synergy": 2.0000}, { "tagidOther": 1, "synergy": 2.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 62, "synergy": 1.0000}, { "tagidOther": 38, "synergy": 1.0000}, { "tagidOther": 59, "synergy": 2.0000}, { "tagidOther": 26, "synergy": 2.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 33, "synergy": 1.5000}, { "tagidOther": 28, "synergy": 1.0000}, { "tagidOther": 38, "synergy": 1.0000}, { "tagidOther": 45, "synergy": 0.5000}, { "tagidOther": 60, "synergy": 2.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 9, "synergy": 4.5000}, { "tagidOther": 8, "synergy": 4.5000}, { "tagidOther": 38, "synergy": 1.0000}, { "tagidOther": 28, "synergy": 1.0000}, { "tagidOther": 36, "synergy": 1.0000}, { "tagidOther": 45, "synergy": 0.5000}, { "tagidOther": 53, "synergy": 0.5000}, { "tagidOther": 23, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 45, "synergy": 1.0000}, { "tagidOther": 38, "synergy": 1.0000}, { "tagidOther": 28, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 6, "synergy": 4.5000}, { "tagidOther": 7, "synergy": 4.5000}, { "tagidOther": 9, "synergy": 4.5000}, { "tagidOther": 28, "synergy": 1.0000}, { "tagidOther": 36, "synergy": 1.0000}, { "tagidOther": 45, "synergy": 1.0000}, { "tagidOther": 53, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 6, "synergy": 4.5000}, { "tagidOther": 8, "synergy": 4.5000}, { "tagidOther": 28, "synergy": 1.5000}, { "tagidOther": 36, "synergy": 1.5000}, { "tagidOther": 45, "synergy": 1.0000}, { "tagidOther": 38, "synergy": 1.0000}, { "tagidOther": 53, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 38, "synergy": 1.0000}, { "tagidOther": 28, "synergy": 1.0000}, { "tagidOther": 53, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 57, "synergy": 0.7500}, { "tagidOther": 44, "synergy": 1.0000}, { "tagidOther": 36, "synergy": 1.2500} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 51, "synergy": 1.7500}, { "tagidOther": 34, "synergy": 1.7500}, { "tagidOther": 27, "synergy": 1.7500}, { "tagidOther": 28, "synergy": 1.0000}, { "tagidOther": 45, "synergy": 1.0000}, { "tagidOther": 38, "synergy": 1.0000}, { "tagidOther": 52, "synergy": 1.0000}, { "tagidOther": 25, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 26, "synergy": 1.0000}, { "tagidOther": 57, "synergy": 1.2500}, { "tagidOther": 53, "synergy": 1.2500}, { "tagidOther": 56, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 52, "synergy": 1.5000}, { "tagidOther": 55, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 53, "synergy": 1.2500}, { "tagidOther": 45, "synergy": 1.0000}, { "tagidOther": 64, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 28, "synergy": 1.0000}, { "tagidOther": 38, "synergy": 1.0000}, { "tagidOther": 52, "synergy": 1.0000}, { "tagidOther": 62, "synergy": 1.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 17, "synergy": -1.0000} ] }
 		, { "maxPerRow": 1, "synergies": [] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 19, "synergy": -2.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 19, "synergy": -2.5000} ] }
 		, { "maxPerRow": 1, "synergies": [] }
 		, { "maxPerRow": 1, "synergies": [] }
 		, { "maxPerRow": 4, "synergies": [] }
-		, { "maxPerRow": 4, "synergies": [ { "tagOther": 23, "synergy": 1.0000}, { "tagOther": 6, "synergy": 0.5000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 24, "synergy": 1.5000}, { "tagOther": 25, "synergy": 3.0000}, { "tagOther": 26, "synergy": 1.5000}, { "tagOther": 28, "synergy": 1.5000} ] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 25, "synergy": 3.2500}, { "tagOther": 24, "synergy": 3.0000}, { "tagOther": 12, "synergy": 1.0000} ] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 26, "synergy": 2.0000}, { "tagOther": 27, "synergy": 2.5000}, { "tagOther": 24, "synergy": 1.5000}, { "tagOther": 28, "synergy": 1.5000}, { "tagOther": 4, "synergy": 2.5000}, { "tagOther": 13, "synergy": 1.0000}, { "tagOther": 43, "synergy": 2.0000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 27, "synergy": 3.7500}, { "tagOther": 26, "synergy": 2.5000}, { "tagOther": 59, "synergy": 3.0000}, { "tagOther": 12, "synergy": 1.7500}, { "tagOther": 61, "synergy": 2.0000} ] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 28, "synergy": 2.0000}, { "tagOther": 26, "synergy": 1.5000}, { "tagOther": 24, "synergy": 1.5000}, { "tagOther": 5, "synergy": 1.0000}, { "tagOther": 6, "synergy": 1.0000}, { "tagOther": 7, "synergy": 1.0000}, { "tagOther": 8, "synergy": 1.0000}, { "tagOther": 9, "synergy": 1.5000}, { "tagOther": 10, "synergy": 1.0000}, { "tagOther": 12, "synergy": 1.0000}, { "tagOther": 16, "synergy": 1.0000}, { "tagOther": 63, "synergy": 1.0000}, { "tagOther": 62, "synergy": 1.0000} ] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 29, "synergy": 2.0000} ] }
+		, { "maxPerRow": 4, "synergies": [ { "tagidOther": 23, "synergy": 1.0000}, { "tagidOther": 6, "synergy": 0.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 24, "synergy": 1.5000}, { "tagidOther": 25, "synergy": 3.0000}, { "tagidOther": 26, "synergy": 1.5000}, { "tagidOther": 28, "synergy": 1.5000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 25, "synergy": 3.2500}, { "tagidOther": 24, "synergy": 3.0000}, { "tagidOther": 12, "synergy": 1.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 26, "synergy": 2.0000}, { "tagidOther": 27, "synergy": 2.5000}, { "tagidOther": 24, "synergy": 1.5000}, { "tagidOther": 28, "synergy": 1.5000}, { "tagidOther": 4, "synergy": 2.5000}, { "tagidOther": 13, "synergy": 1.0000}, { "tagidOther": 43, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 27, "synergy": 3.7500}, { "tagidOther": 26, "synergy": 2.5000}, { "tagidOther": 59, "synergy": 3.0000}, { "tagidOther": 12, "synergy": 1.7500}, { "tagidOther": 61, "synergy": 2.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 28, "synergy": 2.0000}, { "tagidOther": 26, "synergy": 1.5000}, { "tagidOther": 24, "synergy": 1.5000}, { "tagidOther": 5, "synergy": 1.0000}, { "tagidOther": 6, "synergy": 1.0000}, { "tagidOther": 7, "synergy": 1.0000}, { "tagidOther": 8, "synergy": 1.0000}, { "tagidOther": 9, "synergy": 1.5000}, { "tagidOther": 10, "synergy": 1.0000}, { "tagidOther": 12, "synergy": 1.0000}, { "tagidOther": 16, "synergy": 1.0000}, { "tagidOther": 63, "synergy": 1.0000}, { "tagidOther": 62, "synergy": 1.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 29, "synergy": 2.0000} ] }
 		, { "maxPerRow": 1, "synergies": [] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 31, "synergy": 2.5000}, { "tagOther": 63, "synergy": 1.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 31, "synergy": 2.5000}, { "tagidOther": 63, "synergy": 1.5000} ] }
 		, { "maxPerRow": 1, "synergies": [] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 36, "synergy": 0.5000}, { "tagOther": 5, "synergy": 1.5000}, { "tagOther": 64, "synergy": 0.5000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 12, "synergy": 1.7500} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 36, "synergy": 0.5000}, { "tagidOther": 5, "synergy": 1.5000}, { "tagidOther": 64, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 12, "synergy": 1.7500} ] }
 		, { "maxPerRow": 1, "synergies": [] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 36, "synergy": 1.7500}, { "tagOther": 33, "synergy": 0.5000}, { "tagOther": 6, "synergy": 1.0000}, { "tagOther": 8, "synergy": 1.0000}, { "tagOther": 9, "synergy": 1.5000}, { "tagOther": 11, "synergy": 1.2500} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 36, "synergy": 1.7500}, { "tagidOther": 33, "synergy": 0.5000}, { "tagidOther": 6, "synergy": 1.0000}, { "tagidOther": 8, "synergy": 1.0000}, { "tagidOther": 9, "synergy": 1.5000}, { "tagidOther": 11, "synergy": 1.2500} ] }
 		, { "maxPerRow": 1, "synergies": [] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 38, "synergy": 1.7500}, { "tagOther": 44, "synergy": 1.5000}, { "tagOther": 55, "synergy": 1.5000}, { "tagOther": 4, "synergy": 1.0000}, { "tagOther": 5, "synergy": 1.0000}, { "tagOther": 6, "synergy": 1.0000}, { "tagOther": 7, "synergy": 1.0000}, { "tagOther": 9, "synergy": 1.0000}, { "tagOther": 10, "synergy": 1.0000}, { "tagOther": 12, "synergy": 1.0000}, { "tagOther": 16, "synergy": 1.0000}, { "tagOther": 62, "synergy": 1.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 38, "synergy": 1.7500}, { "tagidOther": 44, "synergy": 1.5000}, { "tagidOther": 55, "synergy": 1.5000}, { "tagidOther": 4, "synergy": 1.0000}, { "tagidOther": 5, "synergy": 1.0000}, { "tagidOther": 6, "synergy": 1.0000}, { "tagidOther": 7, "synergy": 1.0000}, { "tagidOther": 9, "synergy": 1.0000}, { "tagidOther": 10, "synergy": 1.0000}, { "tagidOther": 12, "synergy": 1.0000}, { "tagidOther": 16, "synergy": 1.0000}, { "tagidOther": 62, "synergy": 1.0000} ] }
 		, { "maxPerRow": 1, "synergies": [] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 40, "synergy": 3.0000}, { "tagOther": 43, "synergy": 2.0000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 41, "synergy": 3.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 40, "synergy": 3.0000}, { "tagidOther": 43, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 41, "synergy": 3.5000} ] }
 		, { "maxPerRow": 1, "synergies": [] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 26, "synergy": 2.0000}, { "tagOther": 40, "synergy": 2.0000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 44, "synergy": 3.0000}, { "tagOther": 38, "synergy": 1.5000}, { "tagOther": 11, "synergy": 1.0000} ] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 45, "synergy": 2.0000}, { "tagOther": 49, "synergy": 2.0000}, { "tagOther": 48, "synergy": 1.5000}, { "tagOther": 52, "synergy": 1.5000}, { "tagOther": 5, "synergy": 0.5000}, { "tagOther": 6, "synergy": 0.5000}, { "tagOther": 7, "synergy": 1.0000}, { "tagOther": 8, "synergy": 1.0000}, { "tagOther": 9, "synergy": 1.0000}, { "tagOther": 12, "synergy": 1.0000}, { "tagOther": 15, "synergy": 1.0000}, { "tagOther": 65, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 26, "synergy": 2.0000}, { "tagidOther": 40, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 44, "synergy": 3.0000}, { "tagidOther": 38, "synergy": 1.5000}, { "tagidOther": 11, "synergy": 1.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 45, "synergy": 2.0000}, { "tagidOther": 49, "synergy": 2.0000}, { "tagidOther": 48, "synergy": 1.5000}, { "tagidOther": 52, "synergy": 1.5000}, { "tagidOther": 5, "synergy": 0.5000}, { "tagidOther": 6, "synergy": 0.5000}, { "tagidOther": 7, "synergy": 1.0000}, { "tagidOther": 8, "synergy": 1.0000}, { "tagidOther": 9, "synergy": 1.0000}, { "tagidOther": 12, "synergy": 1.0000}, { "tagidOther": 15, "synergy": 1.0000}, { "tagidOther": 65, "synergy": 1.0000} ] }
 		, { "maxPerRow": 1, "synergies": [] }
 		, { "maxPerRow": 1, "synergies": [] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 48, "synergy": 2.5000}, { "tagOther": 45, "synergy": 1.5000}, { "tagOther": 49, "synergy": 1.5000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 49, "synergy": 2.5000}, { "tagOther": 45, "synergy": 2.0000}, { "tagOther": 48, "synergy": 1.5000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 50, "synergy": 3.0000}, { "tagOther": 65, "synergy": 1.5000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 12, "synergy": 1.7500} ] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 52, "synergy": 2.0000}, { "tagOther": 45, "synergy": 1.5000}, { "tagOther": 12, "synergy": 1.0000}, { "tagOther": 14, "synergy": 1.5000}, { "tagOther": 16, "synergy": 1.0000} ] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 53, "synergy": 2.0000}, { "tagOther": 59, "synergy": 3.0000}, { "tagOther": 6, "synergy": 0.5000}, { "tagOther": 8, "synergy": 1.0000}, { "tagOther": 9, "synergy": 0.5000}, { "tagOther": 10, "synergy": 0.5000}, { "tagOther": 13, "synergy": 1.2500}, { "tagOther": 15, "synergy": 1.2500}, { "tagOther": 63, "synergy": 1.0000}, { "tagOther": 64, "synergy": 1.0000}, { "tagOther": 65, "synergy": 0.5000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 54, "synergy": 4.5000}, { "tagOther": 59, "synergy": 3.0000}, { "tagOther": 61, "synergy": 2.0000} ] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 55, "synergy": 2.0000}, { "tagOther": 38, "synergy": 1.5000}, { "tagOther": 14, "synergy": 1.0000} ] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 56, "synergy": 2.0000}, { "tagOther": 13, "synergy": 0.5000} ] }
-		, { "maxPerRow": 3, "synergies": [ { "tagOther": 57, "synergy": 3.0000}, { "tagOther": 11, "synergy": 0.7500}, { "tagOther": 13, "synergy": 1.2500}, { "tagOther": 62, "synergy": 1.0000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 58, "synergy": 4.0000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 27, "synergy": 3.0000}, { "tagOther": 53, "synergy": 3.0000}, { "tagOther": 54, "synergy": 3.0000}, { "tagOther": 4, "synergy": 2.0000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 5, "synergy": 2.0000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 27, "synergy": 2.0000}, { "tagOther": 54, "synergy": 2.0000} ] }
-		, { "maxPerRow": 2, "synergies": [ { "tagOther": 62, "synergy": 2.0000}, { "tagOther": 4, "synergy": 1.0000}, { "tagOther": 16, "synergy": 1.5000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 38, "synergy": 1.0000}, { "tagOther": 57, "synergy": 1.0000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 53, "synergy": 1.0000}, { "tagOther": 28, "synergy": 1.0000}, { "tagOther": 31, "synergy": 1.5000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 15, "synergy": 1.0000}, { "tagOther": 53, "synergy": 1.0000}, { "tagOther": 33, "synergy": 0.5000} ] }
-		, { "maxPerRow": 1, "synergies": [ { "tagOther": 45, "synergy": 1.0000}, { "tagOther": 50, "synergy": 1.5000}, { "tagOther": 53, "synergy": 0.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 48, "synergy": 2.5000}, { "tagidOther": 45, "synergy": 1.5000}, { "tagidOther": 49, "synergy": 1.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 49, "synergy": 2.5000}, { "tagidOther": 45, "synergy": 2.0000}, { "tagidOther": 48, "synergy": 1.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 50, "synergy": 3.0000}, { "tagidOther": 65, "synergy": 1.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 12, "synergy": 1.7500} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 52, "synergy": 2.0000}, { "tagidOther": 45, "synergy": 1.5000}, { "tagidOther": 12, "synergy": 1.0000}, { "tagidOther": 14, "synergy": 1.5000}, { "tagidOther": 16, "synergy": 1.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 53, "synergy": 2.0000}, { "tagidOther": 59, "synergy": 3.0000}, { "tagidOther": 6, "synergy": 0.5000}, { "tagidOther": 8, "synergy": 1.0000}, { "tagidOther": 9, "synergy": 0.5000}, { "tagidOther": 10, "synergy": 0.5000}, { "tagidOther": 13, "synergy": 1.2500}, { "tagidOther": 15, "synergy": 1.2500}, { "tagidOther": 63, "synergy": 1.0000}, { "tagidOther": 64, "synergy": 1.0000}, { "tagidOther": 65, "synergy": 0.5000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 54, "synergy": 4.5000}, { "tagidOther": 59, "synergy": 3.0000}, { "tagidOther": 61, "synergy": 2.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 55, "synergy": 2.0000}, { "tagidOther": 38, "synergy": 1.5000}, { "tagidOther": 14, "synergy": 1.0000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 56, "synergy": 2.0000}, { "tagidOther": 13, "synergy": 0.5000} ] }
+		, { "maxPerRow": 3, "synergies": [ { "tagidOther": 57, "synergy": 3.0000}, { "tagidOther": 11, "synergy": 0.7500}, { "tagidOther": 13, "synergy": 1.2500}, { "tagidOther": 62, "synergy": 1.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 58, "synergy": 4.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 27, "synergy": 3.0000}, { "tagidOther": 53, "synergy": 3.0000}, { "tagidOther": 54, "synergy": 3.0000}, { "tagidOther": 4, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 5, "synergy": 2.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 27, "synergy": 2.0000}, { "tagidOther": 54, "synergy": 2.0000} ] }
+		, { "maxPerRow": 2, "synergies": [ { "tagidOther": 62, "synergy": 2.0000}, { "tagidOther": 4, "synergy": 1.0000}, { "tagidOther": 16, "synergy": 1.5000}, { "tagidOther": 28, "synergy": 1.0000}, { "tagidOther": 38, "synergy": 1.0000}, { "tagidOther": 57, "synergy": 1.0000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 53, "synergy": 1.0000}, { "tagidOther": 28, "synergy": 1.0000}, { "tagidOther": 31, "synergy": 1.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 15, "synergy": 1.0000}, { "tagidOther": 53, "synergy": 1.0000}, { "tagidOther": 33, "synergy": 0.5000} ] }
+		, { "maxPerRow": 1, "synergies": [ { "tagidOther": 45, "synergy": 1.0000}, { "tagidOther": 50, "synergy": 1.5000}, { "tagidOther": 53, "synergy": 0.5000} ] }
 	],
 
 	"goals":

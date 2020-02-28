@@ -109,7 +109,11 @@
 	let iRngTable = 0;
 	let rngSeed = 0;
 
-	xport.seedRng = function(seed) {
+	xport.seedRng = function (seed) {
+		if (!isFinite(seed)) {
+			seed = 0;
+		}
+
 		rngSeed = seed;
 		iRngTable = rngSeed % rngTable.length;
 	}

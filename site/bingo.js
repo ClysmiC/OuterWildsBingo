@@ -1,8 +1,30 @@
-﻿function assert(value) {
+﻿// TODO: Debug Row 5 of seed 860446880 ... there are 4 translate text goals? Are the tags set up properly?
+//	Or do we have a bug?
+
+function assert(value) {
 	if (!value) {
 		debugger;
-		alert("Assertion failed");
+		alert("Assertion failed. Please contact @ClysmiC11 on Twitter with this card's seed so he can debug!");
 	}
+}
+
+function getRandomSeed(difficulty) {
+	// NOTE: We only get a seed from 0 - a hundred million because we are going to append
+	//	a difficulty suffix. Which puts us up to a max of a billion, which is fine for an s32.
+
+	let generatedSeed = Math.floor(Math.random() * 100000000);
+
+	if (difficulty === "Easy") {
+		generatedSeed += g_suffixEasy;
+	}
+	else if (difficulty === "Hard") {
+		generatedSeed += g_suffixHard;
+	}
+	else {
+		generatedSeed += g_suffixNormal;
+	}
+
+	return generatedSeed;
 }
 
 function shorthandLookup(strShort) {
@@ -54,6 +76,46 @@ function htmlFromGoal(goal) {
 	return result;
 }
 
+
+
+function initSeed() {
+	// Get random seed from URL or generate one
+
+	if (window.location.href.includes("?seed=")) {
+		let seedIndex = window.location.href.indexOf("?seed=");
+		seedIndex += "?seed=".length;
+
+		let seedString = window.location.href.substring(seedIndex);
+
+		// TODO: Verify this parseInt succeeds?
+		// TODO: Handle empty string?
+
+		seedRng(parseInt(seedString));
+
+		if (seedString.charAt(seedString.length - 1) === g_suffixEasy) {
+			g_difficulty = "Easy";
+		}
+		else if ((seedString.charAt(seedString.length - 1) === g_suffixHard)) {
+			g_difficulty = "Hard";
+		}
+
+		// Check the corresponding radio button
+
+		document.getElementById("radio" + g_difficulty).checked = true;
+
+		// Make the difficulty text correct
+
+		let spanDifficulty = document.getElementById("spanDifficulty");
+		spanDifficulty.innerText = g_difficulty;
+	}
+	else {
+		// NOTE (this performs a redirect)
+
+		window.location.replace(window.location.href + "?seed=" + getRandomSeed("Normal"));
+		return;
+	}
+}
+
 function initLayout() {
 
 	// Set cell size
@@ -83,23 +145,6 @@ function initLayout() {
 
 function initHandlers() {
 
-	// Get random seed from URL or generate one
-
-	if (window.location.href.includes("?seed=")) {
-		let seedIndex = window.location.href.indexOf("?seed=");
-		seedIndex += "?seed=".length;
-
-		seedRng(parseInt(window.location.href.slice(seedIndex)));
-	}
-	else {
-		let generatedSeed = Math.floor(Math.random() * 1000000000);
-
-		// NOTE (this performs a redirect)
-
-		window.location.replace(window.location.href + "?seed=" + generatedSeed);
-		return;
-	}
-
 	// Initialize new card button
 
 	document.getElementById("btnNewCard").addEventListener("click", function () {
@@ -107,12 +152,18 @@ function initHandlers() {
 		if (window.location.href.includes("?seed=")) {
 			locationSubstring = locationSubstring.substring(0, window.location.href.indexOf("?seed="));
 		}
-		
-		let generatedSeed = Math.floor(Math.random() * 1000000000);
+
+		let difficultySelected = "Normal";
+		if (document.getElementById("radioEasy").checked) {
+			difficultySelected = "Easy";
+		}
+		else if (document.getElementById("radioHard").checked) {
+			difficultySelected = "Hard";
+		}
 
 		// NOTE (this performs a redirect)
 
-		window.location.replace(locationSubstring + "?seed=" + generatedSeed);
+		window.location.replace(locationSubstring + "?seed=" + getRandomSeed(difficultySelected));
 		return;
 	});
 
@@ -238,119 +289,134 @@ function initHandlers() {
 			});
 		}
 	}
-	
+
 	// Recalculate layout on window resize
 
 	addEventListener("resize", initLayout);
 }
 
-function chooseGoals() {
+function goalsFromHeaderId(headerId) {
+	let goals = [];
 
-	// Init extra fields on goals
+	if (headerId === "tlbr") {
+		goals.push(g_goalGrid[0][0]);
+		goals.push(g_goalGrid[1][1]);
+		goals.push(g_goalGrid[2][2]);
+		goals.push(g_goalGrid[3][3]);
+		goals.push(g_goalGrid[4][4]);
+	}
+	else if (headerId === "bltr") {
+		goals.push(g_goalGrid[4][0]);
+		goals.push(g_goalGrid[3][1]);
+		goals.push(g_goalGrid[2][2]);
+		goals.push(g_goalGrid[1][3]);
+		goals.push(g_goalGrid[0][4]);
+	}
+	else if (headerId.startsWith("col")) {
+		let col = headerId.slice(-1);
+		col = parseInt(col) - 1;
 
-	for (let i = 0; i < manifest.goals.length; i++) {
-		manifest.goals[i].isInBoard = false;
+		for (let i = 0; i < 5; i++) {
+			goals.push(g_goalGrid[i][col]);
+		}
+	}
+	else if (headerId.startsWith("row")) {
+		let row = headerId.slice(-1);
+		row = parseInt(row) - 1;
+
+		for (let i = 0; i < 5; i++) {
+			goals.push(g_goalGrid[row][i]);
+		}
+	}
+	else {
+		assert(false);
 	}
 
-	// Shuffle goals in manifest
+	return goals;
+}
 
-	for (let i = 0; i < manifest.goals.length; i++) {
-		let iNew = i + rngInt(manifest.goals.length - i);
+function computeScoreWithSynergies(headerId) {
 
-		var tmp = manifest.goals[i];
-		manifest.goals[i] = manifest.goals[iNew];
-		manifest.goals[iNew] = tmp;
-	}
+	// @Slow
+	function getSynergy(goal0, goal1) {
+		let synergyMax = Number.NEGATIVE_INFINITY;
 
-	let iGoalNext = 0;
-	function nextGoal() {
-		while (manifest.goals[iGoalNext].isInBoard) {
-			iGoalNext += 1;
-			iGoalNext %= manifest.goals.length;
+		for (let iTag = 0; iTag < goal0.tags.length; iTag++) {
+			let tagid = goal0.tags[iTag];
+			let tag = manifest.tags[tagid];
+
+			for (let iTagOther = 0; iTagOther < goal1.tags.length; iTagOther++) {
+				let tagidOther = goal1.tags[iTagOther];
+				let tagOther = manifest.tags[tagidOther];
+
+				for (let iTagSynergy = 0; iTagSynergy < tag.synergies.length; iTagSynergy++) {
+					let synergy = tag.synergies[iTagSynergy];
+
+					if (synergy.tagidOther === tagidOther) {
+						synergyMax = Math.max(synergyMax, synergy.synergy);
+					}
+				}
+			}
 		}
 
-		var result = manifest.goals[iGoalNext];
-		iGoalNext += 1;
-		iGoalNext %= manifest.goals.length;
+		return (synergyMax === Number.NEGATIVE_INFINITY) ? 0 : synergyMax;
+	}
+
+	let result = 0;
+	let goals = goalsFromHeaderId(headerId);
+	assert(goals.length === 5);
+
+	for (let iGoal = 0; iGoal < 5; iGoal++) {
+		let goal = goals[iGoal];
+		result += goal.score;
+
+		for (let iGoalOther = iGoal + 1; iGoalOther < 5; iGoalOther++) {
+			let goalOther = goals[iGoalOther];
+			result -= getSynergy(goal, goalOther);
+		}
+	}
+
+	return result;
+}
+
+// @Slow
+function chooseGoals() {
+
+	function nextGoal() {
+		if (typeof nextGoal.iGoalNext === 'undefined') {
+			nextGoal.iGoalNext = 0;
+		}
+
+		while (manifest.goals[nextGoal.iGoalNext].cell) {
+			nextGoal.iGoalNext += 1;
+			nextGoal.iGoalNext %= manifest.goals.length;
+		}
+
+		var result = manifest.goals[nextGoal.iGoalNext];
+		nextGoal.iGoalNext += 1;
+		nextGoal.iGoalNext %= manifest.goals.length;
 		return result;
 	}
 
-	// Set up 5x5 buffer
-
-	let goalGrid = [];
-	for (let i = 0; i < 5; i++) {
-		goalGrid.push([]);
-		for (let j = 0; j < 5; j++) {
-			goalGrid[i].push(null);
-		}
-	}
-
 	function setGoal(row, col, goal) {
-		let oldGoal = goalGrid[row][col];
+		assert(goal.cell === null);
+
+		let oldGoal = g_goalGrid[row][col];
 		if (oldGoal !== null) {
-			oldGoal.isInBoard = false;
+			assert(oldGoal.cell);
+			oldGoal.cell = null;
 		}
 
-		goalGrid[row][col] = goal;
-		goal.isInBoard = true;
-	}
-
-	// Pick random goals for each cell
-
-	for (let i = 0; i < 5; i++) {
-		for (let j = 0; j < 5; j++) {
-			setGoal(i, j, nextGoal());
-		}
+		g_goalGrid[row][col] = goal;
+		goal.cell = { row: row, col: col };
 	}
 
 	// @Slow
-	function getNextReplaceCandidate(headerId) {
+	function getNextReplaceInstruction(headerId) {
 
-		function goalsFromHeaderId(headerId) {
-			let goals = [];
-
-			if (headerId === "tlbr") {
-				goals.push(goalGrid[0][0]);
-				goals.push(goalGrid[1][1]);
-				goals.push(goalGrid[2][2]);
-				goals.push(goalGrid[3][3]);
-				goals.push(goalGrid[4][4]);
-			}
-			else if (headerId === "bltr") {
-				goals.push(goalGrid[4][0]);
-				goals.push(goalGrid[3][1]);
-				goals.push(goalGrid[2][2]);
-				goals.push(goalGrid[1][3]);
-				goals.push(goalGrid[0][4]);
-			}
-			else if (headerId.startsWith("col")) {
-				let col = headerId.slice(-1);
-				col = parseInt(col) - 1;
-
-				for (let i = 0; i < 5; i++) {
-					goals.push(goalGrid[i][col]);
-				}
-			}
-			else if (headerId.startsWith("row")) {
-				let row = headerId.slice(-1);
-				row = parseInt(row) - 1;
-
-				for (let i = 0; i < 5; i++) {
-					goals.push(goalGrid[row][i]);
-				}
-			}
-			else {
-				assert(false);
-			}
-
-			return goals;
-		}
-
-		function headerIdsFromCell(row, col)
-		{
+		function headerIdsFromCell(row, col) {
 			let headerIds = [];
-			switch (row)
-			{
+			switch (row) {
 				case 0:
 					headerIds.push("row1");
 					break;
@@ -408,35 +474,27 @@ function chooseGoals() {
 				headerIds.push("bltr");
 			}
 
-			assert(headerIds.length === 2 || headerIds.length === 3);
+			assert(headerIds.length === 2 || headerIds.length === 3 || headerIds.length === 4);
 			return headerIds;
 		}
 
-		function getSynergy(goal0, goal1) {
-			// NOTE (andrew) You only get the biggest synergy. You don't get to double dip multiple synergies, as there are certain tags
-			//	that always imply other less specific tags. It is very likely that both tags synergize with similar things, and it would
-			//	be silly to give you the synergy twice. Just choose the one that is biggest. The tag synergies are authored with this in mind.
-
-			// TODO: Go thru all tags pairwise and choose the biggest synergy to return.
-
-			return 0;
-		}
-
-		function getTagViolationsAndNearViolations(headerId, iGoalOmitFromConsideration) {
+		function getTagViolationsAndNearViolations(headerId, goalOmitFromConsideration) {
 			let result = {
 				tagViolations: [],
 				nearTagViolations: []		// Tags that are 1 away from exceeding limit
 			}
-			
+
+			let goals = goalsFromHeaderId(headerId);
+			let mpTagidCGoal = Array(manifest.tags.length).fill(0);
+
 			for (let iGoal = 0; iGoal < 5; iGoal++) {
 
 				// Useful when getting tag constraints when we are replacing a cell
 
-				if (iGoal === iGoalOmitFromConsideration)
+				let goal = goals[iGoal];
+				if (goal === goalOmitFromConsideration)
 					continue;
 
-				let goal = goals[iGoal];
-				let mpTagidCGoal = Array(manifest.tags.length).fill(0);
 
 				// Check tag's MaxPerRow
 
@@ -462,7 +520,7 @@ function chooseGoals() {
 							assert(iNtvExisting !== -1);
 							assert(iTvExisting === -1);
 
-							result.nearTagViolations.splice(ntvExisting, 1);
+							result.nearTagViolations.splice(iNtvExisting, 1);
 							result.tagViolations.push(tagid);
 						}
 						else {
@@ -476,126 +534,400 @@ function chooseGoals() {
 			return result;
 		}
 
+		let goals = goalsFromHeaderId(headerId);
+		let result = {
+			goalReplace: null,
+			tagsDisallowed: [],
+			score: 0
+		};
+
+		// Compute score
+
+		result.score = computeScoreWithSynergies(headerId);
+
 		// Get list of tag violations (and near tag violations)
 
 		let tv;
 		let ntv;
 		{
-			let tvAndNtv = getTagViolationsAndNearViolations(headerId);
-			tv = tvAndNtv.tagViolations;
-			ntv = tvAndNtv.nearTagViolations;
+			let tvNtv = getTagViolationsAndNearViolations(headerId);
+			tv = tvNtv.tagViolations;
+			ntv = tvNtv.nearTagViolations;
 		}
-
-		let goals = getGoalsFromHeaderId(headerId);
-		assert(goals.length === 5);
-
-		let result = {
-			iGoalReplace: -1,
-			tagsDisallowed: [],
-			replacementRelativeScoreDesired: 0		// -1 = decrease, 0 = either, 1 = increase
-		};
 
 		if (tv.length > 0) {
 
 			// Find first goal w/ tag that is in violation. It will be our replace candidate.
 
+		LGoalLoop:
 			for (let iGoal = 0; iGoal < 5; iGoal++) {
 				let goal = goals[iGoal];
+				assert(goal.cell);
 
 				for (let iTag = 0; iTag < goal.tags.length; iTag++) {
-
 					let tagid = goal.tags[iTag];
+
 					for (let iTagViolation = 0; iTagViolation < tv.length; iTagViolation++) {
 						let tagidViolation = tv[iTagViolation];
 
 						if (tagid === tagidViolation) {
-							result.iGoalReplace = iGoal;
-							
-							// TODO: compute tag violations in all headers from headerIdsFromCell(..) with iGoalOmitted.
-							//	Assign it to result.tagsDisallowed.
-							// NOTE: iGoal might not be best for the interface since we don't have it
-							//	on hand for the other headers. 
 
-							// TODO: Compute row score and use that to determine result of replacementRelativeScoreDesired
-							// NOTE: still need to think more about this...
+							// Found a goal that contains a violating tag. Mark it for replacement.
+
+							result.goalReplace = goal;
+							break LGoalLoop;
+						}
+					}
+				}
+			}
+
+			assert(result.goalReplace);		// Surely, by definition, at least one of our goals must have contained the violating tag!
+		}
+		else if (result.score < g_headerScoreMin) {
+			let goalLowestRawScore = goals[0];
+
+			for (let iGoal = 1; iGoal < 5; iGoal++) {
+				let goal = goals[iGoal];
+				if (goal.score < goalLowestRawScore.score) {
+					goalLowestRawScore = goal;
+				}
+			}
+
+			result.goalReplace = goalLowestRawScore;
+		}
+		else if (result.score > g_headerScoreMax) {
+			let goalHighestRawScore = goals[0];
+
+			for (let iGoal = 1; iGoal < 5; iGoal++) {
+				let goal = goals[iGoal];
+				if (goal.score > goalHighestRawScore.score) {
+					goalHighestRawScore = goal;
+				}
+			}
+
+			result.goalReplace = goalHighestRawScore;
+		}
+		else {
+			// All good!
+
+			assert(result.goalReplace === null);
+			assert(result.tagsDisallowed.length === 0);
+			assert(result.score >= g_headerScoreMin && result.score <= g_headerScoreMax);
+			return result;
+		}
+
+		// Compute tagsDisallowed
+
+		assert(result.goalReplace);
+
+		let headerIdsIntersect = headerIdsFromCell(result.goalReplace.cell.row, result.goalReplace.cell.col);
+		for (let iHeaderIdIntersect = 0; iHeaderIdIntersect < headerIdsIntersect.length; iHeaderIdIntersect++) {
+			let headerIdIntersect = headerIdsIntersect[iHeaderIdIntersect];
+			let tvNtvHeaderIntersect = getTagViolationsAndNearViolations(headerIdIntersect, result.goalReplace);
+
+			for (let iTvHeaderIntersect = 0; iTvHeaderIntersect < tvNtvHeaderIntersect.tagViolations.length; iTvHeaderIntersect++) {
+				result.tagsDisallowed.push(tvNtvHeaderIntersect.tagViolations[iTvHeaderIntersect]);
+			}
+
+			for (let iNtvHeaderIntersect = 0; iNtvHeaderIntersect < tvNtvHeaderIntersect.nearTagViolations.length; iNtvHeaderIntersect++) {
+				result.tagsDisallowed.push(tvNtvHeaderIntersect.nearTagViolations[iNtvHeaderIntersect]);
+			}
+		}
+
+		// Uniquify tagsDisallowed
+		// @Slow(could use Set)
+
+		result.tagsDisallowed.filter(function (value, index, ary) { return ary.indexOf(value) === index; });
+		return result;
+	}
+
+	function performReplace(headerId, replaceInstruction) {
+		let goals = goalsFromHeaderId(headerId);
+		let replaceRow = replaceInstruction.goalReplace.cell.row;
+		let replaceCol = replaceInstruction.goalReplace.cell.col;
+
+		LTryFindReplacement:
+			for (let cTryFindReplacement = 0; cTryFindReplacement < 100; cTryFindReplacement++) {
+
+				let goalCandidate = nextGoal();
+
+				// NOTE (andrew) Eagerly set the new goal so that computeScoreWithSynergies will consider it. If we
+				//  end up not wanting to choose this goal, fear not! The next iteration will use a new one!
+
+				setGoal(replaceRow, replaceCol, goalCandidate);
+
+				// Verify that goal doesn't have disallowed tags!
+
+				for (let iTagCandidate = 0; iTagCandidate < goalCandidate.tags.length; iTagCandidate++) {
+					for (let iTagDisallowed = 0; iTagDisallowed < replaceInstruction.tagsDisallowed.length; iTagDisallowed++) {
+						if (goalCandidate.tags[iTagCandidate] === replaceInstruction.tagsDisallowed[iTagDisallowed]) {
+							continue LTryFindReplacement;
 						}
 					}
 				}
 
-				assert(false);		// Surely, by definition, at least one of our goals must have contained the violating tag!
-			}
-		}
-		else {
+				// Verify that he moves us closer to the ideal score!
 
+				let scoreNew = computeScoreWithSynergies(headerId);
+				if (replaceInstruction.score >= g_headerScoreMin && replaceInstruction.score <= g_headerScoreMax) {
+
+					// Row score was in range before doing replacment. Make sure it is still in range.
+
+					if (scoreNew < g_headerScoreMin || scoreNew > g_headerScoreMax) {
+						continue;
+					}
+				}
+				else if (replaceInstruction.score < g_headerScoreMin) {
+
+					// We don't need to get within a valid range. We just need to get closer.
+
+					if (scoreNew <= replaceInstruction.score) {
+						continue;
+					}
+				}
+				else {
+					assert(replaceInstruction.score > g_headerScoreMax);
+
+					// We don't need to get within a valid range. We just need to get closer.
+
+					if (scoreNew >= replaceInstruction.score) {
+						continue;
+					}
+				}
+
+				// Our newly found goal meets all of our criteria! Stop searching!
+
+				break;
+			}
+	}
+
+	// Compute some constants
+	// TODO: Easy, medium, hard difficulties
+	// NOTE (andrew) sqrt is intended to dampen the volatility a little bit. It is definitely a knob that can be tweaked.
+
+	// Init extra fields on goals
+
+	for (let i = 0; i < manifest.goals.length; i++) {
+		manifest.goals[i].cell = null;
+	}
+
+	// Shuffle goals in manifest
+
+	for (let i = 0; i < manifest.goals.length; i++) {
+		let iNew = i + rngInt(manifest.goals.length - i);
+
+		var tmp = manifest.goals[i];
+		manifest.goals[i] = manifest.goals[iNew];
+		manifest.goals[iNew] = tmp;
+	}
+
+	// Pick random goals for each cell
+
+	for (let i = 0; i < 5; i++) {
+		for (let j = 0; j < 5; j++) {
+			setGoal(i, j, nextGoal());
 		}
 	}
-	
+
+	// Mutate until we have a reasonable card
 
 	let stopMutating = false;
 	let iterations = 0;
 	let iterationsMax = 50;
-	let headerIds = ["row1", "row2", "row3", "row4", "row5", "col1", "col2", "col3", "col4", "col5", "tlbr", "bltr"];
-
-	// TODO: Easy, medium, hard difficulties
-
-	// NOTE (andrew) sqrt is intended to dampen the volatility a little bit. It is definitely a knob that can be tweaked.
-	// BB (andrew) In this overestimates the average score post synergy, since each goal has 4 candidates to choose the goal
-	//	it synergizes with the most. I'm not 100% sure that this is the best way to do it...
-
-	let avgScorePostSynergy = manifest.goalScoreAvg - manifest.pairwiseGoalSynergyAvg;
-	let headerScoreMin = avgScorePostSynergy * 5 - Math.sqrt(5 * manifest.goalScoreStddev);
-	let headerScoreIdeal = avgScorePostSynergy * 5;
-	let headerScoreMax = avgScorePostSynergy * 5 + Math.sqrt(5 * manifest.goalScoreStddev);
 
 	// @Slow. Probably a better way to do this using some sort of constraint satisfaction technique. I'm just using a bunch of heuristics
-	//	to get a half-baked genetic algorithm style solution. Seems to work good enough. It is quite inefficient, but at 5x5 it's fine.
+	//	to get a half-baked brute force/genetic algorithm style solution. Seems to work good enough. It is quite inefficient, but at 5x5 it's fine.
 	while (iterations < iterationsMax && !stopMutating) {
 		stopMutating = true;
 
-		for (let i = 0; i < headerIds.length; i++) {
-			let headerId = headerIds[i];
-			let replaceCandidate = getNextReplaceCandidate(headerId);
+		for (let i = 0; i < g_headerIds.length; i++) {
+			let headerId = g_headerIds[i];
+			let replaceInstruction = getNextReplaceInstruction(headerId);
 
-			if (!replaceCandidate)
+			if (replaceInstruction.goalReplace === null)
 				continue;
 
 			stopMutating = false;
-			
-
-			let dScoreIdeal = headerScoreIdeal - evaluation.finalScore;
-			let cNeedReplaceDueToTag = 0;	// TODO: compute. Keep in mind that multiple violations could be fixed by a single replace if it has multiple tags...
-
-			let dScorePerReplace = dScoreIdeal / cNeedReplaceDueToTag;	// TODO: watch for divide by zero here. Need different strategy to nudge difficulty up/down if the tags are fine but difficulty isn't.
-
-			// TODO: If tag violations, try to replace them with better tags (use neartagviolations to guide you)
-			// BB (andrew) Maybe the result value should just have a full index of tagid -> goals, sorted by count. That way we can keep the value updated as we swap
-			//	potentially multiple goals out.
+			performReplace(headerId, replaceInstruction);
 		}
+
+		iterations++;
 	}
 
-	if (!stopMutating)
-	{
+	if (iterations < iterationsMax) {
+		console.log("Board balanced after " + (iterations - 1) + " iterations");
+	}
+	else {
 		assert(iterations == iterationsMax);
-		console.log("Reached max iteration count while mutating board");
+		assert(!stopMutating);
+		console.log("Board imbalanced (" + iterationsMax + " iterations reached)");
 	}
-
-	return goalGrid;
 }
 
-function buildBoardHtml(goals) {
-	for (let i = 0; i < 5; i++) {
-		for (let j = 0; j < 5; j++) {
-			let cell = document.getElementById(i + "_" + j);
-			let goal = goals[i][j];
+function buildBoardHtml() {
+	for (let iRow = 0; iRow < 5; iRow++) {
+		for (let iCol = 0; iCol < 5; iCol++) {
+			let cell = document.getElementById(iRow + "_" + iCol);
+			let goal = g_goalGrid[iRow][iCol];
 
 			cell.innerHTML = htmlFromGoal(goal);
 		}
 	}
 }
 
-initLayout();
+function superSecretDevDebugTool() {
+
+	let isCodeActive = false;
+
+	function toggleSuperSecretDevDebugTool() {
+		isCodeActive = !isCodeActive;
+
+		for (let iRow = 0; iRow < 5; iRow++) {
+			for (let iCol = 0; iCol < 5; iCol++) {
+				let cell = document.getElementById(iRow + "_" + iCol);
+				let goal = g_goalGrid[iRow][iCol];
+
+				if (isCodeActive) {
+					let sigma = (goal.score - manifest.goalScoreAvg) / manifest.goalScoreStddev;
+					sigma = Math.max(sigma, -3);
+					sigma = Math.min(sigma, 3);
+
+					let scoreNormalized = (sigma + 3) / 6;
+					let r = scoreNormalized * 255;
+					let g = (1 - scoreNormalized) * 255;
+
+					cell = document.getElementById(iRow + "_" + iCol);
+					cell.style.backgroundColor = "rgb(" + r + ", " + g + ", 0)";
+
+					assert(cell.innerHTML.indexOf("<br>") === -1);		// Trying to toggle on when already on?
+
+					cell.innerHTML += "<br>{" + goal.score + "}";
+				}
+				else {
+					cell.style.removeProperty("background-color");
+					let iBr = cell.innerHTML.indexOf("<br>");
+					assert(iBr !== -1);									// Trying to toggle off when already off?
+					cell.innerHTML = cell.innerHTML.substring(0, iBr)
+				}
+			}
+		}
+
+		for (let iHeaderId = 0; iHeaderId < g_headerIds.length; iHeaderId++) {
+
+			let headerId = g_headerIds[iHeaderId];
+			let goals = goalsFromHeaderId(headerId);
+			assert(goals.length === 5);
+
+			let headerDom = document.getElementById(headerId);
+
+			if (isCodeActive) {
+				let rawScore = 0;
+				for (let iGoal = 0; iGoal < 5; iGoal++) {
+					let goal = goals[iGoal];
+					rawScore += goal.score;
+				}
+
+				let scoreWithSynergy = computeScoreWithSynergies(headerId);
+
+				let scoreWithSynergyNormalized = (scoreWithSynergy - g_headerScoreMin) / (g_headerScoreMax - g_headerScoreMin);
+				let r = scoreWithSynergyNormalized * 255;
+				let g = (1 - scoreWithSynergyNormalized) * 255;
+
+				headerDom.style.backgroundColor = "rgb(" + r + ", " + g + ", 0)";
+
+				assert(headerDom.innerHTML.indexOf("<br>") === -1);		// Trying to toggle on when already on?
+
+				headerDom.innerHTML += "<br>{score:" + scoreWithSynergy.toFixed(2) + "}<br>{raw:" + rawScore.toFixed(2) + "}";
+			}
+			else {
+				headerDom.style.removeProperty("background-color");
+				let iBr = headerDom.innerHTML.indexOf("<br>");
+				assert(iBr !== -1);										// Trying to toggle off when already off?
+				headerDom.innerHTML = headerDom.innerHTML.substring(0, iBr)
+			}
+		}
+
+		// We added/removed HTML so we need to recalculate layout!
+
+		initLayout();
+	}
+
+	let keyLeft = 37;
+	let keyUp = 38;
+	let keyRight = 39;
+	let keyDown = 40;
+	let keyA = 65;
+	let keyB = 66;
+
+	let konami = [keyUp, keyUp, keyDown, keyDown, keyLeft, keyRight, keyLeft, keyRight, keyB, keyA];
+	let iKonami = 0;
+
+	document.addEventListener("keydown",
+		function (event) {
+			if (event.keyCode === konami[iKonami]) {
+				iKonami++;
+			}
+			else if (event.keyCode === konami[0]) {
+				iKonami = 1;
+			}
+			else {
+				iKonami = 0;
+			}
+
+			if (iKonami === konami.length) {
+				toggleSuperSecretDevDebugTool();
+				iKonami = 0;
+			}
+		}
+	);
+
+	let debugStartToggledOn = true;
+	if (debugStartToggledOn) {
+		toggleSuperSecretDevDebugTool();
+	}
+}
+
+// Set up global state
+// BB (andrew) This is pretty janky, but oh well.
+
+let g_suffixEasy = "0";
+let g_suffixNormal = "5";		// NOTE (andrew) Any other suffix also defaults to normal. But 5 is the explicit suffix.
+let g_suffixHard = "9";
+
+let g_difficulty = "Normal";		// EW please let me use enums JavaScript !!!
+let g_headerIds = ["row1", "row2", "row3", "row4", "row5", "col1", "col2", "col3", "col4", "col5", "tlbr", "bltr"];
+let g_cPairwiseSynergies = 10;									// 5 choose 2
+let g_cPairwiseSynergiesPerGoal = g_cPairwiseSynergies / 5;		// NOTE (andrew) Each goal has 4 other goals it can synergize with. But we don't count synergies both ways, so this should equal 2!
+let g_avgScorePostSynergy = manifest.goalScoreAvg - manifest.pairwiseGoalSynergyAvg * g_cPairwiseSynergiesPerGoal;
+
+// Set up 5x5 buffer
+
+let g_goalGrid = [];
+for (let i = 0; i < 5; i++) {
+	g_goalGrid.push([]);
+	for (let j = 0; j < 5; j++) {
+		g_goalGrid[i].push(null);
+	}
+}
+
+initSeed();
+
+
+let g_headerScoreIdeal = g_avgScorePostSynergy * 5;
+if (g_difficulty === "Easy") {
+	g_headerScoreIdeal *= 0.7;
+}
+else if (g_difficulty === "Hard") {
+	g_headerScoreIdeal *= 1.3;
+}
+
+let g_headerScoreMin = g_headerScoreIdeal - Math.sqrt(5 * manifest.goalScoreStddev);
+let g_headerScoreMax = g_headerScoreIdeal + Math.sqrt(5 * manifest.goalScoreStddev);
+
 initHandlers();
-let goals = chooseGoals();
-buildBoardHtml(goals);
+chooseGoals();
+buildBoardHtml();
+initLayout();
+superSecretDevDebugTool();
 
 document.getElementById("panelMain").style.visibility = "visible";

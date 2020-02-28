@@ -98,7 +98,7 @@ h2 {
 #txtCredit {
 	font-size: 0.6rem;
 	font-family: arial;
-	position: absolute;
+	position: fixed;
 	bottom: 10px;
     left: 10px;
 }

@@ -1030,7 +1030,7 @@ void DumpToJson()
 				else						append(&str, ", ");
 
 				append(&str, "{ ");
-				append(&str, "\"tagOther\": ");
+				append(&str, "\"tagidOther\": ");
 				append(&str, PChzFromInt(pSynrg->m_tagid1));
 				append(&str, ", \"synergy\": ");
 				append(&str, PChzFromFloat(pSynrg->m_gSynrg));
