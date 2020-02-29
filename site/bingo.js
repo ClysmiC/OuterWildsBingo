@@ -862,13 +862,13 @@ function superSecretDevDebugTool() {
 					cell = document.getElementById(iRow + "_" + iCol);
 					cell.style.backgroundColor = "rgb(" + r + ", " + g + ", 0)";
 
-					assert(cell.innerHTML.indexOf("<br>") === -1);		// Trying to toggle on when already on?
+					assert(cell.innerHTML.indexOf('<br class="brSentinel">') === -1);		// Trying to toggle on when already on?
 
-					cell.innerHTML += "<br>{" + goal.score + "}";
+					cell.innerHTML += '<br class="brSentinel">{' + goal.score + "}";
 				}
 				else {
 					cell.style.removeProperty("background-color");
-					let iBr = cell.innerHTML.indexOf("<br>");
+					let iBr = cell.innerHTML.indexOf('<br class="brSentinel">');
 					assert(iBr !== -1);									// Trying to toggle off when already off?
 					cell.innerHTML = cell.innerHTML.substring(0, iBr)
 				}
