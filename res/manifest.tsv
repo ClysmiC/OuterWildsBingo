@@ -164,17 +164,17 @@ Translate any text on [DB]		DB, TranslatePrimary	3	3.5
 Translate any text on [WHS]		WHS, TranslatePrimary	4	3.5
 Translate any text on [TI]		TI, TranslatePrimary	5	3.5
 Translate any text on [QM]		QM, TranslatePrimary	5	5
-[COMMENT] A "hunt" is anything that can be done on at least 3 different primary locations				
+[COMMENT] A "hunt" is anything that can be done on at least 3 different bodies				
 Translate text on $3/4/5$ planet(s)		TextHunt	$4/5.5/7$	$4/5.5/7$
-Translate text on $3/4/5/6$ celestial bodie(s)		TextHunt	$3/4.3/5.6/7$	$3/4.3/5.6/7$
-Translate text on $3/4/5/6$ primary location(s)		TextHunt	$2/4.3/5.6/7$	$3/4.3/5.6/7$
+Translate text on $3/4/5/6$ natural bodie(s)		TextHunt	$3/4.3/5.6/7$	$3/4.3/5.6/7$
+Translate text on $3/4/5/6$ bodie(s)		TextHunt	$2/4.3/5.6/7$	$3/4.3/5.6/7$
 Take $2/3/4$ different warp(s)	*Any* warp from a black hole to white hole counts. Warping back on a charged pad doesn't.	WarpHunt	$2/3/4$	$2/3/4$
 Eat a marshmallow at $2/3/4/5$ different fire(s)		FireHunt	$1/2/3/4.5$	$1.5/2.5/3.5/4.5$
 Talk to $2/3/4/5$ Hearthian traveler(s) outside of [TH]		TravelerHunt	$3/4/5/6$	$3.5/4.5/5.5/6.5$
 Touch $1/2/3$ distress beacon(s)		BeaconHunt	$2/4/7$	$2/4/7$
 Touch $2/3/4$ travelers' ship(s)		TravelerHunt	$1.5/3/4.5$	$1.5/3/5$
 Translate any text on $2/3$ moon(s)		MoonHunt, TranslatePrimary	$5/6.5$	$5/6.5$
-Use $2/3/4$ different projection pool(s)		ProjectionPoolHunt	$3/4.5/6$	$3/4.5/6$
+Activate $2/3/4$ different projection pool(s)	The "activated" pool is the one that you are standing at. Not the remote one.	ProjectionPoolHunt	$3/4.5/6$	$3/4.5/6$
 Touch the quantum cave shard on [ET]		ET, QShard	3.5	3
 Touch the quantum grove shard on [TH]		TH, QShard	1.5	1.5
 Touch the quantum museum shard on [TH]		Museum, QShard	1	2.5
@@ -185,7 +185,7 @@ Light $1/2/3$ camp fire(s)		UnlitFireHunt	$1.5/2.5/4$	$1.5/2.5/4$
 Refuel your jetpack at $3/4/5$ different canister(s)	Refueling via the canister in your ship counts as 1	JetFuelHunt	$2.5/3.5/5$	$2.5/3.5/5$
 Use $1/2/3/4/5/6$ Nomai telekinetic orb(s)	You must activate something. Just moving it isn't sufficient.	TKOrbHunt	$0.67/1.33/2/2.67/3.33/4$	$0.67/1.33/2/2.67/3.33/4$
 Touch a [DB] vine on $1/2/3$ different planet(s)		DBVineHunt	$1/2.5/4$	$1/2.5/4$
-[TODO] Puncture your suit on $2/3/4$ primary locations		PunctureHunt	1.5	1
+[TODO] Puncture your suit on $2/3/4$ bodies		PunctureHunt	1.5	1
 Touch the "Sky Shutter" satellite orbiting [TH]		TH, Early	3	1.5
 Go through the black hole in [BH]$/ without your ship$		BHBlackHole $/, Shipless$	2	2.5
 Talk to Solanum		SixthLocation	6	6.5
@@ -210,15 +210,15 @@ Aggro an anglerfish (and survive)		DB	2.5	3.5
 Touch a living or dead Jellyfish		Jelly	3	3.5
 Translate any text inside [TI]		TI, TranslatePrimary, ShitCreek	7	7.5
 Read any text in the museum on [TH]		Museum	1	2.5
-Repair the satellite in the zero g cave	(Fully)	TH	2.5	3.5
+Repair the satellite in the Zero-G Cave	(Fully)	TH	2.5	3.5
 Touch $1/2$ anglerfish skeleton(s)		 	$3.5/7$	$3/6.5$
-Translate any text inside Mine 2b		MineTwoB, TranslateSecondary	2	2.5
-Use a storm shelter on Giants Deep		GD	4	3
+Translate any text inside Mining Site 2b		MineTwoB, TranslateSecondary	2	2.5
+Use a storm shelter on Giants Deep		GD, Tornado	4	3
 Touch the red anglerfish eggs		DB	3	4
 Translate any text inside statue island	Text on the outside does not count	StatueIsland, TranslateSecondary	3.5	3
-Touch a clothed Nomai corpse on $1/2/3$ primary location(s)	[QM] only counts as 1. Clothed = not a skeleton	NomaiCorpseHunt	$2/4/6$	$2/4/6$
+Touch a clothed Nomai corpse on $1/2/3$ bodies	[QM] only counts as 1. Clothed = not a skeleton	NomaiCorpseHunt	$2/4/6$	$2/4/6$
 Shoot scout through $1/2$ impassable bramble seed(s)		TinyBramble	3.5	3.5
-Find and talk to both kids in hide and go seek		TH	1	1.5
+Play hide and go seek	Must find and talk to both children	TH	1	1.5
 Hold an advanced warp core	(Broken or functional…)	AdvWarpCore	4.5	4
 Pilot $1/2$ Nomai ship(s)		NomaiShip	$2/4$	$2.5/4.5$
 Land a Nomai Ship on any location different than its takeoff		NomaiShip	4	4
@@ -230,7 +230,7 @@ QM Ending	(Remove the warp core from [ATP] and then await the supernova at the 6
 Watch the supernova with $Slate/Chert/Gabbro/Feldspar/Riebeck/Esker$		Late, $TH/ET/GD/DB/BH/AR$	3	6
 Touch [SS] with your ship		SS, Sun	7	4
 Ride 3 elevators on TH		TH	2	3.5
-[TODO] [Need to declare this tag + synergies] Detect ghost matter on $2/3/4$ primary location(s)		GhostMatterHunt	$3/4/5$	$3/4/5$
+[TODO] [Need to declare this tag + synergies] Detect ghost matter on $2/3/4$ bodies		GhostMatterHunt	$3/4/5$	$3/4/5$
 Translate any text at Eye Signal Locator	(on [AR])	EyeSigLoc, TranslateSecondary	2	2
 Translate any text at the Construction Yard		ConstrYard, TranslateSecondary	2.5	3.5
 Translate any text at Quantum Moon Locator	(on [ET])	QMLoc, TranslateSecondary	2	3
@@ -238,20 +238,20 @@ Touch or stand on SS as it begins getting engulfed by the Sun		SS	6.5	6.5
 Use any projection stone at the location that it projects	For example, use the [GD] projection stone at the [GD] projection pool	ProjectionPoolHunt	4.5	3.5
 Get inside [SS] without warping to it		SS, ShitCreek	8	5
 Read Esker's Signalscope Log		AR	1.5	1.5
-Have your ship destroyed by the sun		Sun, Shipless	1.5	3
+Destroy your ship in the sun		Sun, Shipless	1.5	3
 Press the eject button		Shipless	3	1.5
 Ride sand pillar from [AT] -> [ET], w/o your ship		HT, Shipless	3	3
-[HT] <-> any primary location, w/o your ship or warps	Going from one [HT] to the other doesn't count	HT, Shipless	4	4
-[TH] <-> any primary location, w/o your ship or warps		TH, Shipless	5	5
-[AR] <-> any primary location, w/o your ship or warps		AR, Shipless	4	4
-[BH] <-> any primary location, w/o your ship or warps		BH, Shipless	4	4
-[HL] <-> any primary location, w/o your ship or warps		HL, Shipless	5	5
-[GD] <-> any primary location, w/o your ship or warps		GD, Shipless	6	6
-[OPC] <-> any primary location, w/o your ship or warps		OPC, Shipless	5	5
-[DB] <-> any primary location, w/o your ship or warps		DB, Shipless	4	4
-[WHS] <-> any primary location, w/o your ship or warps		WHS, Shipless	4	4
-[TI] <-> any primary location, w/o your ship or warps		TI, Shipless	5	5
-[QM] <-> any primary location, w/o your ship or warps		QM, Shipless	6	6
+[HT] <-> any body, w/o your ship or warps	Going from one [HT] to the other doesn't count	HT, Shipless	4	4
+[TH] <-> any body, w/o your ship or warps		TH, Shipless	5	5
+[AR] <-> any body, w/o your ship or warps		AR, Shipless	4	4
+[BH] <-> any body, w/o your ship or warps		BH, Shipless	4	4
+[HL] <-> any body, w/o your ship or warps		HL, Shipless	5	5
+[GD] <-> any body, w/o your ship or warps		GD, Shipless	6	6
+[OPC] <-> any body, w/o your ship or warps		OPC, Shipless	5	5
+[DB] <-> any body, w/o your ship or warps		DB, Shipless	4	4
+[WHS] <-> any body, w/o your ship or warps		WHS, Shipless	4	4
+[TI] <-> any body, w/o your ship or warps		TI, Shipless	5	5
+[QM] <-> any body, w/o your ship or warps		QM, Shipless	6	6
 Shock yourself or your ship		Shock	2	2.5
 				
 !!Eof				

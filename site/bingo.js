@@ -1,6 +1,9 @@
 ﻿// TODO: Debug Row 5 of seed 860446880 ... there are 4 translate text goals? Are the tags set up properly?
 //	Or do we have a bug?
 
+// TODO: Inline counters for goals with X subtasks
+// TODO: Double click a header for a popout (a la SRL)
+
 function assert(value) {
 	if (!value) {
 		debugger;
@@ -76,8 +79,6 @@ function htmlFromGoal(goal) {
 	return result;
 }
 
-
-
 function initSeed() {
 	// Get random seed from URL or generate one
 
@@ -98,10 +99,6 @@ function initSeed() {
 		else if ((seedString.charAt(seedString.length - 1) === g_suffixHard)) {
 			g_difficulty = "Hard";
 		}
-
-		// Check the corresponding radio button
-
-		document.getElementById("radio" + g_difficulty).checked = true;
 
 		// Make the difficulty text correct
 
@@ -147,25 +144,32 @@ function initHandlers() {
 
 	// Initialize new card button
 
-	document.getElementById("btnNewCard").addEventListener("click", function () {
-		let locationSubstring = window.location.href;
-		if (window.location.href.includes("?seed=")) {
-			locationSubstring = locationSubstring.substring(0, window.location.href.indexOf("?seed="));
-		}
+	let btns = document.getElementsByClassName("btnNewCard");
+	for (let iBtn = 0; iBtn < btns.length; iBtn++) {
+		let btn = btns[iBtn];
+		btn.addEventListener("click", function (event) {
+			let locationSubstring = window.location.href;
+			if (window.location.href.includes("?seed=")) {
+				locationSubstring = locationSubstring.substring(0, window.location.href.indexOf("?seed="));
+			}
 
-		let difficultySelected = "Normal";
-		if (document.getElementById("radioEasy").checked) {
-			difficultySelected = "Easy";
-		}
-		else if (document.getElementById("radioHard").checked) {
-			difficultySelected = "Hard";
-		}
+			let difficultySelected = "Normal";
+			if (event.target.id === "btnNewEasyCard") {
+				difficultySelected = "Easy";
+			}
+			else if (event.target.id === "btnNewHardCard") {
+				difficultySelected = "Hard";
+			}
+			else {
+				assert(event.target.id === "btnNewNormalCard");
+			}
 
-		// NOTE (this performs a redirect)
+			// NOTE (this performs a redirect)
 
-		window.location.replace(locationSubstring + "?seed=" + getRandomSeed(difficultySelected));
-		return;
-	});
+			window.location.replace(locationSubstring + "?seed=" + getRandomSeed(difficultySelected));
+			return;
+		});
+	}
 
 	// Initialize row/column headers
 
@@ -701,10 +705,6 @@ function chooseGoals() {
 			}
 	}
 
-	// Compute some constants
-	// TODO: Easy, medium, hard difficulties
-	// NOTE (andrew) sqrt is intended to dampen the volatility a little bit. It is definitely a knob that can be tweaked.
-
 	// Init extra fields on goals
 
 	for (let i = 0; i < manifest.goals.length; i++) {
@@ -858,6 +858,7 @@ function superSecretDevDebugTool() {
 	let keyDown = 40;
 	let keyA = 65;
 	let keyB = 66;
+	let keyEsc = 27;
 
 	let konami = [keyUp, keyUp, keyDown, keyDown, keyLeft, keyRight, keyLeft, keyRight, keyB, keyA];
 	let iKonami = 0;
@@ -872,6 +873,10 @@ function superSecretDevDebugTool() {
 			}
 			else {
 				iKonami = 0;
+
+				if (event.keyCode == keyEsc && isCodeActive) {
+					toggleSuperSecretDevDebugTool();
+				}
 			}
 
 			if (iKonami === konami.length) {
@@ -881,7 +886,7 @@ function superSecretDevDebugTool() {
 		}
 	);
 
-	let debugStartToggledOn = true;
+	let debugStartToggledOn = false;
 	if (debugStartToggledOn) {
 		toggleSuperSecretDevDebugTool();
 	}
@@ -893,6 +898,8 @@ function superSecretDevDebugTool() {
 let g_suffixEasy = "0";
 let g_suffixNormal = "5";		// NOTE (andrew) Any other suffix also defaults to normal. But 5 is the explicit suffix.
 let g_suffixHard = "9";
+
+// NOTE (andrew) Difficulty string is capitalized for... historical reasons
 
 let g_difficulty = "Normal";		// EW please let me use enums JavaScript !!!
 let g_headerIds = ["row1", "row2", "row3", "row4", "row5", "col1", "col2", "col3", "col4", "col5", "tlbr", "bltr"];
@@ -910,16 +917,20 @@ for (let i = 0; i < 5; i++) {
 	}
 }
 
-initSeed();
+// Seed and determine difficulty
 
+initSeed();
 
 let g_headerScoreIdeal = g_avgScorePostSynergy * 5;
 if (g_difficulty === "Easy") {
 	g_headerScoreIdeal *= 0.7;
 }
+
 else if (g_difficulty === "Hard") {
 	g_headerScoreIdeal *= 1.3;
 }
+
+// NOTE (andrew) sqrt is intended to dampen the volatility a little bit. It is definitely a knob that can be tweaked.
 
 let g_headerScoreMin = g_headerScoreIdeal - Math.sqrt(5 * manifest.goalScoreStddev);
 let g_headerScoreMax = g_headerScoreIdeal + Math.sqrt(5 * manifest.goalScoreStddev);

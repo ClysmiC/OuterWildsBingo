@@ -1,6 +1,8 @@
 body {
-    background-color: #2A2A2F;
-    color: #F8FFFF;     /* TODO: Relpace */
+	background-color: #2A2A2F;
+	color: #F8FFFF;
+
+	font-family: arial;
 }
 
 
@@ -29,19 +31,19 @@ table {
 th {
 	background-color: #0D142D;
 	border: 1px solid #253456;
-    color: #5066BF;
+	color: #5066BF;
 	padding: 3px;
 }
 
 th:hover,
 th.selected {
-    background-color: #000042;
+	background-color: #000042;
 }
 
 td {
 	display: table-cell;
 	border: 1px solid #4F4F4F;
-    color: #E2E2E2;
+	color: #E2E2E2;
 	padding: 5px;
 	background-color: #1F1F1F;
 }
@@ -52,7 +54,7 @@ td.fakeHover {
 
 td.preselected,
 td.selected {
-    background-color: #000042;
+	background-color: #000042;
 }
 
 td:hover {
@@ -78,21 +80,23 @@ td.redCell:hover {
 
 /* TEXT */
 
+
+#panelRight {
+	font-size: 0.8rem;
+	font-family: arial;
+	line-height: 1.5em;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
 h2 {
 	font-family: arial;
-	font-size: 150%;
+	font-size: 200%;
 }
 
-#txtAbout {
-	font-size: 0.8rem;
-	font-family: arial;
-	line-height: 1.5em;
-}
-
-#txtRules {
-	font-size: 0.8rem;
-	font-family: arial;
-	line-height: 1.5em;
+#txtDifficulty {
+	margin-top: 20px;
+	margin-left: 50px;
 }
 
 #txtCredit {
@@ -100,7 +104,7 @@ h2 {
 	font-family: arial;
 	position: fixed;
 	bottom: 10px;
-    left: 10px;
+	left: 10px;
 }
 
 
@@ -108,43 +112,43 @@ h2 {
 /* TOOLTIP */
 
 .ttCrumb {
-    color: #F2F2F2;
-    border-bottom: 1px dotted #F2F2F2;
-    position: relative;
+	color: #F2F2F2;
+	border-bottom: 1px dotted #F2F2F2;
+	position: relative;
 }
 
 .ttText {
-    visibility: hidden;
-    width: 150px;
-    background-color: #555;
-    color: #fff;
-    text-align: center;
-    padding: 10px 5px;
-    border-radius: 6px;
+	visibility: hidden;
+	width: 150px;
+	background-color: #555;
+	color: #fff;
+	text-align: center;
+	padding: 10px 5px;
+	border-radius: 6px;
 
-    position: absolute;
-    z-index: 1;
-    top: 200%;
-    left: 50%;
-    margin-left: -75px;
-    opacity: 0;
-    transition: opacity 0.3s;
+	position: absolute;
+	z-index: 1;
+	top: 200%;
+	left: 50%;
+	margin-left: -75px;
+	opacity: 0;
+	transition: opacity 0.3s;
 }
 
 .ttText::after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -12.5px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent transparent #555 transparent;
+	content: "";
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -12.5px;
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent transparent #555 transparent;
 }
 
 .ttCrumb:hover > .ttText {
-    visibility: visible;
-    opacity: 1;
+	visibility: visible;
+	opacity: 1;
 }
 
 
@@ -152,7 +156,7 @@ h2 {
 /* ETC */
 
 #panelMain{
-    visibility: hidden;     /* Revealed after JS computes layout */
+	visibility: hidden;     /* Revealed after JS computes layout */
 }
 
 #panelCard {
@@ -165,17 +169,27 @@ h2 {
 	position: relative;
 }
 
-#btnNewCard {
-	padding: 10px;
-	margin-left: 2em;
-	margin-bottom: 2em;
+#panelRadio {
+	display: inline-block;
+}
+
+.btnNewCard {
+	display: inline-block;
+	margin-right: 2em;
+
+	padding: 8px 10px;
+	cursor: pointer;
+}
+
+#spanDifficulty {
+	font-weight: bold;
 }
 
 
 /* unvisited link */
 a:link,
 a:visited {
-  color: #588CC0;
+  color: #689CD0;
 }
 
 /* mouse over link */

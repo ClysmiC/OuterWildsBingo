@@ -191,49 +191,49 @@ let manifest = {
 			"alt": ""
 		},
 		{
-			"text": "Translate text on 3 celestial bodie(s)",
+			"text": "Translate text on 3 natural bodie(s)",
 			"score": 5.6002,
 			"tags": [ 3, 2 ],
 			"alt": ""
 		},
 		{
-			"text": "Translate text on 4 celestial bodie(s)",
+			"text": "Translate text on 4 natural bodie(s)",
 			"score": 7.6006,
 			"tags": [ 3, 2 ],
 			"alt": ""
 		},
 		{
-			"text": "Translate text on 5 celestial bodie(s)",
+			"text": "Translate text on 5 natural bodie(s)",
 			"score": 9.6010,
 			"tags": [ 3, 2 ],
 			"alt": ""
 		},
 		{
-			"text": "Translate text on 6 celestial bodie(s)",
+			"text": "Translate text on 6 natural bodie(s)",
 			"score": 11.7553,
 			"tags": [ 3, 2 ],
 			"alt": ""
 		},
 		{
-			"text": "Translate text on 3 primary location(s)",
+			"text": "Translate text on 3 bodie(s)",
 			"score": 5.0614,
 			"tags": [ 3, 2 ],
 			"alt": ""
 		},
 		{
-			"text": "Translate text on 4 primary location(s)",
+			"text": "Translate text on 4 bodie(s)",
 			"score": 7.6006,
 			"tags": [ 3, 2 ],
 			"alt": ""
 		},
 		{
-			"text": "Translate text on 5 primary location(s)",
+			"text": "Translate text on 5 bodie(s)",
 			"score": 9.6010,
 			"tags": [ 3, 2 ],
 			"alt": ""
 		},
 		{
-			"text": "Translate text on 6 primary location(s)",
+			"text": "Translate text on 6 bodie(s)",
 			"score": 11.7553,
 			"tags": [ 3, 2 ],
 			"alt": ""
@@ -353,22 +353,22 @@ let manifest = {
 			"alt": ""
 		},
 		{
-			"text": "Use 2 different projection pool(s)",
+			"text": "Activate 2 different projection pool(s)",
 			"score": 5.6002,
 			"tags": [ 12, 2 ],
-			"alt": ""
+			"alt": "The \"activated\" pool is the one that you are standing at. Not the remote one."
 		},
 		{
-			"text": "Use 3 different projection pool(s)",
+			"text": "Activate 3 different projection pool(s)",
 			"score": 7.9083,
 			"tags": [ 12, 2 ],
-			"alt": ""
+			"alt": "The \"activated\" pool is the one that you are standing at. Not the remote one."
 		},
 		{
-			"text": "Use 4 different projection pool(s)",
+			"text": "Activate 4 different projection pool(s)",
 			"score": 10.2165,
 			"tags": [ 12, 2 ],
-			"alt": ""
+			"alt": "The \"activated\" pool is the one that you are standing at. Not the remote one."
 		},
 		{
 			"text": "Touch the quantum cave shard on [ET]",
@@ -695,7 +695,7 @@ let manifest = {
 			"alt": ""
 		},
 		{
-			"text": "Repair the satellite in the zero g cave",
+			"text": "Repair the satellite in the Zero-G Cave",
 			"score": 5.8308,
 			"tags": [ 33 ],
 			"alt": "(Fully)"
@@ -713,7 +713,7 @@ let manifest = {
 			"alt": ""
 		},
 		{
-			"text": "Translate any text inside Mine 2b",
+			"text": "Translate any text inside Mining Site 2b",
 			"score": 4.5614,
 			"tags": [ 34, 33, 1 ],
 			"alt": ""
@@ -721,7 +721,7 @@ let manifest = {
 		{
 			"text": "Use a storm shelter on Giants Deep",
 			"score": 6.1389,
-			"tags": [ 45 ],
+			"tags": [ 45, 49 ],
 			"alt": ""
 		},
 		{
@@ -737,19 +737,19 @@ let manifest = {
 			"alt": "Text on the outside does not count"
 		},
 		{
-			"text": "Touch a clothed Nomai corpse on 1 primary location(s)",
+			"text": "Touch a clothed Nomai corpse on 1 bodies",
 			"score": 4.0614,
 			"tags": [ 13, 2 ],
 			"alt": "[QM] only counts as 1. Clothed = not a skeleton"
 		},
 		{
-			"text": "Touch a clothed Nomai corpse on 2 primary location(s)",
+			"text": "Touch a clothed Nomai corpse on 2 bodies",
 			"score": 7.1389,
 			"tags": [ 13, 2 ],
 			"alt": "[QM] only counts as 1. Clothed = not a skeleton"
 		},
 		{
-			"text": "Touch a clothed Nomai corpse on 3 primary location(s)",
+			"text": "Touch a clothed Nomai corpse on 3 bodies",
 			"score": 10.2165,
 			"tags": [ 13, 2 ],
 			"alt": "[QM] only counts as 1. Clothed = not a skeleton"
@@ -767,10 +767,10 @@ let manifest = {
 			"alt": ""
 		},
 		{
-			"text": "Find and talk to both kids in hide and go seek",
+			"text": "Play hide and go seek",
 			"score": 3.0226,
 			"tags": [ 33 ],
-			"alt": ""
+			"alt": "Must find and talk to both children"
 		},
 		{
 			"text": "Hold an advanced warp core",
@@ -917,7 +917,7 @@ let manifest = {
 			"alt": ""
 		},
 		{
-			"text": "Have your ship destroyed by the sun",
+			"text": "Destroy your ship in the sun",
 			"score": 4.7920,
 			"tags": [ 24, 23, 22 ],
 			"alt": ""
@@ -935,67 +935,67 @@ let manifest = {
 			"alt": ""
 		},
 		{
-			"text": "[HT] <-> any primary location, w/o your ship or warps",
+			"text": "[HT] <-> any body, w/o your ship or warps",
 			"score": 7.1389,
 			"tags": [ 29, 26, 28, 23, 22 ],
 			"alt": "Going from one [HT] to the other doesn't count"
 		},
 		{
-			"text": "[TH] <-> any primary location, w/o your ship or warps",
+			"text": "[TH] <-> any body, w/o your ship or warps",
 			"score": 8.6777,
 			"tags": [ 33, 23, 22 ],
 			"alt": ""
 		},
 		{
-			"text": "[AR] <-> any primary location, w/o your ship or warps",
+			"text": "[AR] <-> any body, w/o your ship or warps",
 			"score": 7.1389,
 			"tags": [ 36, 23, 22 ],
 			"alt": ""
 		},
 		{
-			"text": "[BH] <-> any primary location, w/o your ship or warps",
+			"text": "[BH] <-> any body, w/o your ship or warps",
 			"score": 7.1389,
 			"tags": [ 38, 23, 22 ],
 			"alt": ""
 		},
 		{
-			"text": "[HL] <-> any primary location, w/o your ship or warps",
+			"text": "[HL] <-> any body, w/o your ship or warps",
 			"score": 8.6777,
 			"tags": [ 44, 23, 22 ],
 			"alt": ""
 		},
 		{
-			"text": "[GD] <-> any primary location, w/o your ship or warps",
+			"text": "[GD] <-> any body, w/o your ship or warps",
 			"score": 10.2165,
 			"tags": [ 45, 23, 22 ],
 			"alt": ""
 		},
 		{
-			"text": "[OPC] <-> any primary location, w/o your ship or warps",
+			"text": "[OPC] <-> any body, w/o your ship or warps",
 			"score": 8.6777,
 			"tags": [ 52, 23, 22 ],
 			"alt": ""
 		},
 		{
-			"text": "[DB] <-> any primary location, w/o your ship or warps",
+			"text": "[DB] <-> any body, w/o your ship or warps",
 			"score": 7.1389,
 			"tags": [ 53, 23, 22 ],
 			"alt": ""
 		},
 		{
-			"text": "[WHS] <-> any primary location, w/o your ship or warps",
+			"text": "[WHS] <-> any body, w/o your ship or warps",
 			"score": 7.1389,
 			"tags": [ 55, 23, 22 ],
 			"alt": ""
 		},
 		{
-			"text": "[TI] <-> any primary location, w/o your ship or warps",
+			"text": "[TI] <-> any body, w/o your ship or warps",
 			"score": 8.6777,
 			"tags": [ 56, 23, 22 ],
 			"alt": ""
 		},
 		{
-			"text": "[QM] <-> any primary location, w/o your ship or warps",
+			"text": "[QM] <-> any body, w/o your ship or warps",
 			"score": 10.2165,
 			"tags": [ 57, 23, 22 ],
 			"alt": ""
@@ -1010,5 +1010,5 @@ let manifest = {
 
 	"goalScoreAvg": 6.998686,
 	"goalScoreStddev": 2.763853,
-	"pairwiseGoalSynergyAvg": 0.774889
+	"pairwiseGoalSynergyAvg": 0.775067
 };

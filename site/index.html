@@ -1,156 +1,158 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Outer Wilds Bingo</title>
+	<meta charset="UTF-8">
+	<title>Outer Wilds Bingo</title>
 
-    <link rel="stylesheet" type="text/css" href="bingo.css">
+	<link rel="stylesheet" type="text/css" href="bingo.css">
 </head>
 
 
 <body>
-    <div id="panelMain">
-        <div id="panelCard">
-            <table>
-                <tbody>
-                    <tr>
-                        <th id="tlbr">TL-BR</th>
-                        <th id="col1">COL 1</th>
-                        <th id="col2">COL 2</th>
-                        <th id="col3">COL 3</th>
-                        <th id="col4">COL 4</th>
-                        <th id="col5">COL 5</th>
-                    </tr>
+	<div id="panelMain">
+		<div id="panelCard">
+			<table>
+				<tbody>
+					<tr>
+						<th id="tlbr">TL-BR</th>
+						<th id="col1">COL 1</th>
+						<th id="col2">COL 2</th>
+						<th id="col3">COL 3</th>
+						<th id="col4">COL 4</th>
+						<th id="col5">COL 5</th>
+					</tr>
 
-                    <tr>
-                        <th id="row1">ROW 1</th>
-                        <td id="0_0">A</td>
-                        <td id="0_1">B</td>
-                        <td id="0_2">C</td>
-                        <td id="0_3">D</td>
-                        <td id="0_4">E</td>
-                    </tr>
+					<tr>
+						<th id="row1">ROW 1</th>
+						<td id="0_0">A</td>
+						<td id="0_1">B</td>
+						<td id="0_2">C</td>
+						<td id="0_3">D</td>
+						<td id="0_4">E</td>
+					</tr>
 
-                    <tr>
-                        <th id="row2">ROW 2</th>
-                        <td id="1_0">F</td>
-                        <td id="1_1">G</td>
-                        <td id="1_2">H</td>
-                        <td id="1_3">I</td>
-                        <td id="1_4">J</td>
-                    </tr>
+					<tr>
+						<th id="row2">ROW 2</th>
+						<td id="1_0">F</td>
+						<td id="1_1">G</td>
+						<td id="1_2">H</td>
+						<td id="1_3">I</td>
+						<td id="1_4">J</td>
+					</tr>
 
-                    <tr>
-                        <th id="row3">ROW 3</th>
-                        <td id="2_0">K</td>
-                        <td id="2_1">L</td>
-                        <td id="2_2">M</td>
-                        <td id="2_3">N</td>
-                        <td id="2_4">O</td>
-                    </tr>
+					<tr>
+						<th id="row3">ROW 3</th>
+						<td id="2_0">K</td>
+						<td id="2_1">L</td>
+						<td id="2_2">M</td>
+						<td id="2_3">N</td>
+						<td id="2_4">O</td>
+					</tr>
 
-                    <tr>
-                        <th id="row4">ROW 4</th>
-                        <td id="3_0">P</td>
-                        <td id="3_1">Q</td>
-                        <td id="3_2">R</td>
-                        <td id="3_3">S</td>
-                        <td id="3_4">T</td>
-                    </tr>
+					<tr>
+						<th id="row4">ROW 4</th>
+						<td id="3_0">P</td>
+						<td id="3_1">Q</td>
+						<td id="3_2">R</td>
+						<td id="3_3">S</td>
+						<td id="3_4">T</td>
+					</tr>
 
-                    <tr>
-                        <th id="row5">ROW 5</th>
-                        <td id="4_0">U</td>
-                        <td id="4_1">V</td>
-                        <td id="4_2">W</td>
-                        <td id="4_3">X</td>
-                        <td id="4_4">Y</td>
-                    </tr>
+					<tr>
+						<th id="row5">ROW 5</th>
+						<td id="4_0">U</td>
+						<td id="4_1">V</td>
+						<td id="4_2">W</td>
+						<td id="4_3">X</td>
+						<td id="4_4">Y</td>
+					</tr>
 
-                    <tr>
-                        <th id="bltr">BL-TR</th>
-                    </tr>
-                </tbody>
-            </table>
+					<tr>
+						<th id="bltr">BL-TR</th>
+					</tr>
+				</tbody>
+			</table>
 
-            <div id="txtDifficulty">
-                Current Difficulty: <span id="spanDifficulty">Normal</span>
-            </div>
+			<div id="txtDifficulty">
+				Difficulty: <span id="spanDifficulty">Normal</span>
+			</div>
+		</div>      <!--panelCard-->
 
-            <div id="txtCredit">
-                Version 0.1 | Made by ClysmiC <a href="https://twitter.com/ClysmiC11">(@ClysmiC11)</a>
-            </div>
-        </div>      <!--panelCard-->
+		<div id="panelRight">
+			<h2>Outer Wilds Bingo!</h2>
 
-        <div id="panelRight">
-            <h2>Outer Wilds Bingo!</h2>
+			<b>Spoiler Warning</b>: This site contains spoilers for Outer Wilds. The game is best played with no advance knowledge,
+			so if you haven't finished the game yet, please close this page!
 
-            <br>
+			<hr>
 
-            <input type="radio" id="radioEasy" name="difficulty" value="easy">
-            <label for="radioEasy">Easy</label>
-            <br>
-            <input type="radio" id="radioNormal" name="difficulty" value="normal">
-            <label for="radioNormal">Normal</label>
-            <br>
-            <input type="radio" id="radioHard" name="difficulty" value="hard">
-            <label for="radioHard">Hard</label>
+			<h2 id="labelAbout">About</h2>
 
-            <button id="btnNewCard">
-                New Card!
-            </button>
+			<div id="txtAbout">
+				This is a randomly generated bingo card for <a href="https://www.mobiusdigitalgames.com/outer-wilds.html">Outer Wilds</a>. To complete the card, you must complete all 5 squares in a single row, column, or diagonal.
 
-            <hr>
+				<ul>
+					<li>The card is generated using the seed in the URL. To send this card to a friend, simply copy/paste the URL. You can generate a new card with the buttons below.</li>
+					<li>You can click on squares to turn them green or red. You can also click on a row/col/diag header to turn its squares blue. This can help you stay organized.</li>
+					<li>Many squares have underlined text that can be hovered over for clarifications.</li>
+				</ul>
+			</div>      <!--txtAbout-->
 
-            <h2 id="labelAbout">About</h2>
+			<br>
 
-            <br>
+			<div id="panelNewCard">
+				<button id="btnNewEasyCard" class="btnNewCard">
+					New Easy Card
+				</button>
 
-            <div id="txtAbout">
+				<button id="btnNewNormalCard" class="btnNewCard">
+					New Normal Card
+				</button>
 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+				<button id="btnNewHardCard" class="btnNewCard">
+					New Hard Card
+				</button>
+			</div>      <!-- panelNewCard -->
 
-                <ul>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                </ul>
+			<br>
 
-                Note that you can hover over many of the goals to clarify the rules for that goal.
-            </div>      <!--txtAbout-->
+			<h2 id="labelRules">Rules &amp; Clarifications</h2>
 
-            <hr>
+			<div id="txtRules">
 
-            <h2 id="labelRules">Rules / FAQ</h2>
+				The card generation algorithm and ruleset below are designed so that any card <i>should</i> be optimally completable with a single excellent run. That being said, it will likely
+				often take you multiple loops if you die or cannot complete all your goals in time. If you have any questions or rule suggestions, please let me know @ClysmiC11.
 
-            <br>
+				<ul>
+					<li>If racing, generate the card when every is on the "wake up" screen. Start the timer as soon as the card is generated.</li>
+					<li>Do not start on a new file. You don't need to get the launch codes and you are allowed to use your computer to track locations.</li>
+					<li>You are allowed to manipulate time by pausing, resting, meditating, suiciding, changing in-game settings, etc.</li>
+					<li>Time ends as soon as you have completed all 5 squares in a row, column, or diagonal.</li>
+					<li>No end-game events that happen after setting foot on The Eye count as progress towards any square (this eliminates a bunch of ambiguity).</li>
+					<li>Partial progress towards completing a square <i>does</i> carry over between time loops. That said, if the square requires you to do something at X different locations, you cannot get credit for the same location twice.</li>
+					<li>"Bodies" means any location that you can select on your computer's map: Sun Station, Ash Twin, Ember Twin, Timber Hearth, Attlerock, Brittle Hollow, Hollow's Lantern, Giant's Deep, Orbital Probe Cannon, Dark Bramble, White Hole Station, The Interloper, or Quantum Moon.</li>
+					<li>"Natural bodies" means any "body" except for Sun Station and Orbital Probe Cannon.</li>
+					<li>"Moons" means Attlerock, Hollow's Lantern, or Quantum Moon.</li>
+					<li>"Planets" means Ash Twin, Ember Twin, Timber Hearth, Brittle Hollow, Giant's Deep, or Dark Bramble.</li>
+					<li>Ash Twin and Ember Twin are considered separate planets/bodies. If a goal considers them to be the same entity it will refer to them as the Hourglass Twins.</li>
+					<li>"Touch" means touch with your person or your ship.</li>
+					<li>"X &lt;-&gt; any body" means traverse from X to any other body, or from any other body to X.</li>
+					<li>Chunks of Brittle Hollow that have fallen through the black hole are <i>not</i> considered part of Brittle Hollow (nor White Hole Station, for that matter).</li>
+					<li>The Probe Tracking module is <i>not</i> considered part of the Orbital Probe Cannon (it <i>is</i> considered part of Giant's Deep).</li>
+					<li>Squares that specify getting a specific ending are completed once the game displays the text for that ending. See <a href="https://outerwilds.gamepedia.com/Endings">https://outerwilds.gamepedia.com/Endings</a>.</li>
+					<li>"Watch the supernova with X" squares are completed once the supernova kills you. You must be within eyeshot and earshot to be "with" them.</li>
+					<li>Translating audio logs also counts as translating. But audio logs/text from Hearthian's don't count because you didn't need to translate them!</li>
+				</ul>
+			</div>      <!--txtAbout-->
+		</div>      <!--panelRight-->
+	</div>      <!--panelMain-->
 
-            <div id="txtRules">
+	<div id="txtCredit">
+		Version 0.2 | Made by ClysmiC <a href="https://twitter.com/ClysmiC11">(@ClysmiC11)</a>
+	</div>
 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-                <ul>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                </ul>
-
-                Note that you can hover over many of the goals to clarify the rules for that goal.
-            </div>      <!--txtAbout-->
-        </div>      <!--panelRight-->
-    </div>      <!--panelMain-->
-
-    <script src="./manifest/manifest.js"></script>
-    <script src="./rng.js"></script>
-    <script src="./bingo.js"></script>
+	<script src="./manifest/manifest.js"></script>
+	<script src="./rng.js"></script>
+	<script src="./bingo.js"></script>
 </body>
 </html>
