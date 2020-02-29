@@ -42,6 +42,7 @@ th.selected {
 
 td {
 	display: table-cell;
+    position: relative;
 	border: 1px solid #4F4F4F;
 	color: #E2E2E2;
 	padding: 5px;
@@ -151,6 +152,39 @@ h2 {
 	opacity: 1;
 }
 
+.panelTracker {
+    display: inline-block;
+    position: absolute;
+
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 5px;
+
+    background-color: #2F2F2F;
+
+    white-space: nowrap;
+}
+
+.txtTracker {
+    display: inline-block;
+    padding-left: 0.6em;
+    padding-right: 0.6em;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background-color: #3F3F3F;
+}
+
+button:hover {
+    background-color: #5F5F5F;
+}
+
+.btnTrackerMinus,
+.btnTrackerPlus {
+    display: inline-block;
+}
 
 
 /* ETC */
@@ -177,8 +211,9 @@ h2 {
 	display: inline-block;
 	margin-right: 2em;
 
+    color: white;
+
 	padding: 8px 10px;
-	cursor: pointer;
 }
 
 #spanDifficulty {

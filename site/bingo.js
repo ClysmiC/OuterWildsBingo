@@ -76,6 +76,23 @@ function htmlFromGoal(goal) {
 		result += " <span class='ttCrumb'>[?]<span class='ttText'>" + htmlFromStringWithShorthands(goal.alt) + "</span></span>";
 	}
 
+	//<button id="btnNewHardCard" class="btnNewCard">
+
+	let row = goal.cell.row;
+	let col = goal.cell.col;
+	let btnMinusId = "btnTrackerMinus" + row + "_" + col;
+	let btnPlusId = "btnTrackerPlus" + row + "_" + col;
+	let txtTrackerId = "txtTracker" + row + "_" + col;
+
+	if (goal.track) {
+		result +=	'<br>';
+		result +=	'<div class="panelTracker">';
+		result +=		'<button id="' + btnMinusId + '" class="btnTrackerMinus">-</button>';
+		result +=		'<span id="' + txtTrackerId + '" class="txtTracker">0</span>';
+		result +=		'<button id="' + btnPlusId + '" class="btnTrackerPlus">+</button>';
+		result +=	'</div>';
+	}
+
 	return result;
 }
 
@@ -119,8 +136,8 @@ function initLayout() {
 
 	{
 		let dimension = 0.7 * Math.min(window.innerWidth, window.innerHeight);
-		dimension = Math.max(400, dimension);
-		dimension = Math.min(800, dimension);
+		dimension = Math.max(500, dimension);
+		// dimension = Math.min(800, dimension);
 
 		let cellDimension = dimension / 5.0;
 
@@ -292,6 +309,52 @@ function initHandlers() {
 				}
 			});
 		}
+	}
+
+	// Init click listener for inline tracker buttons
+
+	let minusButtons = document.getElementsByClassName("btnTrackerMinus");
+	for (let iBtn = 0; iBtn < minusButtons.length; iBtn++) {
+		let btn = minusButtons[iBtn];
+		btn.addEventListener("click", function (event) {
+			let btnClicked = event.target;
+			let rowColId = btnClicked.id.substring("btnTrackerMinus".length);
+
+			let textDom = document.getElementById("txtTracker" + rowColId);
+			let counterValue = parseInt(textDom.innerText);
+			counterValue = Math.max(counterValue - 1, 0);
+
+			textDom.innerText = counterValue.toString();
+
+			event.stopPropagation();
+		});
+	}
+
+	let plusButtons = document.getElementsByClassName("btnTrackerPlus");
+	for (let iBtn = 0; iBtn < plusButtons.length; iBtn++) {
+		let btn = plusButtons[iBtn];
+		btn.addEventListener("click", function (event) {
+			let btnClicked = event.target;
+			let rowColId = btnClicked.id.substring("btnTrackerPlus".length);
+
+			let textDom = document.getElementById("txtTracker" + rowColId);
+			let counterValue = parseInt(textDom.innerText);
+
+			// NOTE (andrew) This wraps around at 9, which I think is a good design decision since we don't
+			//	have a "reset to 0" button. Might need to change this if we ever have a goal that makes you
+			//	do 10 things!
+
+			if (counterValue === 9) {
+				counterValue = 0;
+			}
+			else {
+				counterValue++;
+			}
+
+			textDom.innerText = counterValue.toString();
+
+			event.stopPropagation();
+		});
 	}
 
 	// Recalculate layout on window resize
@@ -935,9 +998,9 @@ else if (g_difficulty === "Hard") {
 let g_headerScoreMin = g_headerScoreIdeal - Math.sqrt(5 * manifest.goalScoreStddev);
 let g_headerScoreMax = g_headerScoreIdeal + Math.sqrt(5 * manifest.goalScoreStddev);
 
-initHandlers();
 chooseGoals();
 buildBoardHtml();
+initHandlers();
 initLayout();
 superSecretDevDebugTool();
 

@@ -46,6 +46,7 @@ struct Goal
 	DynamicArray<TAGID>			m_aryTagid;				// Tags associated with this goal
 	f32							m_gDifficulty;			// Unit-less, ballparked difficulty. Only has meaning relative to other difficulties.
 	f32							m_gLength;				//	... length.
+	bool						m_fInlineTracker;		// TODO: If we add other metatags, make this an array of METATAGID ??
 
 	f32							m_gScore;				// Score that we export
 };

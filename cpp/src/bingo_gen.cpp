@@ -648,6 +648,7 @@ void CompileManifest()
 			NextCellVerify("Tags");
 			NextCellVerify("Difficulty");
 			NextCellVerify("Length");
+			NextCellVerify("Metatags");
 			SkipToNextLine();
 		}
 
@@ -662,6 +663,7 @@ void CompileManifest()
 				StringView		m_strvTags;
 				StringView		m_strvDifficulty;
 				StringView		m_strvLength;
+				StringView		m_strvMetatags;
 			};
 
 			DynamicArray<GoalCtx> aryGctx;
@@ -815,6 +817,37 @@ void CompileManifest()
 				}
 			}
 
+			// Metatags
+
+			{
+				StringView strv = StrvNextCell();
+
+				DynamicArray<String> aryStrSubstituted;
+				init(&aryStrSubstituted);
+		
+				// $-expr
+
+				if (FTryCompileDollarExpr(strv, &aryStrSubstituted))
+				{
+					if (aryStrSubstituted.cItem != aryGctx.cItem)		ErrorAndExit("Inconsistent number of goals in $-expressions");
+
+					for (int iGctx = 0; iGctx < aryGctx.cItem; iGctx++)
+					{
+						GoalCtx * pGctx = &aryGctx[iGctx];
+						pGctx->m_strvMetatags.pCh = aryStrSubstituted[iGctx].pBuffer;
+						pGctx->m_strvMetatags.cCh = aryStrSubstituted[iGctx].cChar;
+					}
+				}
+				else
+				{
+					for (int iGctx = 0; iGctx < aryGctx.cItem; iGctx++)
+					{
+						GoalCtx * pGctx = &aryGctx[iGctx];
+						pGctx->m_strvMetatags = strv;
+					}
+				}
+			}
+
 			// Generate actual goals now that we have substituted $-expressions
 
 			for (int iCtx = 0; iCtx < aryGctx.cItem; iCtx++)
@@ -895,6 +928,24 @@ void CompileManifest()
 					int iChStrv = 0;
 					if (!tryConsumeFloatApprox(pGctx->m_strvLength.pCh, &iChStrv, &pGoal->m_gLength))		ErrorAndExit("Expected float");
 					if (pGoal->m_gLength<= 0)																ErrorAndExit("Expected number > 0");
+				}
+
+				// Metatags
+				// TODO (andrew) Generalize this if we end up adding more metatags!
+
+				{
+					if (pGctx->m_strvMetatags == "InlineTracker")
+					{
+						pGoal->m_fInlineTracker = true;
+					}
+					else if (pGctx->m_strvMetatags.cCh > 0)
+					{
+						ErrorAndExitStrvHack("Unknown metatag: %s", pGctx->m_strvMetatags);
+					}
+					else
+					{
+						pGoal->m_fInlineTracker = false;
+					}
 				}
 			}
 
@@ -1105,7 +1156,14 @@ void DumpToJson()
 			AppendTabs(&str, cTab + 1);
 			append(&str, "\"alt\": \"");
 			append(&str, PChzEscapedFromStrv(pGoal->m_strvAlt));
-			append(&str, "\"\n");
+			append(&str, "\",\n");
+
+			// TODO: Output metatags in a more generalized way
+
+			AppendTabs(&str, cTab + 1);
+			append(&str, "\"track\": ");
+			append(&str, pGoal->m_fInlineTracker ? "true" : "false");
+			append(&str, "\n");
 
 			AppendTabs(&str, cTab);
 			append(&str, "}");
@@ -1166,20 +1224,38 @@ void DumpToJson()
 		// Finalize goal scores and compute avg
 
 		{
-			float gScoreSum = 0;
+			// NOTE (andrew) The idea is that the "score" is a fusion of the length and the difficulty of a goal. The actual formula
+			//	for combining them is pretty arbitrary. Basically, I want to add 1 to the length per sigma that the difficulty is above
+			//	some minimum threshold that is effectively "zero" difficulty. The "zero" difficulty will be the lowest difficulty in the
+			//	data set that is within a certain negative dSigma threshold. Anything lower than that is too much of an outlier, and I
+			//	don't want it to affect the other scores. Negative outliers won't be punished by lowering their score below their length...
+			//	They will just get the difficulty term clamped to 0.
+
+			float dSigmaBaseline = 0;
+			static const float s_dSigmaBaselineMin = -3;
 			for (int iGoal = 0; iGoal < pAryGoal->cItem; iGoal++)
 			{
 				Goal * pGoal = &(*pAryGoal)[iGoal];
 				float dSigmaDifficulty = (pGoal->m_gDifficulty - gstats.m_gDifficultyAvg) / gstats.m_gDifficultyStddev;
 
-				// NOTE (andrew) The idea is that the "score" is a fusion of the length and the difficulty of a goal. The actual formula
-				//	for combining them is pretty arbitrary. Basically, I want to add 1 to the length per sigma that the difficulty is above
-				//	some minimum threshold that is effectively "zero" difficulty. I don't want to use the minimum difficulty to prevent against
-				//	outliers, so the baseline is just a negative sigma that will cover almost every goal. Again, it is fairly arbitrary and
-				//	is just another knob I can tweak to balance the board.
+				if (dSigmaDifficulty < s_dSigmaBaselineMin)
+				{
+					dSigmaBaseline = s_dSigmaBaselineMin;
+					break;
+				}
+				else if (dSigmaDifficulty < dSigmaBaseline)
+				{
+					dSigmaBaseline = dSigmaDifficulty;
+				}
+			}
 
-				static const float s_dSigmaBaseline = -3;
-				pGoal->m_gScore = pGoal->m_gLength + (dSigmaDifficulty - s_dSigmaBaseline);
+			float gScoreSum = 0;
+			for (int iGoal = 0; iGoal < pAryGoal->cItem; iGoal++)
+			{
+				Goal * pGoal = &(*pAryGoal)[iGoal];
+				float dSigmaDifficulty = (pGoal->m_gDifficulty - gstats.m_gDifficultyAvg) / gstats.m_gDifficultyStddev;
+				float dSigmaFromBaseline = (dSigmaDifficulty - dSigmaBaseline);
+				pGoal->m_gScore = pGoal->m_gLength + Max(dSigmaFromBaseline, 0);
 				gScoreSum += pGoal->m_gScore;
 			}
 
